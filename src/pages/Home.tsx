@@ -44,7 +44,12 @@ export default function Home() {
       ctx.fillStyle = "white";
       ctx.save();
 
-      const fontSize = isMobile ? 120 : 200;
+      let fontSize = 200;
+      if (isMobile) {
+        fontSize = 80;
+      } else if (window.innerWidth < 1200) {
+        fontSize = 120;
+      }
       ctx.font = `bold ${fontSize}px "Bitcount Prop Single", sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
