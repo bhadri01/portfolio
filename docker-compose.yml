@@ -1,0 +1,20 @@
+services:
+  bharinathan-portfolio:
+    image: ghcr.io/bhadri01/portfolio:latest
+    container_name: bharinathan-portfolio
+    hostname: bharinathan
+    restart: always
+    networks:
+      default:
+    labels:
+      - traefik.enable=true
+      - traefik.domain=youngstorage.in
+      - traefik.http.routers.bharinathan-portfolio.rule=Host(`bha3.me`)
+      - traefik.http.routers.bharinathan-portfolio.entrypoints=websecure
+      - traefik.http.routers.bharinathan-portfolio.tls=true
+      - traefik.http.routers.bharinathan-portfolio.tls.certresolver=myresolver
+      - traefik.http.services.bharinathan-portfolio.loadbalancer.server.port=80
+networks:
+  default:
+    name: traefik
+    external: true
