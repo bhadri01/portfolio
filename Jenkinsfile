@@ -11,7 +11,7 @@ pipeline {
       steps {
         git branch: 'main',
             credentialsId: 'GITHUB_SECRET',
-            url: 'ghcr.io/bhadri01/portfolio:latest'
+            url: 'https://github.com/bhadri01/portfolio.git'
       }
     }
 
