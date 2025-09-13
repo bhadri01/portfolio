@@ -10,6 +10,8 @@ services:
       - traefik.enable=true
       - traefik.domain=bha3.me
       - traefik.http.routers.bharinathan-portfolio.rule=Host(`bha3.me`)
+      - traefik.http.routers.bharinathan-portfolio.tls.domains[0].main=bha3.me
+      - traefik.http.routers.bharinathan-portfolio.tls.domains[0].main=*.bha3.me
       - traefik.http.routers.bharinathan-portfolio.entrypoints=websecure
       - traefik.http.routers.bharinathan-portfolio.tls=true
       - traefik.http.routers.bharinathan-portfolio.tls.certresolver=myresolver
