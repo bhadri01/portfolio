@@ -36,4 +36,12 @@ describe("projects data", () => {
   it("marks at least one project as featured", () => {
     expect(projects.some((p) => p.featured)).toBe(true);
   });
+
+  it("public projects expose a link; private projects don't", () => {
+    for (const p of projects) {
+      const hasLink = Boolean(p.live || p.github);
+      if (p.visibility === "public") expect(hasLink).toBe(true);
+      else expect(hasLink).toBe(false);
+    }
+  });
 });

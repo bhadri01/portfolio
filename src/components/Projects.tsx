@@ -2,8 +2,8 @@ import type { ComponentType } from "react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { fadeUp, stagger, viewportOnce } from "../lib/motion";
-import { ArrowUpRight, Star, X, Github, ExternalLink, Code2, TrendingUp, ShieldCheck, RadioTower, BrainCircuit, Sparkles, Smartphone } from "lucide-react";
-import { SiFastapi, SiRust, SiDocker, SiWireguard, SiReact, SiGo } from "react-icons/si";
+import { ArrowUpRight, Star, X, Github, ExternalLink, Code2, TrendingUp, ShieldCheck, RadioTower, Smartphone, GraduationCap, Globe, Lock } from "lucide-react";
+import { SiFastapi, SiRust, SiDocker, SiWireguard, SiGo } from "react-icons/si";
 import { projects, type Project } from "../data/projects";
 
 type IconType = ComponentType<{ size?: number; className?: string }>;
@@ -11,20 +11,34 @@ type IconType = ComponentType<{ size?: number; className?: string }>;
 // Per-project cover art: a representative icon + accent colour
 const coverMeta: Record<string, { color: string; Icon: IconType }> = {
   "AlgoTrade Platform": { color: "#0358fc", Icon: TrendingUp },
+  "Succeedex — EdTech Platform": { color: "#7c3aed", Icon: GraduationCap },
   ZeroVPN: { color: "#B7410E", Icon: SiRust },
   NullVeil: { color: "#3f4756", Icon: SiRust },
   "FastAPI QueryBuilder": { color: "#009688", Icon: SiFastapi },
   "FastAPI SSE Events": { color: "#7C3AED", Icon: RadioTower },
-  "RAG Knowledge System": { color: "#0246d4", Icon: BrainCircuit },
-  Hackminds: { color: "#10A37F", Icon: Sparkles },
   "Crypton API": { color: "#1e40af", Icon: ShieldCheck },
   "WireGuard VPN Platform": { color: "#88171A", Icon: SiWireguard },
   "Docker Stats Monitor": { color: "#2496ED", Icon: SiDocker },
   Voxiloud: { color: "#087EA4", Icon: Smartphone },
   "Crime Records CRM": { color: "#00ADD8", Icon: SiGo },
-  "Bha3.me Portfolio": { color: "#149ECA", Icon: SiReact },
 };
 const coverFor = (title: string) => coverMeta[title] ?? { color: "#0358fc", Icon: Code2 };
+
+/** Small Public / Private status pill. */
+function VisibilityBadge({ visibility }: { visibility: Project["visibility"] }) {
+  if (visibility === "public") {
+    return (
+      <span className="inline-flex items-center gap-1 font-mono text-[10px] tracking-wide uppercase text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
+        <Globe size={10} /> Public
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center gap-1 font-mono text-[10px] tracking-wide uppercase text-slate-500 dark:text-slate-400 bg-slate-500/10 border border-slate-400/20 px-2 py-0.5 rounded-full">
+      <Lock size={10} /> Private
+    </span>
+  );
+}
 
 function shade(hex: string, amt: number) {
   const h = hex.replace("#", "");
@@ -154,8 +168,11 @@ function ProjectRow({ project, onOpen }: { project: Project; onOpen: () => void 
       </div>
 
       {/* Right meta */}
-      <div className="flex flex-col items-end gap-3 shrink-0 self-stretch">
-        <span className="font-mono text-[10px] text-slate-400 dark:text-slate-500 tracking-wider">{project.year}</span>
+      <div className="flex flex-col items-end justify-between gap-2 shrink-0 self-stretch">
+        <div className="flex flex-col items-end gap-1.5">
+          <VisibilityBadge visibility={project.visibility} />
+          <span className="font-mono text-[10px] text-slate-400 dark:text-slate-500 tracking-wider">{project.year}</span>
+        </div>
         <span className="mt-auto w-9 h-9 rounded-full flex items-center justify-center text-slate-400 dark:text-slate-500 border border-slate-200 dark:border-white/10 group-hover:border-[#0358fc]/30 group-hover:text-[#0358fc] group-hover:bg-[#0358fc]/5 transition-all duration-300">
           <ArrowUpRight
             size={17}
@@ -236,7 +253,11 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
             <span className="w-11 h-11 rounded-xl bg-white/15 flex items-center justify-center backdrop-blur-sm">
               <cover.Icon className="w-6 h-6 text-white" />
             </span>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="inline-flex items-center gap-1.5 font-mono text-[10px] tracking-widest text-white uppercase bg-white/15 px-2.5 py-1 rounded-full">
+                {project.visibility === "public" ? <Globe size={10} /> : <Lock size={10} />}
+                {project.visibility}
+              </span>
               {project.featured && (
                 <span className="inline-flex items-center gap-1.5 font-mono text-[10px] tracking-widest text-white uppercase bg-white/15 px-2.5 py-1 rounded-full">
                   <Star size={10} className="fill-white" /> Featured
@@ -297,8 +318,8 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
             ))}
           </div>
 
-          {/* Links */}
-          {(project.live || project.github) && (
+          {/* Links — only for public projects */}
+          {project.visibility === "public" && (project.live || project.github) ? (
             <div className="flex flex-wrap gap-3">
               {project.live && (
                 <a
@@ -320,6 +341,10 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
                   <Github size={15} /> View source
                 </a>
               )}
+            </div>
+          ) : (
+            <div className="inline-flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+              <Lock size={14} /> Private project — source isn't publicly available.
             </div>
           )}
         </div>

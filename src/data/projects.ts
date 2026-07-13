@@ -7,6 +7,9 @@ export interface Project {
   live?: string;
   year: string;
   featured?: boolean;
+  /** "public" → shows a Public badge + a redirect link (live/github).
+   *  "private" → shows a Private badge and no outbound link. */
+  visibility: "public" | "private";
   /** Optional screenshot/cover image (e.g. "/screenshots/algotrade.png").
    *  When set it's shown in the list row + modal; otherwise the icon cover is used. */
   cover?: string;
@@ -27,6 +30,23 @@ export const projects: Project[] = [
     live: "https://algo.bha3.me",
     year: "2026",
     featured: true,
+    visibility: "public",
+  },
+  {
+    title: "Succeedex — EdTech Platform",
+    description:
+      "A multi-tenant EdTech platform connecting students, colleges, and companies — a suite of role-based CRMs, an online test portal, and centralized OAuth, live at succeedex.in.",
+    highlights: [
+      "Contributed across the platform: the Python backend, the TypeScript test/assessment portal, and the public landing page.",
+      "Part of a multi-service suite — Student, College, Company, and Admin CRMs sharing a common backend and a centralized OAuth service.",
+      "Helped shape the shared authentication flow and the online assessment experience.",
+      "Containerized the services with a Docker-based DevOps / infra-as-code setup.",
+    ],
+    tech: ["React", "TypeScript", "Python", "OAuth", "Docker", "DevOps"],
+    live: "https://succeedex.in",
+    year: "2025",
+    featured: true,
+    visibility: "public",
   },
   {
     title: "ZeroVPN",
@@ -41,6 +61,7 @@ export const projects: Project[] = [
     tech: ["Rust", "Axum", "React", "WireGuard", "PostgreSQL", "Redis", "ZeroMQ", "WebAssembly", "Docker", "Networking"],
     year: "2026",
     featured: true,
+    visibility: "private",
   },
   {
     title: "NullVeil",
@@ -55,6 +76,7 @@ export const projects: Project[] = [
     tech: ["Rust", "Filesystems", "Forensics", "CLI/TUI", "Systems Programming"],
     year: "2026",
     featured: true,
+    visibility: "private",
   },
   {
     title: "FastAPI QueryBuilder",
@@ -69,6 +91,7 @@ export const projects: Project[] = [
     github: "https://github.com/bhadri01/fastapi-querybuilder",
     year: "2025",
     featured: true,
+    visibility: "public",
   },
   {
     title: "FastAPI SSE Events",
@@ -83,31 +106,7 @@ export const projects: Project[] = [
     github: "https://github.com/bhadri01/fastapi_sse_events",
     year: "2025",
     featured: true,
-  },
-  {
-    title: "RAG Knowledge System",
-    description:
-      "Retrieval-Augmented Generation system with document ingestion, pgvector semantic search, and LangGraph agent orchestration.",
-    highlights: [
-      "Built a document ingestion pipeline with pgvector-backed semantic search.",
-      "Orchestrated retrieval and answering as a LangGraph agent workflow.",
-      "Added an LLM evaluation harness to measure answer quality and faithfulness.",
-    ],
-    tech: ["Python", "LangChain", "LangGraph", "pgvector", "RAG Systems", "AI Agents", "LLM Evaluation", "PostgreSQL"],
-    year: "2025",
-    featured: true,
-  },
-  {
-    title: "Hackminds",
-    description:
-      "Gemini-powered quiz-question generator API — a FastAPI service that produces unique questions across six question types.",
-    highlights: [
-      "Generated MCQ, MSQ, True/False, Fill-up, Short and Coding questions with Google Gemini.",
-      "Built an anti-duplication engine using Jaccard, LCS and SimHash similarity over a corpus of known stems.",
-      "Handled scale with automatic request chunking on token limits, schema validation, retry logic and background corpus updates.",
-    ],
-    tech: ["Python", "FastAPI", "Google Gemini", "SQLAlchemy", "AI Agents"],
-    year: "2025",
+    visibility: "public",
   },
   {
     title: "Crypton API",
@@ -120,6 +119,7 @@ export const projects: Project[] = [
     ],
     tech: ["Python", "FastAPI", "SQLAlchemy", "PostgreSQL", "Redis", "MinIO"],
     year: "2025",
+    visibility: "private",
   },
   {
     title: "WireGuard VPN Platform",
@@ -131,6 +131,7 @@ export const projects: Project[] = [
     ],
     tech: ["WireGuard", "Python", "React", "DNS", "Linux", "Networking"],
     year: "2024",
+    visibility: "private",
   },
   {
     title: "Docker Stats Monitor",
@@ -142,6 +143,7 @@ export const projects: Project[] = [
     ],
     tech: ["Docker", "Python", "WebSockets", "SSE / WebSockets", "Linux"],
     year: "2024",
+    visibility: "private",
   },
   {
     title: "Voxiloud",
@@ -154,6 +156,7 @@ export const projects: Project[] = [
     ],
     tech: ["React Native", "Recoil", "Tailwind CSS", "JavaScript"],
     year: "2025",
+    visibility: "private",
   },
   {
     title: "Crime Records CRM",
@@ -166,18 +169,6 @@ export const projects: Project[] = [
     ],
     tech: ["Go", "React", "PostgreSQL", "Docker"],
     year: "2023",
-  },
-  {
-    title: "Bha3.me Portfolio",
-    description:
-      "This portfolio — a light design system with Framer Motion, shipped through a Docker + Traefik + Jenkins pipeline.",
-    highlights: [
-      "Designed and built a light design system with Framer Motion animation.",
-      "Deployed via Docker with a Traefik reverse proxy and Jenkins CI/CD.",
-    ],
-    tech: ["React", "TypeScript", "Tailwind CSS", "Vite", "Docker", "Traefik", "Jenkins", "CI/CD"],
-    github: "https://github.com/bhadri01/portfolio",
-    live: "https://bha3.me",
-    year: "2025",
+    visibility: "private",
   },
 ];
