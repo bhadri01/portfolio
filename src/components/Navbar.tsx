@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Github, Linkedin, Menu, X, Sun, Moon } from "lucide-react";
+import { Github, Linkedin, Menu, X, Sun, Moon, Monitor } from "lucide-react";
 import { easeOut } from "../lib/motion";
 import Logo from "./Logo";
 
@@ -10,6 +10,23 @@ const navLinks = [
   { label: "Work", href: "#projects" },
   { label: "Experience", href: "#experience" },
 ];
+
+type Theme = "light" | "dark" | "system";
+
+function resolveTheme(t: Theme): "light" | "dark" {
+  if (t === "system") {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  return t;
+}
+
+function applyTheme(t: Theme) {
+  const resolved = resolveTheme(t);
+  document.documentElement.classList.toggle("dark", resolved === "dark");
+  document
+    .querySelector('meta[name="theme-color"]')
+    ?.setAttribute("content", resolved === "dark" ? "#0a0f1c" : "#f6f9fe");
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -45,33 +62,36 @@ export default function Navbar() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const [dark, setDark] = useState(false);
-
-  const applyThemeColor = (isDark: boolean) => {
-    document
-      .querySelector('meta[name="theme-color"]')
-      ?.setAttribute("content", isDark ? "#0a0f1c" : "#f6f9fe");
-  };
+  const [theme, setTheme] = useState<Theme>("system");
 
   useEffect(() => {
     const stored = localStorage.getItem("theme");
-    const isDark = stored
-      ? stored === "dark"
-      : window.matchMedia("(prefers-color-scheme: dark)").matches;
-    setDark(isDark);
-    document.documentElement.classList.toggle("dark", isDark);
-    applyThemeColor(isDark);
+    const initial: Theme =
+      stored === "light" || stored === "dark" || stored === "system" ? stored : "system";
+    setTheme(initial);
+    applyTheme(initial);
   }, []);
 
-  const toggleTheme = () => {
-    setDark((d) => {
-      const next = !d;
-      document.documentElement.classList.toggle("dark", next);
-      localStorage.setItem("theme", next ? "dark" : "light");
-      applyThemeColor(next);
+  // Follow the OS when in "system" mode
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const onChange = () => theme === "system" && applyTheme("system");
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, [theme]);
+
+  const cycleTheme = () => {
+    const order: Theme[] = ["light", "dark", "system"];
+    setTheme((cur) => {
+      const next = order[(order.indexOf(cur) + 1) % order.length];
+      localStorage.setItem("theme", next);
+      applyTheme(next);
       return next;
     });
   };
+
+  const ThemeIcon = theme === "light" ? Sun : theme === "dark" ? Moon : Monitor;
+  const themeLabel = theme.charAt(0).toUpperCase() + theme.slice(1);
 
   const handleClick = (href: string) => {
     setOpen(false);
@@ -136,11 +156,12 @@ export default function Navbar() {
           {/* Desktop social */}
           <div className="hidden md:flex items-center gap-1">
             <button
-              onClick={toggleTheme}
-              aria-label="Toggle dark mode"
+              onClick={cycleTheme}
+              aria-label={`Theme: ${themeLabel}. Click to change.`}
+              title={`Theme: ${themeLabel}`}
               className="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:text-[#0358fc] hover:bg-slate-100 dark:hover:bg-white/10 transition-all duration-200"
             >
-              {dark ? <Sun size={18} /> : <Moon size={18} />}
+              <ThemeIcon size={18} />
             </button>
             <a
               href="https://github.com/bhadri01"
@@ -247,12 +268,12 @@ export default function Navbar() {
                   <Linkedin size={20} />
                 </a>
                 <button
-                  onClick={toggleTheme}
-                  aria-label="Toggle dark mode"
+                  onClick={cycleTheme}
+                  aria-label={`Theme: ${themeLabel}. Click to change.`}
                   className="ml-auto flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-600 dark:text-slate-300 hover:text-[#0358fc] hover:bg-slate-100 dark:hover:bg-white/10 transition-all duration-200"
                 >
-                  {dark ? <Sun size={18} /> : <Moon size={18} />}
-                  {dark ? "Light" : "Dark"}
+                  <ThemeIcon size={18} />
+                  {themeLabel}
                 </button>
               </div>
             </motion.div>
