@@ -89,7 +89,7 @@ export default function Footer() {
         <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-start">
           {/* Left: heading + form */}
           <motion.div variants={fadeUp}>
-            <p className="font-brand text-xs text-[#0358fc] tracking-[0.2em] uppercase mb-3">
+            <p className="font-brand text-xs text-[#0358fc] dark:text-[#4b8dff] tracking-[0.2em] uppercase mb-3">
               Get in touch
             </p>
             <h2 className="font-brand text-2xl md:text-3xl text-[#000b1b] dark:text-slate-100 leading-tight mb-6">
@@ -172,7 +172,7 @@ export default function Footer() {
             <div className="space-y-3">
               {/* Email + copy */}
               <div className="group flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-white/10 hover:border-[#0358fc]/40 hover:bg-[#0358fc]/[0.03] transition-all duration-200">
-                <span className="w-9 h-9 rounded-lg bg-[#0358fc]/10 text-[#0358fc] flex items-center justify-center shrink-0">
+                <span className="w-9 h-9 rounded-lg bg-[#0358fc]/10 text-[#0358fc] dark:text-[#4b8dff] flex items-center justify-center shrink-0">
                   <Mail size={16} />
                 </span>
                 <a
@@ -196,7 +196,7 @@ export default function Footer() {
                 download
                 className="group flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-white/10 hover:border-[#0358fc]/40 hover:bg-[#0358fc]/[0.03] transition-all duration-200"
               >
-                <span className="w-9 h-9 rounded-lg bg-[#0358fc]/10 text-[#0358fc] flex items-center justify-center shrink-0">
+                <span className="w-9 h-9 rounded-lg bg-[#0358fc]/10 text-[#0358fc] dark:text-[#4b8dff] flex items-center justify-center shrink-0">
                   <Download size={16} />
                 </span>
                 <span className="text-sm text-slate-600 dark:text-slate-300 group-hover:text-[#0358fc] transition-colors">

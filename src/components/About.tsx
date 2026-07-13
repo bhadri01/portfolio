@@ -32,7 +32,7 @@ export default function About() {
       >
         {/* Section label */}
         <motion.div variants={fadeUp} className="flex items-center gap-4 mb-12">
-          <span className="font-brand text-xs text-[#0358fc] tracking-[0.2em] uppercase">
+          <span className="font-brand text-xs text-[#0358fc] dark:text-[#4b8dff] tracking-[0.2em] uppercase">
             01 / About
           </span>
           <div className="h-px flex-1 bg-gradient-to-r from-[#0358fc]/30 to-transparent" />
@@ -71,8 +71,8 @@ export default function About() {
               I'm a full-stack engineer who ships end-to-end — polished React and
               TypeScript interfaces on the front, scalable Python and FastAPI APIs
               behind them — and the creator of{" "}
-              <span className="text-[#0358fc] font-medium">fastapi-querybuilder</span> and{" "}
-              <span className="text-[#0358fc] font-medium">fastapi-sse-events</span>.
+              <span className="text-[#0358fc] dark:text-[#4b8dff] font-medium">fastapi-querybuilder</span> and{" "}
+              <span className="text-[#0358fc] dark:text-[#4b8dff] font-medium">fastapi-sse-events</span>.
             </motion.p>
 
             <motion.p variants={fadeUp} className="relative text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-8">
@@ -115,7 +115,7 @@ export default function About() {
             </span>
             <div className="mt-5 space-y-4">
               <div className="flex items-start gap-3">
-                <span className="mt-0.5 flex-shrink-0 w-8 h-8 rounded-lg bg-[#0358fc]/10 text-[#0358fc] flex items-center justify-center">
+                <span className="mt-0.5 flex-shrink-0 w-8 h-8 rounded-lg bg-[#0358fc]/10 text-[#0358fc] dark:text-[#4b8dff] flex items-center justify-center">
                   <Briefcase size={15} />
                 </span>
                 <div>
@@ -124,7 +124,7 @@ export default function About() {
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <span className="mt-0.5 flex-shrink-0 w-8 h-8 rounded-lg bg-[#0358fc]/10 text-[#0358fc] flex items-center justify-center">
+                <span className="mt-0.5 flex-shrink-0 w-8 h-8 rounded-lg bg-[#0358fc]/10 text-[#0358fc] dark:text-[#4b8dff] flex items-center justify-center">
                   <MapPin size={15} />
                 </span>
                 <div>
@@ -133,7 +133,7 @@ export default function About() {
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <span className="mt-0.5 flex-shrink-0 w-8 h-8 rounded-lg bg-[#0358fc]/10 text-[#0358fc] flex items-center justify-center">
+                <span className="mt-0.5 flex-shrink-0 w-8 h-8 rounded-lg bg-[#0358fc]/10 text-[#0358fc] dark:text-[#4b8dff] flex items-center justify-center">
                   <GitBranch size={15} />
                 </span>
                 <div>

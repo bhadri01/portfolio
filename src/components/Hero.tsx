@@ -102,7 +102,7 @@ export default function Hero() {
         <motion.div variants={fadeUp} className="mb-8 min-h-9 flex items-center justify-center px-2">
           <span className="text-lg md:text-2xl font-medium text-slate-600 dark:text-slate-300 text-center">
             {display}
-            <span className="animate-caret text-[#0358fc] font-normal ml-0.5">|</span>
+            <span className="animate-caret text-[#0358fc] dark:text-[#4b8dff] font-normal ml-0.5">|</span>
           </span>
         </motion.div>
 

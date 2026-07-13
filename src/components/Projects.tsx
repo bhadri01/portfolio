@@ -53,7 +53,7 @@ export default function Projects() {
         >
           {/* Section label */}
           <motion.div variants={fadeUp} className="flex items-center gap-4 mb-6">
-            <span className="font-brand text-xs text-[#0358fc] tracking-[0.2em] uppercase">
+            <span className="font-brand text-xs text-[#0358fc] dark:text-[#4b8dff] tracking-[0.2em] uppercase">
               02 / Work
             </span>
             <div className="h-px flex-1 bg-gradient-to-r from-[#0358fc]/30 to-transparent" />
@@ -131,7 +131,7 @@ function ProjectRow({ project, onOpen }: { project: Project; onOpen: () => void 
           >
             {project.title}
           </motion.h3>
-          {project.featured && <Star size={13} className="fill-[#0358fc] text-[#0358fc] shrink-0" />}
+          {project.featured && <Star size={13} className="fill-[#0358fc] text-[#0358fc] dark:text-[#4b8dff] shrink-0" />}
         </div>
 
         <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-1 md:line-clamp-2 mb-2.5">

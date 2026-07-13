@@ -407,7 +407,7 @@ function SkillsInner({
       >
         {/* Section label */}
         <motion.div variants={fadeUp} className="flex items-center gap-4 mb-5">
-          <span className="font-brand text-xs text-[#0358fc] tracking-[0.2em] uppercase">
+          <span className="font-brand text-xs text-[#0358fc] dark:text-[#4b8dff] tracking-[0.2em] uppercase">
             Skill Portfolio
           </span>
           <div className="h-px flex-1 bg-gradient-to-r from-[#0358fc]/30 to-transparent" />

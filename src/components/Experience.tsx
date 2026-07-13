@@ -99,7 +99,7 @@ export default function Experience() {
           viewport={viewportOnce}
           className="flex items-center gap-4 mb-6"
         >
-          <span className="font-brand text-xs text-[#0358fc] tracking-[0.2em] uppercase">
+          <span className="font-brand text-xs text-[#0358fc] dark:text-[#4b8dff] tracking-[0.2em] uppercase">
             03 / Experience
           </span>
           <div className="h-px flex-1 bg-gradient-to-r from-[#0358fc]/30 to-transparent" />
@@ -172,7 +172,7 @@ function TimelineCard({ item, idx }: { item: TimelineItem; idx: number }) {
           {/* Top row: pills (left) + index number (right corner) */}
           <div className="flex items-start justify-between gap-3 mb-2">
             <div className="flex items-center gap-2.5 flex-wrap">
-              <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-[#0358fc] bg-[#0358fc]/10 border border-[#0358fc]/15 px-2.5 py-0.5 rounded-full">
+              <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-[#0358fc] dark:text-[#4b8dff] bg-[#0358fc]/10 border border-[#0358fc]/15 px-2.5 py-0.5 rounded-full">
                 <Calendar size={11} />
                 {item.period}
               </span>

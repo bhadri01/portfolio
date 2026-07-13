@@ -129,6 +129,19 @@ body {
   background-clip: text;
 }
 
+/* Brighter gradients in dark mode so the blue keeps its contrast */
+.dark .gradient-text {
+  background: linear-gradient(100deg, #5b9bff 0%, #93c0ff 50%, #5b9bff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.dark .gradient-text-cyan {
+  background: linear-gradient(135deg, #5b9bff 0%, #93c0ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
 /* Animations */
 @keyframes fade-in-up {
   from { opacity: 0; transform: translateY(24px); }
