@@ -1,6 +1,34 @@
+import type { ComponentType } from "react";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { fadeUp, stagger } from "../lib/motion";
+import {
+  SiFastapi, SiPython, SiRust, SiReact, SiTypescript, SiDocker, SiRedis,
+  SiPostgresql, SiLangchain, SiWireguard, SiSqlalchemy, SiTailwindcss,
+  SiJenkins, SiTraefikproxy, SiLinux,
+} from "react-icons/si";
+import { Workflow, Boxes, Download } from "lucide-react";
+
+type MarqueeIcon = ComponentType<{ className?: string }>;
+const marqueeSkills: { name: string; Icon: MarqueeIcon }[] = [
+  { name: "FastAPI", Icon: SiFastapi },
+  { name: "Python", Icon: SiPython },
+  { name: "Rust", Icon: SiRust },
+  { name: "React", Icon: SiReact },
+  { name: "TypeScript", Icon: SiTypescript },
+  { name: "Docker", Icon: SiDocker },
+  { name: "Redis", Icon: SiRedis },
+  { name: "PostgreSQL", Icon: SiPostgresql },
+  { name: "LangChain", Icon: SiLangchain },
+  { name: "LangGraph", Icon: Workflow },
+  { name: "pgvector", Icon: Boxes },
+  { name: "WireGuard", Icon: SiWireguard },
+  { name: "SQLAlchemy", Icon: SiSqlalchemy },
+  { name: "Tailwind", Icon: SiTailwindcss },
+  { name: "Jenkins", Icon: SiJenkins },
+  { name: "Traefik", Icon: SiTraefikproxy },
+  { name: "Linux", Icon: SiLinux },
+];
 
 const phrases = [
   "Software Engineer",
@@ -37,7 +65,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-dvh flex flex-col items-center justify-center px-6 md:px-12 overflow-hidden"
+      className="relative min-h-dvh flex flex-col items-center justify-center px-5 sm:px-6 md:px-12 overflow-hidden"
     >
       {/* Subtle grid */}
       <div
@@ -61,13 +89,18 @@ export default function Hero() {
           <img
             src="/bhadrinathan-wordmark.svg"
             alt="Bhadrinathan"
-            className="w-full max-w-[680px] sm:max-w-[780px] md:max-w-[860px]"
+            className="w-full max-w-[680px] sm:max-w-[780px] md:max-w-[860px] dark:hidden"
+          />
+          <img
+            src="/bhadrinathan-wordmark-dark.svg"
+            alt="Bhadrinathan"
+            className="hidden w-full max-w-[680px] sm:max-w-[780px] md:max-w-[860px] dark:block"
           />
         </motion.h1>
 
         {/* Typewriter tagline */}
         <motion.div variants={fadeUp} className="mb-8 min-h-9 flex items-center justify-center px-2">
-          <span className="text-lg md:text-2xl font-medium text-slate-600 text-center">
+          <span className="text-lg md:text-2xl font-medium text-slate-600 dark:text-slate-300 text-center">
             {display}
             <span className="animate-caret text-[#0358fc] font-normal ml-0.5">|</span>
           </span>
@@ -76,7 +109,7 @@ export default function Hero() {
         {/* Description */}
         <motion.p
           variants={fadeUp}
-          className="max-w-2xl mx-auto text-slate-600 text-base md:text-lg leading-relaxed mb-12"
+          className="max-w-2xl mx-auto text-slate-600 dark:text-slate-300 text-base md:text-lg leading-relaxed mb-12"
         >
           A software engineer who ships end-to-end — turning complex problems
           into reliable systems, thoughtful developer tools, and, increasingly,
@@ -98,12 +131,25 @@ export default function Hero() {
             View Work
           </motion.a>
           <motion.a
-            href="mailto:bhadri2002@gmail.com"
+            href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+              document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
+            }}
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
-            className="px-8 py-3 rounded-full bg-white border border-slate-300 text-slate-700 font-medium text-sm hover:border-[#0358fc] hover:text-[#0358fc] transition-colors duration-300"
+            className="px-8 py-3 rounded-full bg-white dark:bg-[#0f1a2e] border border-slate-300 dark:border-white/20 text-slate-700 dark:text-slate-300 font-medium text-sm hover:border-[#0358fc] hover:text-[#0358fc] transition-colors duration-300"
           >
             Get in Touch
+          </motion.a>
+          <motion.a
+            href="/Bhadrinathan_A_Resume.pdf"
+            download
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.97 }}
+            className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-white dark:bg-[#0f1a2e] border border-slate-300 dark:border-white/20 text-slate-700 dark:text-slate-300 font-medium text-sm hover:border-[#0358fc] hover:text-[#0358fc] transition-colors duration-300"
+          >
+            <Download size={16} /> Resume
           </motion.a>
         </motion.div>
       </motion.div>
@@ -115,7 +161,7 @@ export default function Hero() {
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 0.8 }}
       >
-        <span className="font-mono text-xs text-slate-400 tracking-[0.2em] uppercase">
+        <span className="font-mono text-xs text-slate-400 dark:text-slate-500 tracking-[0.2em] uppercase">
           Scroll
         </span>
         <motion.div
@@ -127,44 +173,21 @@ export default function Hero() {
       </motion.div>
 
       {/* Bottom marquee */}
-      <div className="absolute bottom-0 left-0 w-full border-t border-slate-200 overflow-hidden">
-        <div className="flex animate-marquee whitespace-nowrap py-3">
-          {[...Array(2)].map((_, i) => (
-            <span
-              key={i}
-              className="flex items-center gap-8 px-4 text-slate-400 text-xs font-mono tracking-wider"
-            >
-              <span>FASTAPI</span>
-              <span className="text-[#0358fc]/50">◆</span>
-              <span>PYTHON</span>
-              <span className="text-[#0358fc]/50">◆</span>
-              <span>REACT</span>
-              <span className="text-[#0358fc]/50">◆</span>
-              <span>TYPESCRIPT</span>
-              <span className="text-[#0358fc]/50">◆</span>
-              <span>DOCKER</span>
-              <span className="text-[#0358fc]/50">◆</span>
-              <span>REDIS</span>
-              <span className="text-[#0358fc]/50">◆</span>
-              <span>LANGGRAPH</span>
-              <span className="text-[#0358fc]/50">◆</span>
-              <span>LANGCHAIN</span>
-              <span className="text-[#0358fc]/50">◆</span>
-              <span>PGVECTOR</span>
-              <span className="text-[#0358fc]/50">◆</span>
-              <span>WIREGUARD</span>
-              <span className="text-[#0358fc]/50">◆</span>
-              <span>SQLALCHEMY</span>
-              <span className="text-[#0358fc]/50">◆</span>
-              <span>TAILWIND</span>
-              <span className="text-[#0358fc]/50">◆</span>
-              <span>JENKINS</span>
-              <span className="text-[#0358fc]/50">◆</span>
-              <span>TRAEFIK</span>
-              <span className="text-[#0358fc]/50">◆</span>
-              <span>LINUX</span>
-              <span className="text-[#0358fc]/50 mr-8">◆</span>
-            </span>
+      <div className="absolute bottom-0 left-0 w-full border-t border-slate-200 dark:border-white/10 overflow-hidden">
+        <div className="flex animate-marquee whitespace-nowrap py-3.5">
+          {[...Array(2)].map((_, copy) => (
+            <div key={copy} aria-hidden={copy === 1} className="flex items-center shrink-0">
+              {marqueeSkills.map((s) => (
+                <span
+                  key={s.name}
+                  className="flex items-center gap-2 px-5 text-slate-400 dark:text-slate-500 text-xs font-mono tracking-wide"
+                >
+                  <s.Icon className="w-4 h-4 opacity-80" />
+                  <span>{s.name}</span>
+                  <span className="text-[#0358fc]/40 ml-3">◆</span>
+                </span>
+              ))}
+            </div>
           ))}
         </div>
       </div>

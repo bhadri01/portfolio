@@ -20,7 +20,7 @@ const focus = [
 
 export default function About() {
   return (
-    <section id="about" className="relative py-32 md:py-44 px-6 md:px-12 overflow-hidden scroll-mt-24">
+    <section id="about" className="relative py-20 md:py-32 px-5 sm:px-6 md:px-12 overflow-hidden scroll-mt-24">
       <div className="absolute left-0 top-1/3 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#0358fc]/8 blur-[120px] pointer-events-none" />
 
       <motion.div
@@ -43,7 +43,7 @@ export default function About() {
           {/* Intro — large card */}
           <motion.div
             variants={scaleIn}
-            className="relative md:col-span-2 md:row-span-2 overflow-hidden bg-white rounded-3xl border border-slate-200 p-8 md:p-10 flex flex-col"
+            className="relative md:col-span-2 md:row-span-2 overflow-hidden bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-6 sm:p-8 md:p-10 flex flex-col"
           >
             <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-gradient-to-br from-[#0358fc]/10 to-transparent blur-2xl pointer-events-none" />
 
@@ -51,8 +51,8 @@ export default function About() {
             <div className="relative flex items-center gap-3 mb-8">
               <Logo size={40} showWordmark={false} />
               <div>
-                <p className="font-brand text-sm text-[#000b1b] tracking-tight">Bhadrinathan</p>
-                <p className="font-mono text-[11px] text-slate-500 tracking-wide">
+                <p className="font-brand text-sm text-[#000b1b] dark:text-slate-100 tracking-tight">Bhadrinathan</p>
+                <p className="font-mono text-[11px] text-slate-500 dark:text-slate-400 tracking-wide">
                   Software Engineer
                 </p>
               </div>
@@ -60,14 +60,14 @@ export default function About() {
 
             <motion.h2
               variants={fadeUp}
-              className="relative font-brand text-2xl md:text-[2rem] leading-snug tracking-tight text-[#000b1b] mb-6"
+              className="relative font-brand text-2xl md:text-[2rem] leading-snug tracking-tight text-[#000b1b] dark:text-slate-100 mb-6"
             >
               I build full-stack products and
               <span className="gradient-text-cyan"> developer tools </span>
               people actually reach for.
             </motion.h2>
 
-            <motion.p variants={fadeUp} className="relative text-slate-600 text-base leading-relaxed mb-5">
+            <motion.p variants={fadeUp} className="relative text-slate-600 dark:text-slate-300 text-base leading-relaxed mb-5">
               I'm a full-stack engineer who ships end-to-end — polished React and
               TypeScript interfaces on the front, scalable Python and FastAPI APIs
               behind them — and the creator of{" "}
@@ -75,7 +75,7 @@ export default function About() {
               <span className="text-[#0358fc] font-medium">fastapi-sse-events</span>.
             </motion.p>
 
-            <motion.p variants={fadeUp} className="relative text-slate-500 text-sm leading-relaxed mb-8">
+            <motion.p variants={fadeUp} className="relative text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-8">
               From responsive UIs and real-time dashboards to containerized
               platforms and production RAG and agentic workflows built on pgvector,
               LangChain, and LangGraph — I like owning the whole stack.
@@ -88,7 +88,7 @@ export default function About() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
-                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full border border-slate-200 text-sm text-slate-600 hover:text-[#0358fc] hover:border-[#0358fc]/40 hover:bg-[#0358fc]/5 transition-all duration-200"
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full border border-slate-200 dark:border-white/10 text-sm text-slate-600 dark:text-slate-300 hover:text-[#0358fc] hover:border-[#0358fc]/40 hover:bg-[#0358fc]/5 transition-all duration-200"
               >
                 <Github size={15} /> GitHub
               </a>
@@ -97,7 +97,7 @@ export default function About() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
-                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full border border-slate-200 text-sm text-slate-600 hover:text-[#0358fc] hover:border-[#0358fc]/40 hover:bg-[#0358fc]/5 transition-all duration-200"
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full border border-slate-200 dark:border-white/10 text-sm text-slate-600 dark:text-slate-300 hover:text-[#0358fc] hover:border-[#0358fc]/40 hover:bg-[#0358fc]/5 transition-all duration-200"
               >
                 <Linkedin size={15} /> LinkedIn
               </a>
@@ -108,9 +108,9 @@ export default function About() {
           <motion.div
             variants={scaleIn}
             whileHover={{ y: -4 }}
-            className="bg-white rounded-3xl border border-slate-200 p-7 hover:border-[#0358fc]/40 transition-colors duration-300"
+            className="bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-7 hover:border-[#0358fc]/40 transition-colors duration-300"
           >
-            <span className="font-mono text-[11px] text-slate-400 tracking-[0.2em] uppercase">
+            <span className="font-mono text-[11px] text-slate-400 dark:text-slate-500 tracking-[0.2em] uppercase">
               Currently
             </span>
             <div className="mt-5 space-y-4">
@@ -119,8 +119,8 @@ export default function About() {
                   <Briefcase size={15} />
                 </span>
                 <div>
-                  <p className="text-sm font-medium text-[#000b1b]">Software Engineer</p>
-                  <p className="text-xs text-slate-500">Bloomskilltech</p>
+                  <p className="text-sm font-medium text-[#000b1b] dark:text-slate-100">Software Engineer</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Bloomskilltech</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -128,8 +128,8 @@ export default function About() {
                   <MapPin size={15} />
                 </span>
                 <div>
-                  <p className="text-sm font-medium text-[#000b1b]">Salem, Tamil Nadu</p>
-                  <p className="text-xs text-slate-500">India · Remote-friendly</p>
+                  <p className="text-sm font-medium text-[#000b1b] dark:text-slate-100">Salem, Tamil Nadu</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">India · Remote-friendly</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -137,8 +137,8 @@ export default function About() {
                   <GitBranch size={15} />
                 </span>
                 <div>
-                  <p className="text-sm font-medium text-[#000b1b]">Open source</p>
-                  <p className="text-xs text-slate-500">Maintaining PyPI packages</p>
+                  <p className="text-sm font-medium text-[#000b1b] dark:text-slate-100">Open source</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Maintaining PyPI packages</p>
                 </div>
               </div>
             </div>
@@ -148,16 +148,16 @@ export default function About() {
           <motion.div
             variants={scaleIn}
             whileHover={{ y: -4 }}
-            className="bg-white rounded-3xl border border-slate-200 p-7 hover:border-[#0358fc]/40 transition-colors duration-300"
+            className="bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-7 hover:border-[#0358fc]/40 transition-colors duration-300"
           >
-            <span className="font-mono text-[11px] text-slate-400 tracking-[0.2em] uppercase">
+            <span className="font-mono text-[11px] text-slate-400 dark:text-slate-500 tracking-[0.2em] uppercase">
               Focus
             </span>
             <div className="mt-5 flex flex-wrap gap-2">
               {focus.map((f) => (
                 <span
                   key={f}
-                  className="px-3 py-1.5 rounded-full text-xs font-medium text-slate-600 bg-slate-50 border border-slate-200"
+                  className="px-3 py-1.5 rounded-full text-xs font-medium text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-white/[0.04] border border-slate-200 dark:border-white/10"
                 >
                   {f}
                 </span>
@@ -171,14 +171,14 @@ export default function About() {
               key={stat.label}
               variants={scaleIn}
               whileHover={{ y: -4 }}
-              className="bg-white rounded-3xl border border-slate-200 p-7 hover:border-[#0358fc]/40 transition-colors duration-300"
+              className="bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-7 hover:border-[#0358fc]/40 transition-colors duration-300"
             >
               <span
                 className={`block font-brand text-3xl md:text-4xl bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent mb-2`}
               >
                 {stat.number}
               </span>
-              <span className="font-mono text-xs text-slate-500 tracking-wider uppercase">
+              <span className="font-mono text-xs text-slate-500 dark:text-slate-400 tracking-wider uppercase">
                 {stat.label}
               </span>
             </motion.div>

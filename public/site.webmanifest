@@ -1,0 +1,14 @@
+{
+  "name": "Bhadrinathan — Full-Stack Engineer",
+  "short_name": "Bhadrinathan",
+  "description": "Full-stack engineer building React & TypeScript interfaces, FastAPI & Rust backends, developer tools, and real-time systems.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f9fe",
+  "theme_color": "#0358fc",
+  "icons": [
+    { "src": "/favicon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/favicon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/favicon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

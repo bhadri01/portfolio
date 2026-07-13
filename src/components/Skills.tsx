@@ -228,7 +228,7 @@ function SkillModal({ sel, onClose }: { sel: Selected; onClose: () => void }) {
       />
       <motion.div
         layoutId={`skill-${skill.label}`}
-        className="relative w-full max-w-lg max-h-[88vh] flex flex-col bg-white rounded-3xl overflow-hidden ring-1 ring-black/10"
+        className="relative w-full max-w-lg max-h-[88vh] flex flex-col bg-white dark:bg-[#0f1a2e] rounded-3xl overflow-hidden ring-1 ring-black/10 dark:ring-white/10"
         transition={{ type: "spring", stiffness: 300, damping: 32 }}
       >
         {/* Header */}
@@ -265,19 +265,19 @@ function SkillModal({ sel, onClose }: { sel: Selected; onClose: () => void }) {
 
         {/* Stats strip */}
         <div className="relative z-10 -mt-11 px-6 grid grid-cols-2 gap-3 shrink-0">
-          <div className="bg-white rounded-2xl border border-slate-200 px-3 py-3 text-center">
+          <div className="bg-white dark:bg-[#0f1a2e] rounded-2xl border border-slate-200 dark:border-white/10 px-3 py-3 text-center">
             <div className="leading-none">
-              <span className="font-brand text-lg text-[#000b1b]">{skill.level}</span>
-              <span className="text-xs text-slate-400">%</span>
+              <span className="font-brand text-lg text-[#000b1b] dark:text-slate-100">{skill.level}</span>
+              <span className="text-xs text-slate-400 dark:text-slate-500">%</span>
             </div>
-            <div className="font-mono text-[9px] uppercase tracking-wider text-slate-400 mt-1.5">Proficiency</div>
+            <div className="font-mono text-[9px] uppercase tracking-wider text-slate-400 dark:text-slate-500 mt-1.5">Proficiency</div>
           </div>
-          <div className="bg-white rounded-2xl border border-slate-200 px-3 py-3 text-center">
+          <div className="bg-white dark:bg-[#0f1a2e] rounded-2xl border border-slate-200 dark:border-white/10 px-3 py-3 text-center">
             <div className="leading-none">
-              <span className="font-brand text-lg text-[#000b1b]">{skill.wt}</span>
-              <span className="text-xs text-slate-400">/10</span>
+              <span className="font-brand text-lg text-[#000b1b] dark:text-slate-100">{skill.wt}</span>
+              <span className="text-xs text-slate-400 dark:text-slate-500">/10</span>
             </div>
-            <div className="font-mono text-[9px] uppercase tracking-wider text-slate-400 mt-1.5">Focus</div>
+            <div className="font-mono text-[9px] uppercase tracking-wider text-slate-400 dark:text-slate-500 mt-1.5">Focus</div>
           </div>
         </div>
 
@@ -288,11 +288,11 @@ function SkillModal({ sel, onClose }: { sel: Selected; onClose: () => void }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.16, duration: 0.3 }}
         >
-          <p className="text-sm text-slate-600 leading-relaxed mb-6">{catNote[skill.cat]}</p>
+          <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-6">{catNote[skill.cat]}</p>
           <div className="flex items-center gap-2 mb-3">
-            <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400">Where I've used it</span>
+            <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400 dark:text-slate-500">Where I've used it</span>
             <div className="h-px flex-1 bg-slate-200" />
-            <span className="font-mono text-[11px] text-slate-400">
+            <span className="font-mono text-[11px] text-slate-400 dark:text-slate-500">
               {related.length} {related.length === 1 ? "project" : "projects"}
             </span>
           </div>
@@ -306,8 +306,8 @@ function SkillModal({ sel, onClose }: { sel: Selected; onClose: () => void }) {
                       href={link}
                       target={link ? "_blank" : undefined}
                       rel="noopener noreferrer"
-                      className={`group relative block rounded-2xl border border-slate-200 p-4 pl-5 overflow-hidden transition-all duration-300 ${
-                        link ? "hover:border-[#0358fc]/40 hover:bg-slate-50 hover:-translate-y-0.5" : "cursor-default"
+                      className={`group relative block rounded-2xl border border-slate-200 dark:border-white/10 p-4 pl-5 overflow-hidden transition-all duration-300 ${
+                        link ? "hover:border-[#0358fc]/40 hover:bg-slate-50 dark:bg-white/[0.04] hover:-translate-y-0.5" : "cursor-default"
                       }`}
                     >
                       <span
@@ -315,20 +315,20 @@ function SkillModal({ sel, onClose }: { sel: Selected; onClose: () => void }) {
                         style={{ backgroundColor: skill.color }}
                       />
                       <div className="flex items-center gap-2">
-                        <span className="font-semibold text-sm text-[#000b1b]">{p.title}</span>
+                        <span className="font-semibold text-sm text-[#000b1b] dark:text-slate-100">{p.title}</span>
                         {link && (
-                          <ArrowUpRight size={14} className="text-slate-400 group-hover:text-[#0358fc] transition-colors" />
+                          <ArrowUpRight size={14} className="text-slate-400 dark:text-slate-500 group-hover:text-[#0358fc] transition-colors" />
                         )}
-                        <span className="ml-auto font-mono text-[10px] text-slate-400">{p.year}</span>
+                        <span className="ml-auto font-mono text-[10px] text-slate-400 dark:text-slate-500">{p.year}</span>
                       </div>
-                      <p className="text-xs text-slate-500 leading-relaxed mt-1 line-clamp-2">{p.description}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mt-1 line-clamp-2">{p.description}</p>
                       <div className="flex flex-wrap gap-1.5 mt-2.5">
                         {p.tech.slice(0, 5).map((tech) => {
                           const isCur = tech.toLowerCase() === skill.label.toLowerCase();
                           return (
                             <span
                               key={tech}
-                              className={`px-2 py-0.5 rounded-md text-[10px] font-mono ${isCur ? "font-semibold" : "bg-slate-100 text-slate-500"}`}
+                              className={`px-2 py-0.5 rounded-md text-[10px] font-mono ${isCur ? "font-semibold" : "bg-slate-100 text-slate-500 dark:text-slate-400"}`}
                               style={isCur ? { backgroundColor: `${skill.color}1a`, color: skill.color } : undefined}
                             >
                               {tech}
@@ -342,7 +342,7 @@ function SkillModal({ sel, onClose }: { sel: Selected; onClose: () => void }) {
               })}
             </motion.ul>
           ) : (
-            <div className="flex items-center gap-3 rounded-2xl border border-dashed border-slate-300 p-4 text-slate-500">
+            <div className="flex items-center gap-3 rounded-2xl border border-dashed border-slate-300 dark:border-white/20 p-4 text-slate-500 dark:text-slate-400">
               <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-slate-100 shrink-0">
                 <Boxes size={18} />
               </span>
@@ -395,7 +395,7 @@ function SkillsInner({
 }) {
   const current = tiles.find((t) => t.s.label === active)?.s;
   return (
-    <section id="skills" className="relative py-24 md:py-32 px-6 md:px-12 overflow-hidden scroll-mt-24">
+    <section id="skills" className="relative py-20 md:py-32 px-5 sm:px-6 md:px-12 overflow-hidden scroll-mt-24">
       <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#0358fc]/8 blur-[120px] pointer-events-none" />
 
       <motion.div
@@ -418,15 +418,17 @@ function SkillsInner({
           {current ? (
             <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
               <span className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: current.color }} />
-              <span className="font-semibold text-[#000b1b]">{current.label}</span>
-              <span className="text-slate-400">·</span>
-              <span className="text-slate-500">{current.cat}</span>
-              <span className="text-slate-400">·</span>
-              <span className="text-slate-600">{current.level}% proficiency</span>
+              <span className="font-semibold text-[#000b1b] dark:text-slate-100">{current.label}</span>
+              <span className="text-slate-400 dark:text-slate-500">·</span>
+              <span className="text-slate-500 dark:text-slate-400">{current.cat}</span>
+              <span className="text-slate-400 dark:text-slate-500">·</span>
+              <span className="text-slate-600 dark:text-slate-300">{current.level}% proficiency</span>
             </span>
           ) : (
-            <span className="font-mono text-[11px] text-slate-400">
-              Hover a tile to inspect · tile size = weight · colour = technology
+            <span className="font-mono text-[11px] text-slate-400 dark:text-slate-500">
+              <span className="hidden sm:inline">Hover a tile to inspect · </span>
+              <span className="sm:hidden">Tap a tile · swipe to explore · </span>
+              tile size = weight · colour = technology
             </span>
           )}
         </motion.div>
@@ -458,13 +460,23 @@ function SkillsInner({
                 >
                   <motion.div
                     layoutId={`skill-${t.s.label}`}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`${t.s.label}, ${t.s.level}% proficiency, ${t.s.cat}`}
                     onHoverStart={() => setActive(t.s.label)}
+                    onFocus={() => setActive(t.s.label)}
                     onClick={(e) =>
                       setSelected({ skill: t.s, rect: (e.currentTarget as HTMLElement).getBoundingClientRect() })
                     }
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setSelected({ skill: t.s, rect: (e.currentTarget as HTMLElement).getBoundingClientRect() });
+                      }
+                    }}
                     animate={{ opacity: dim ? 0.38 : 1 }}
                     transition={{ type: "spring", stiffness: 320, damping: 24 }}
-                    className="absolute inset-[2px] rounded-md overflow-hidden flex flex-col justify-between p-1.5 md:p-2 cursor-pointer hover:brightness-110 [container-type:size]"
+                    className="absolute inset-[2px] rounded-md overflow-hidden flex flex-col justify-between p-1.5 md:p-2 cursor-pointer hover:brightness-110 [container-type:size] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-inset"
                     style={{ backgroundColor: t.s.color, color: fg }}
                   >
                     <Icon className="opacity-90 shrink-0 w-[clamp(13px,38cqmin,44px)] h-[clamp(13px,38cqmin,44px)]" />

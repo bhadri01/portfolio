@@ -11,10 +11,16 @@ export default function Logo({ size = 36, showWordmark = false, className = "" }
         src="/logo-mark.svg"
         alt="Bhadrinathan logo"
         style={{ height: size, width: "auto" }}
-        className="block"
+        className="block dark:hidden"
+      />
+      <img
+        src="/logo-mark-dark.svg"
+        alt="Bhadrinathan logo"
+        style={{ height: size, width: "auto" }}
+        className="hidden dark:block"
       />
       {showWordmark && (
-        <span className="font-brand text-[15px] tracking-[0.16em] text-[#000b1b] leading-none">
+        <span className="font-brand text-[15px] tracking-[0.16em] text-[#000b1b] dark:text-slate-100 leading-none">
           BHADRINATHAN
         </span>
       )}

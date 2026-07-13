@@ -7,6 +7,9 @@ export interface Project {
   live?: string;
   year: string;
   featured?: boolean;
+  /** Optional screenshot/cover image (e.g. "/screenshots/algotrade.png").
+   *  When set it's shown in the list row + modal; otherwise the icon cover is used. */
+  cover?: string;
 }
 
 export const projects: Project[] = [

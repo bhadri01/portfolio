@@ -4,15 +4,66 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("theme");
+        var d = t ? t === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (d) document.documentElement.classList.add("dark");
+      } catch (e) {}
+    })();
+  </script>
   <meta name="description" content="Bhadrinathan is a full-stack engineer building React and TypeScript interfaces, FastAPI and Rust backends, developer tools, and real-time systems." />
+  <meta name="author" content="Bhadrinathan A" />
+  <link rel="canonical" href="https://bha3.me/" />
+
+  <!-- Open Graph -->
   <meta property="og:title" content="Bhadrinathan | Full-Stack Engineer" />
   <meta property="og:description" content="Full-stack products, developer tools, and real-time systems — React & TypeScript on the front, Python, FastAPI & Rust behind them." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://bha3.me" />
+  <meta property="og:url" content="https://bha3.me/" />
+  <meta property="og:site_name" content="Bhadrinathan" />
+  <meta property="og:image" content="https://bha3.me/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Bhadrinathan | Full-Stack Engineer" />
+  <meta name="twitter:description" content="Full-stack products, developer tools, and real-time systems — React & TypeScript on the front, Python, FastAPI & Rust behind them." />
+  <meta name="twitter:image" content="https://bha3.me/og-image.png" />
+
   <meta name="theme-color" content="#f6f9fe" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="apple-touch-icon" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
   <title>Bhadrinathan | Full-Stack Engineer</title>
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Bhadrinathan A",
+    "url": "https://bha3.me/",
+    "image": "https://bha3.me/og-image.png",
+    "jobTitle": "Full-Stack Engineer",
+    "worksFor": { "@type": "Organization", "name": "BloomSkillTech" },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Salem",
+      "addressRegion": "Tamil Nadu",
+      "addressCountry": "IN"
+    },
+    "alumniOf": { "@type": "CollegeOrUniversity", "name": "Muthayammal Engineering College" },
+    "email": "mailto:bhadrinathan28@gmail.com",
+    "knowsAbout": ["React", "TypeScript", "FastAPI", "Python", "Rust", "PostgreSQL", "Docker", "AI Engineering", "RAG Systems"],
+    "sameAs": [
+      "https://github.com/bhadri01",
+      "https://www.linkedin.com/in/bhadrinathan-a-90b8bb361"
+    ]
+  }
+  </script>
 </head>
 
 <body>

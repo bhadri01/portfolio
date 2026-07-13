@@ -1,12 +1,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Michroma&display=swap");
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --ink: #000b1b;
   --primary: #0358fc;
   --primary-dark: #0246d4;
   --bg: #f6f9fe;
   --border: #e4e9f2;
+}
+
+.dark {
+  --ink: #e7ecf5;
+  --bg: #0a0f1c;
+  --border: rgba(255, 255, 255, 0.1);
+  color-scheme: dark;
 }
 
 html {
@@ -43,6 +52,17 @@ body {
   color: var(--ink);
 }
 
+/* Keyboard focus — visible ring for anything not managing its own */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+/* Don't show the focus ring for pointer clicks */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
 /* Brand display font */
 .font-brand {
   font-family: "Michroma", sans-serif;
@@ -66,6 +86,24 @@ body {
   background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+}
+.dark .glass {
+  background: rgba(15, 23, 42, 0.72);
+}
+
+/* Dark scrollbar */
+.dark ::-webkit-scrollbar-track {
+  background: #0f1a2e;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #33415a;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+.dark ::selection {
+  background-color: rgba(59, 130, 246, 0.35);
+  color: #e7ecf5;
 }
 
 /* Gradient text — brand blue */
