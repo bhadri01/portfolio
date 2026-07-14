@@ -7,7 +7,7 @@ import {
   SiPostgresql, SiLangchain, SiWireguard, SiSqlalchemy, SiTailwindcss,
   SiJenkins, SiTraefikproxy, SiLinux,
 } from "react-icons/si";
-import { Workflow, Boxes, Download } from "lucide-react";
+import { Workflow, Boxes } from "lucide-react";
 
 type MarqueeIcon = ComponentType<{ className?: string }>;
 const marqueeSkills: { name: string; Icon: MarqueeIcon }[] = [
@@ -142,15 +142,6 @@ export default function Hero({ start = true }: { start?: boolean }) {
             className="px-8 py-3 rounded-full bg-white dark:bg-[#0f1a2e] border border-slate-300 dark:border-white/20 text-slate-700 dark:text-slate-300 font-medium text-sm hover:border-[#0358fc] hover:text-[#0358fc] transition-colors duration-300"
           >
             Get in Touch
-          </motion.a>
-          <motion.a
-            href="/Bhadrinathan_A_Resume.pdf"
-            download
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-white dark:bg-[#0f1a2e] border border-slate-300 dark:border-white/20 text-slate-700 dark:text-slate-300 font-medium text-sm hover:border-[#0358fc] hover:text-[#0358fc] transition-colors duration-300"
-          >
-            <Download size={16} /> Resume
           </motion.a>
         </motion.div>
       </motion.div>
