@@ -45,14 +45,15 @@ export default function HeroScene() {
 
   return (
     <Canvas
+      flat
       dpr={dpr}
       camera={{ position: [0, 0, 8], fov: 40 }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       style={{ position: "absolute", inset: 0 }}
       aria-hidden="true"
     >
-      <ambientLight intensity={isDark ? 0.45 : 0.4} />
-      <directionalLight position={[5, 6, 8]} intensity={isDark ? 1.6 : 1.05} color="#eef4ff" />
+      <ambientLight intensity={isDark ? 0.5 : 0.4} />
+      <directionalLight position={[5, 6, 8]} intensity={isDark ? 1.15 : 1.05} color="#eef4ff" />
       <directionalLight position={[-7, -2, 3]} intensity={0.9} color="#0358fc" />
       <pointLight position={[0, 1, 6]} intensity={0.6} color="#7ba0ff" />
       <Suspense fallback={null}>

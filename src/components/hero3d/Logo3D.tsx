@@ -80,14 +80,14 @@ export default function Logo3D({ isDark = true }: { isDark?: boolean }) {
         {parts.map((p, i) => (
           <mesh key={i} geometry={p.geometry}>
             <meshPhysicalMaterial
-              color={p.accent ? "#3d7bff" : bodyColor}
-              emissive={p.accent ? "#2f6bff" : "#060d1c"}
-              emissiveIntensity={p.accent ? 0.75 : 0.08}
-              metalness={p.accent ? 0.5 : isDark ? 0.9 : 0.62}
-              roughness={p.accent ? 0.2 : isDark ? 0.3 : 0.52}
-              clearcoat={isDark ? 0.9 : 0.6}
-              clearcoatRoughness={p.accent ? 0.15 : isDark ? 0.2 : 0.4}
-              envMapIntensity={isDark ? 0.9 : 0.4}
+              color={p.accent ? "#0358fc" : bodyColor}
+              emissive={p.accent ? "#0358fc" : "#060d1c"}
+              emissiveIntensity={p.accent ? 0.45 : 0.08}
+              metalness={p.accent ? 0 : isDark ? 0.9 : 0.62}
+              roughness={p.accent ? 0.5 : isDark ? 0.3 : 0.52}
+              clearcoat={p.accent ? 0 : isDark ? 0.9 : 0.6}
+              clearcoatRoughness={p.accent ? 0.4 : isDark ? 0.2 : 0.4}
+              envMapIntensity={p.accent ? 0 : isDark ? 0.9 : 0.4}
             />
           </mesh>
         ))}
