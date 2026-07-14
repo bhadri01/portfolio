@@ -67,8 +67,8 @@ export default function Logo3D({ isDark = true }: { isDark?: boolean }) {
     g.position.y = Math.sin(state.clock.elapsedTime * 0.8) * 0.08;
   });
 
-  // Premium deep-navy metal — darker, moodier, not chrome-bright.
-  const bodyColor = isDark ? "#091428" : "#182742";
+  // Dark theme: bright silver-white metal (pops on the dark bg). Light theme: deep navy.
+  const bodyColor = isDark ? "#eef2fa" : "#182742";
 
   return (
     <group ref={group}>
@@ -83,11 +83,11 @@ export default function Logo3D({ isDark = true }: { isDark?: boolean }) {
               color={p.accent ? "#3d7bff" : bodyColor}
               emissive={p.accent ? "#2f6bff" : "#060d1c"}
               emissiveIntensity={p.accent ? 0.75 : 0.08}
-              metalness={p.accent ? 0.5 : isDark ? 0.85 : 0.62}
-              roughness={p.accent ? 0.2 : isDark ? 0.4 : 0.52}
-              clearcoat={0.6}
-              clearcoatRoughness={p.accent ? 0.15 : 0.4}
-              envMapIntensity={isDark ? 0.5 : 0.4}
+              metalness={p.accent ? 0.5 : isDark ? 0.9 : 0.62}
+              roughness={p.accent ? 0.2 : isDark ? 0.3 : 0.52}
+              clearcoat={isDark ? 0.9 : 0.6}
+              clearcoatRoughness={p.accent ? 0.15 : isDark ? 0.2 : 0.4}
+              envMapIntensity={isDark ? 0.9 : 0.4}
             />
           </mesh>
         ))}
