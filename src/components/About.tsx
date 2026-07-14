@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { fadeUp, scaleIn, stagger, viewportOnce } from "../lib/motion";
 import { MapPin, Briefcase, GitBranch, Github, Linkedin } from "lucide-react";
 import Logo from "./Logo";
+import PortraitCard from "./portrait3d/PortraitCard";
 
 const stats = [
   { number: "2", label: "Published FastAPI tools", gradient: "from-[#0358fc] to-[#4b8dff]" },
@@ -40,6 +41,11 @@ export default function About() {
 
         {/* Bento grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-4 md:gap-5">
+          {/* Portrait — scroll-driven pixel-dissolve */}
+          <motion.div variants={scaleIn} className="md:col-span-1 md:row-span-2">
+            <PortraitCard />
+          </motion.div>
+
           {/* Intro — large card */}
           <motion.div
             variants={scaleIn}
