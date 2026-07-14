@@ -1,18 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script>
-    (function () {
-      try {
-        var t = localStorage.getItem("theme");
-        var d = t === "dark" || ((t === "system" || t === null) && window.matchMedia("(prefers-color-scheme: dark)").matches);
-        if (d) document.documentElement.classList.add("dark");
-      } catch (e) {}
-    })();
-  </script>
   <meta name="description" content="Bhadrinathan is a full-stack engineer building React and TypeScript interfaces, FastAPI and Rust backends, developer tools, and real-time systems." />
   <meta name="author" content="Bhadrinathan A" />
   <link rel="canonical" href="https://bha3.me/" />
@@ -33,7 +24,7 @@
   <meta name="twitter:description" content="Full-stack products, developer tools, and real-time systems — React & TypeScript on the front, Python, FastAPI & Rust behind them." />
   <meta name="twitter:image" content="https://bha3.me/og-image.png" />
 
-  <meta name="theme-color" content="#f6f9fe" />
+  <meta name="theme-color" content="#0a0f1c" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
