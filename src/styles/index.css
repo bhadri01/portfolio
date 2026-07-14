@@ -103,16 +103,16 @@ body::before {
 }
 .logo-loader .ld-acc {
   fill: #0358fc;
-  stroke: #0358fc;
-  stroke-width: 4;
-  stroke-linejoin: round;
-  fill-opacity: 0;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  transform-box: fill-box;
-  transform-origin: center;
+  fill-opacity: 1;
+  stroke: none;
   filter: drop-shadow(0 0 6px rgba(3, 88, 252, 0.55));
-  animation: ldAcc 2.3s ease-in-out infinite;
+  animation: ldAccFade 2.3s ease-in-out infinite;
+}
+/* the accent fills upward (bottom node -> top) like current flowing in */
+.logo-loader .ld-acc-wipe {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: ldAccWipe 2.3s ease-in-out infinite;
 }
 @keyframes ldB {
   0% {
@@ -136,43 +136,47 @@ body::before {
     opacity: 0;
   }
 }
-@keyframes ldAcc {
+/* accent visibility: hidden until the B is drawn, then holds, then fades for the loop */
+@keyframes ldAccFade {
   0%,
-  28% {
-    stroke-dashoffset: 1;
-    fill-opacity: 0;
-    transform: translateY(16px) scale(0.97);
+  22% {
+    opacity: 0;
+  }
+  30% {
     opacity: 1;
   }
-  52% {
-    stroke-dashoffset: 0;
-    fill-opacity: 0;
-    transform: translateY(0) scale(1);
-  }
-  60% {
-    transform: translateY(-2px) scale(1.01);
-  }
-  66% {
-    fill-opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  86% {
-    fill-opacity: 1;
+  90% {
     opacity: 1;
   }
   100% {
-    fill-opacity: 1;
     opacity: 0;
+  }
+}
+/* accent fill wipe: grows up from the bottom node with a tiny overshoot ("locks in") */
+@keyframes ldAccWipe {
+  0%,
+  28% {
+    transform: scaleY(0);
+  }
+  60% {
+    transform: scaleY(1.03);
+  }
+  66% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(1);
   }
 }
 @media (prefers-reduced-motion: reduce) {
   .logo-loader .ld-b,
-  .logo-loader .ld-acc {
+  .logo-loader .ld-acc,
+  .logo-loader .ld-acc-wipe {
     animation: none;
     stroke-dashoffset: 0;
     fill-opacity: 1;
     opacity: 1;
-    transform: none;
+    transform: scaleY(1);
   }
 }
 /* Don't show the focus ring for pointer clicks */
