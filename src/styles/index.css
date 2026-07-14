@@ -228,3 +228,108 @@ body {
     scroll-behavior: auto;
   }
 }
+
+/* --- Branded logo loader: B draws + fills, accent flows in like an arrow --- */
+.logo-loader {
+  overflow: visible;
+}
+.logo-loader .ld-b {
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 7;
+  stroke-linejoin: round;
+  fill-opacity: 0;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: ldB 2.3s ease-in-out infinite;
+}
+.logo-loader .ld-acc {
+  fill: #0358fc;
+  fill-opacity: 1;
+  stroke: none;
+  filter: drop-shadow(0 0 6px rgba(3, 88, 252, 0.55));
+  animation: ldAccFade 2.3s ease-in-out infinite;
+}
+/* the accent fills upward (bottom node -> top) like current flowing in */
+.logo-loader .ld-acc-wipe {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: ldAccWipe 2.3s ease-in-out infinite;
+}
+@keyframes ldB {
+  0% {
+    stroke-dashoffset: 1;
+    fill-opacity: 0;
+    opacity: 1;
+  }
+  25% {
+    stroke-dashoffset: 0;
+    fill-opacity: 0;
+  }
+  40% {
+    fill-opacity: 1;
+  }
+  86% {
+    fill-opacity: 1;
+    opacity: 1;
+  }
+  100% {
+    fill-opacity: 1;
+    opacity: 0;
+  }
+}
+/* accent visibility: hidden until the B is drawn, then holds, then fades for the loop */
+@keyframes ldAccFade {
+  0%,
+  22% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+/* accent fill wipe: grows up from the bottom node with a tiny overshoot ("locks in") */
+@keyframes ldAccWipe {
+  0%,
+  28% {
+    transform: scaleY(0);
+  }
+  60% {
+    transform: scaleY(1.03);
+  }
+  66% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .logo-loader .ld-b,
+  .logo-loader .ld-acc,
+  .logo-loader .ld-acc-wipe {
+    animation: none;
+    stroke-dashoffset: 0;
+    fill-opacity: 1;
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+/* Rotating hero skill — swaps without shifting layout */
+@keyframes skillSwap {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
