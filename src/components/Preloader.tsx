@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import LogoLoader from "./LogoLoader";
 
 /** Assets worth having in cache before the reveal. */
 const ASSETS = [
@@ -53,7 +54,8 @@ export default function Preloader() {
       if (!mounted) return;
       setProgress(100);
       // brief hold so 100% is visible, then reveal
-      setTimeout(() => mounted && setDone(true), 260);
+      // hold long enough to show one full "assemble" cycle before revealing
+      setTimeout(() => mounted && setDone(true), 1500);
     };
 
     Promise.all(tasks).finally(finish);
@@ -79,23 +81,8 @@ export default function Preloader() {
         >
           <div className="flex flex-col items-center gap-7">
             <div className="relative grid place-items-center">
-              <div className="pointer-events-none absolute h-28 w-28 rounded-full bg-[#0358fc]/15 blur-2xl" />
-              <motion.img
-                src="/logo-mark.svg"
-                alt=""
-                aria-hidden
-                className="relative h-16 w-16 dark:hidden"
-                animate={{ scale: [1, 1.09, 1], opacity: [0.65, 1, 0.65] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              />
-              <motion.img
-                src="/logo-mark-dark.svg"
-                alt=""
-                aria-hidden
-                className="relative hidden h-16 w-16 dark:block"
-                animate={{ scale: [1, 1.09, 1], opacity: [0.65, 1, 0.65] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              />
+              <div className="pointer-events-none absolute h-32 w-32 rounded-full bg-[#0358fc]/15 blur-2xl" />
+              <LogoLoader size={96} />
             </div>
 
             <div className="h-[3px] w-40 overflow-hidden rounded-full bg-slate-200 dark:bg-white/10">
