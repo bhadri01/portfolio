@@ -57,14 +57,13 @@ export default function Logo3D() {
     return { offset: center, scale: s };
   }, [parts]);
 
-  useFrame((state, delta) => {
+  useFrame(() => {
     const g = group.current;
     if (!g) return;
-    const p = useScrollStore.getState().heroProgress;
-    g.rotation.y += delta * 0.35;
-    // gentle pointer parallax + scroll tilt
-    g.rotation.x = THREE.MathUtils.lerp(g.rotation.x, -state.pointer.y * 0.28 + p * 0.5, 0.06);
-    g.position.x = THREE.MathUtils.lerp(g.position.x, state.pointer.x * 0.25, 0.06);
+    // No auto-spin — the emblem only turns to follow the cursor.
+    const p = useScrollStore.getState().pointer;
+    g.rotation.y = THREE.MathUtils.lerp(g.rotation.y, p.x * 0.55, 0.07);
+    g.rotation.x = THREE.MathUtils.lerp(g.rotation.x, -p.y * 0.4, 0.07);
   });
 
   return (

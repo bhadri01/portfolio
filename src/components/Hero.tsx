@@ -81,6 +81,30 @@ export default function Hero() {
         }}
       />
 
+      {/* 3D B3 emblem — right-side corner, cursor-steered (no auto-rotation) */}
+      <div className="pointer-events-none absolute right-1 top-16 z-0 hidden h-[300px] w-[300px] md:right-4 md:top-20 md:block lg:right-10 lg:h-[440px] lg:w-[440px]">
+        {webgl === true ? (
+          <Suspense fallback={null}>
+            <HeroScene />
+          </Suspense>
+        ) : (
+          <>
+            <img
+              src="/logo-mark.svg"
+              alt=""
+              aria-hidden
+              className="h-full w-full object-contain opacity-90 dark:hidden"
+            />
+            <img
+              src="/logo-mark-dark.svg"
+              alt=""
+              aria-hidden
+              className="hidden h-full w-full object-contain opacity-90 dark:block"
+            />
+          </>
+        )}
+      </div>
+
       {/* Content */}
       <motion.div
         className="max-w-5xl mx-auto w-full relative z-10 text-center"
@@ -88,40 +112,6 @@ export default function Hero() {
         initial="hidden"
         animate="show"
       >
-        {/* 3D B3 emblem — real extruded logo inside a particle field */}
-        <motion.div
-          variants={fadeUp}
-          className="relative mx-auto mb-2 h-[240px] w-full max-w-[440px] sm:h-[300px] md:h-[360px]"
-        >
-          {webgl === true ? (
-            <Suspense
-              fallback={
-                <img
-                  src="/logo-mark.svg"
-                  alt=""
-                  aria-hidden
-                  className="h-full w-full object-contain opacity-90 dark:hidden"
-                />
-              }
-            >
-              <HeroScene />
-            </Suspense>
-          ) : (
-            <>
-              <img
-                src="/logo-mark.svg"
-                alt="Bhadrinathan logo"
-                className="h-full w-full object-contain dark:hidden"
-              />
-              <img
-                src="/logo-mark-dark.svg"
-                alt="Bhadrinathan logo"
-                className="hidden h-full w-full object-contain dark:block"
-              />
-            </>
-          )}
-        </motion.div>
-
         {/* Name — brand wordmark */}
         <motion.h1 variants={fadeUp} className="mb-8 flex justify-center">
           <img
