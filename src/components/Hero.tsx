@@ -71,16 +71,6 @@ export default function Hero() {
       id="home"
       className="relative min-h-dvh flex items-center px-5 sm:px-6 md:px-12 overflow-hidden"
     >
-      {/* Subtle grid */}
-      <div
-        className="absolute inset-0 opacity-[0.5]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(12,26,51,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(12,26,51,0.05) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }}
-      />
-
       {/* Two-column hero: identity left, 3D B3 emblem right */}
       <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-4 pb-24 pt-24 md:grid-cols-[1.05fr_0.95fr] md:gap-10 md:pb-0 md:pt-0">
         {/* LEFT — identity */}

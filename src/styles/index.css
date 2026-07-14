@@ -58,6 +58,34 @@ body {
   outline-offset: 2px;
   border-radius: 6px;
 }
+
+/* Site-wide engineered grid backdrop — ties every section to the 3D hero.
+   Fixed to the viewport, faint, and fading downward so it never competes
+   with content. Sits behind #root content. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(12, 26, 51, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(12, 26, 51, 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 0%, transparent 78%);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 0%, transparent 78%);
+}
+
+.dark body::before {
+  background-image:
+    linear-gradient(rgba(120, 160, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 160, 255, 0.06) 1px, transparent 1px);
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+}
 /* Don't show the focus ring for pointer clicks */
 :focus:not(:focus-visible) {
   outline: none;
