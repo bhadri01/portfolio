@@ -16,7 +16,7 @@ type Part = {
  * The dark body + blue accent paths become two metallic materials.
  * (A hand-finished Blender GLB will replace this later.)
  */
-export default function Logo3D() {
+export default function Logo3D({ isDark = true }: { isDark?: boolean }) {
   const data = useLoader(SVGLoader, LOGO_URL);
   const group = useRef<THREE.Group>(null);
 
@@ -57,14 +57,18 @@ export default function Logo3D() {
     return { offset: center, scale: s };
   }, [parts]);
 
-  useFrame(() => {
+  useFrame((state) => {
     const g = group.current;
     if (!g) return;
-    // No auto-spin — the emblem only turns to follow the cursor.
+    // No auto-spin — the emblem only turns to follow the cursor, with a gentle idle float.
     const p = useScrollStore.getState().pointer;
     g.rotation.y = THREE.MathUtils.lerp(g.rotation.y, p.x * 0.55, 0.07);
     g.rotation.x = THREE.MathUtils.lerp(g.rotation.x, -p.y * 0.4, 0.07);
+    g.position.y = Math.sin(state.clock.elapsedTime * 0.8) * 0.08;
   });
+
+  // Dark graphite-metal both modes (a bright chrome washes out on the light page).
+  const bodyColor = isDark ? "#101b30" : "#2b3547";
 
   return (
     <group ref={group}>
@@ -76,11 +80,12 @@ export default function Logo3D() {
         {parts.map((p, i) => (
           <mesh key={i} geometry={p.geometry}>
             <meshStandardMaterial
-              color={p.accent ? "#1f6bff" : "#0c1626"}
-              emissive={p.accent ? "#0358fc" : "#04070d"}
-              emissiveIntensity={p.accent ? 0.55 : 0.15}
-              metalness={p.accent ? 0.7 : 0.85}
-              roughness={p.accent ? 0.22 : 0.35}
+              color={p.accent ? "#2f6bff" : bodyColor}
+              emissive={p.accent ? "#0358fc" : "#000000"}
+              emissiveIntensity={p.accent ? 0.5 : 0}
+              metalness={p.accent ? 0.6 : isDark ? 0.95 : 0.82}
+              roughness={p.accent ? 0.25 : isDark ? 0.32 : 0.36}
+              envMapIntensity={isDark ? 0.9 : 0.65}
             />
           </mesh>
         ))}

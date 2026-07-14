@@ -1,12 +1,31 @@
 import { Suspense, useEffect } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
+import * as THREE from "three";
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import Logo3D from "./Logo3D";
 import { useDeviceTier } from "../../hooks/useDeviceTier";
+import { useIsDark } from "../../hooks/useIsDark";
 import { useScrollStore } from "../../lib/store";
+
+/** Procedural studio environment (no CDN) so the metal reflects nicely. */
+function StudioEnv() {
+  const { scene, gl } = useThree();
+  useEffect(() => {
+    const pmrem = new THREE.PMREMGenerator(gl);
+    const env = pmrem.fromScene(new RoomEnvironment(), 0.04);
+    scene.environment = env.texture;
+    return () => {
+      env.texture.dispose();
+      pmrem.dispose();
+    };
+  }, [scene, gl]);
+  return null;
+}
 
 /** R3F canvas: the 3D B3 emblem, steered only by the cursor. */
 export default function HeroScene() {
   const tier = useDeviceTier();
+  const isDark = useIsDark();
   const dpr: [number, number] | number =
     tier === "high" ? [1, 2] : tier === "medium" ? [1, 1.5] : 1;
   const setPointer = useScrollStore((s) => s.setPointer);
@@ -32,12 +51,13 @@ export default function HeroScene() {
       style={{ position: "absolute", inset: 0 }}
       aria-hidden="true"
     >
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[5, 6, 8]} intensity={2.4} color="#eaf1ff" />
-      <directionalLight position={[-7, -2, 3]} intensity={1.3} color="#0358fc" />
-      <pointLight position={[0, 0, 6]} intensity={1.1} color="#8fb4ff" />
+      <ambientLight intensity={isDark ? 0.35 : 0.6} />
+      <directionalLight position={[5, 6, 8]} intensity={2.1} color="#eaf1ff" />
+      <directionalLight position={[-7, -2, 3]} intensity={1.2} color="#0358fc" />
+      <pointLight position={[0, 1, 6]} intensity={1.0} color="#8fb4ff" />
       <Suspense fallback={null}>
-        <Logo3D />
+        <StudioEnv />
+        <Logo3D isDark={isDark} />
       </Suspense>
     </Canvas>
   );

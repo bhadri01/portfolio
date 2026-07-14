@@ -158,6 +158,8 @@ export default function Hero() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
         >
+          {/* soft glow behind the emblem */}
+          <div className="pointer-events-none absolute left-1/2 top-1/2 h-[62%] w-[62%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#0358fc]/20 blur-[90px] dark:bg-[#0358fc]/25" />
           {webgl === true ? (
             <Suspense
               fallback={
