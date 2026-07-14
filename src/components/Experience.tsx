@@ -30,23 +30,12 @@ const timeline: TimelineItem[] = [
     Icon: Briefcase,
   },
   {
-    title: "Senior Software Developer",
-    org: "BloomSkillTech",
-    location: "Salem, Tamil Nadu · Hybrid",
-    period: "Mar 2024 — Dec 2024",
-    description:
-      "Promoted to take greater ownership of platform architecture and security. Designed a secure VPN layer for isolated, per-session access to lab environments, and built the orchestration layer that spins up, scales, and tears down containerized environments automatically to optimize cloud cost.",
-    accentGradient: "from-[#0246d4] to-[#0358fc]",
-    label: "Full-time",
-    Icon: Briefcase,
-  },
-  {
     title: "Software Developer",
     org: "BloomSkillTech",
     location: "Salem, Tamil Nadu · Hybrid",
-    period: "May 2023 — Feb 2024",
+    period: "May 2023 — Dec 2024",
     description:
-      "Built a cloud-based lab platform that provisions isolated, browser-accessible development environments on demand — no local setup required. Developed the full stack: user-facing frontend, backend APIs, and environment-provisioning services, with containerized labs for consistent, reproducible sessions.",
+      "Built a cloud-based lab platform that provisions isolated, browser-accessible development environments on demand — no local setup required. Developed the full stack (user-facing frontend, backend APIs, and environment-provisioning services) with containerized labs for consistent, reproducible sessions — then took on platform architecture and security: a secure VPN layer for isolated, per-session lab access and an orchestration layer that automatically spins up, scales, and tears down environments to optimize cloud cost.",
     accentGradient: "from-[#4b8dff] to-[#0358fc]",
     label: "Full-time",
     Icon: Briefcase,
