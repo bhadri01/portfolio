@@ -25,19 +25,35 @@ export default function Navbar() {
 
   useEffect(() => {
     const ids = navLinks.map((l) => l.href.slice(1));
-    const els = ids
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => el !== null);
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(e.target.id);
-        });
-      },
-      { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
-    );
-    els.forEach((el) => obs.observe(el));
-    return () => obs.disconnect();
+    let obs: IntersectionObserver | null = null;
+    let raf = 0;
+
+    // The sections are lazy-loaded, so they may not be in the DOM when the
+    // navbar mounts. Retry until they all exist, then observe for scroll-spy.
+    const setup = () => {
+      const els = ids
+        .map((id) => document.getElementById(id))
+        .filter((el): el is HTMLElement => el !== null);
+      if (els.length < ids.length) {
+        raf = requestAnimationFrame(setup);
+        return;
+      }
+      obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) setActive(e.target.id);
+          });
+        },
+        { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+      );
+      els.forEach((el) => obs!.observe(el));
+    };
+    setup();
+
+    return () => {
+      cancelAnimationFrame(raf);
+      obs?.disconnect();
+    };
   }, []);
 
   useEffect(() => {
