@@ -1,7 +1,10 @@
 import type { ComponentType } from "react";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { fadeUp, stagger } from "../lib/motion";
+import { useWebGLSupport } from "../hooks/useWebGLSupport";
+
+const HeroScene = lazy(() => import("./hero3d/HeroScene"));
 import {
   SiFastapi, SiPython, SiRust, SiReact, SiTypescript, SiDocker, SiRedis,
   SiPostgresql, SiLangchain, SiWireguard, SiSqlalchemy, SiTailwindcss,
@@ -43,6 +46,7 @@ export default function Hero() {
   const [display, setDisplay] = useState("");
   const [pi, setPi] = useState(0);
   const [deleting, setDeleting] = useState(false);
+  const webgl = useWebGLSupport();
 
   useEffect(() => {
     const full = phrases[pi];
@@ -84,6 +88,40 @@ export default function Hero() {
         initial="hidden"
         animate="show"
       >
+        {/* 3D B3 emblem — real extruded logo inside a particle field */}
+        <motion.div
+          variants={fadeUp}
+          className="relative mx-auto mb-2 h-[240px] w-full max-w-[440px] sm:h-[300px] md:h-[360px]"
+        >
+          {webgl === true ? (
+            <Suspense
+              fallback={
+                <img
+                  src="/logo-mark.svg"
+                  alt=""
+                  aria-hidden
+                  className="h-full w-full object-contain opacity-90 dark:hidden"
+                />
+              }
+            >
+              <HeroScene />
+            </Suspense>
+          ) : (
+            <>
+              <img
+                src="/logo-mark.svg"
+                alt="Bhadrinathan logo"
+                className="h-full w-full object-contain dark:hidden"
+              />
+              <img
+                src="/logo-mark-dark.svg"
+                alt="Bhadrinathan logo"
+                className="hidden h-full w-full object-contain dark:block"
+              />
+            </>
+          )}
+        </motion.div>
+
         {/* Name — brand wordmark */}
         <motion.h1 variants={fadeUp} className="mb-8 flex justify-center">
           <img
