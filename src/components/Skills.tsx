@@ -228,7 +228,7 @@ function SkillModal({ sel, onClose }: { sel: Selected; onClose: () => void }) {
       />
       <motion.div
         layoutId={`skill-${skill.label}`}
-        className="relative w-full max-w-lg max-h-[88vh] flex flex-col bg-white dark:bg-[#0f1a2e] rounded-3xl overflow-hidden ring-1 ring-black/10 dark:ring-white/10"
+        className="relative w-full max-w-lg max-h-[90dvh] flex flex-col bg-white dark:bg-[#0f1a2e] rounded-3xl overflow-hidden ring-1 ring-black/10 dark:ring-white/10"
         transition={{ type: "spring", stiffness: 300, damping: 32 }}
       >
         {/* Header */}
@@ -449,8 +449,9 @@ function SkillsInner({
                   .map((s) => {
                     const Icon = s.Icon;
                     return (
-                      <button
+                      <motion.button
                         key={s.label}
+                        layoutId={`skill-${s.label}`}
                         type="button"
                         onClick={(e) =>
                           setSelected({
@@ -482,7 +483,7 @@ function SkillsInner({
                           {s.level}
                           <span className="text-[0.7em] opacity-70">%</span>
                         </span>
-                      </button>
+                      </motion.button>
                     );
                   })}
               </div>

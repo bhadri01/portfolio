@@ -3,6 +3,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { fadeUp, stagger } from "../lib/motion";
 import { useWebGLSupport } from "../hooks/useWebGLSupport";
+import { useMediaQuery } from "../hooks/useMediaQuery";
 
 const HeroScene = lazy(() => import("./hero3d/HeroScene"));
 import {
@@ -45,6 +46,8 @@ const phrases = [
 export default function Hero({ start = true }: { start?: boolean }) {
   const [display, setDisplay] = useState("");
   const webgl = useWebGLSupport();
+  // Only load the heavy 3D scene (three.js) on desktop — mobile stays lightweight.
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   const [pi, setPi] = useState(0);
   const [deleting, setDeleting] = useState(false);
 
@@ -161,14 +164,14 @@ export default function Hero({ start = true }: { start?: boolean }) {
           animate={start ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.94 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
         >
-          {webgl === true ? (
+          {isDesktop && webgl === true ? (
             <Suspense
               fallback={
                 <img
-                  src="/logo-mark.svg"
+                  src="/logo-mark-dark.svg"
                   alt=""
                   aria-hidden
-                  className="absolute inset-0 h-full w-full object-contain p-6 opacity-90 dark:hidden"
+                  className="absolute inset-0 h-full w-full object-contain p-6 opacity-90"
                 />
               }
             >

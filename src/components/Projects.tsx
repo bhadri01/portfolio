@@ -218,7 +218,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
       <motion.div
         layoutId={`project-${project.title}`}
         transition={{ type: "spring", stiffness: 300, damping: 32 }}
-        className="relative w-full max-w-2xl max-h-[88vh] flex flex-col bg-white dark:bg-[#0f1a2e] rounded-3xl overflow-hidden ring-1 ring-black/10 dark:ring-white/10"
+        className="relative w-full max-w-2xl max-h-[90dvh] flex flex-col bg-white dark:bg-[#0f1a2e] rounded-3xl overflow-hidden ring-1 ring-black/10 dark:ring-white/10"
       >
         {/* Header with project cover accent (or a real screenshot if provided) */}
         <div
