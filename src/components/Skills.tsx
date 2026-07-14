@@ -394,6 +394,7 @@ function SkillsInner({
   setSelected: (v: Selected | null) => void;
 }) {
   const current = tiles.find((t) => t.s.label === active)?.s;
+  const categories = [...new Set(skills.map((s) => s.cat))];
   return (
     <section id="skills" className="relative py-20 md:py-32 px-5 sm:px-6 md:px-12 overflow-hidden scroll-mt-24">
       <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#0358fc]/8 blur-[120px] pointer-events-none" />
@@ -434,7 +435,63 @@ function SkillsInner({
         </motion.div>
 
         {/* Unified treemap heatmap */}
-        <motion.div variants={fadeUp} layoutScroll className="overflow-x-auto no-scrollbar">
+        {/* Mobile / small screens: a clean vertical list (no horizontal scroll) */}
+        <motion.div variants={fadeUp} className="space-y-6 md:hidden">
+          {categories.map((cat) => (
+            <div key={cat}>
+              <h3 className="mb-2 font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+                {cat}
+              </h3>
+              <div className="space-y-1.5">
+                {skills
+                  .filter((s) => s.cat === cat)
+                  .sort((a, b) => b.level - a.level)
+                  .map((s) => {
+                    const Icon = s.Icon;
+                    return (
+                      <button
+                        key={s.label}
+                        type="button"
+                        onClick={(e) =>
+                          setSelected({
+                            skill: s,
+                            rect: (e.currentTarget as HTMLElement).getBoundingClientRect(),
+                          })
+                        }
+                        aria-label={`${s.label}, ${s.level}% proficiency`}
+                        className="group flex w-full items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-left transition-colors hover:border-[#0358fc]/40 dark:border-white/10 dark:bg-[#0f1a2e]"
+                      >
+                        <span
+                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg"
+                          style={{ backgroundColor: `${s.color}22`, color: s.color }}
+                        >
+                          <Icon className="h-4 w-4" />
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-sm font-medium text-[#000b1b] dark:text-slate-100">
+                            {s.label}
+                          </span>
+                          <span className="mt-1.5 block h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-white/10">
+                            <span
+                              className="block h-full rounded-full"
+                              style={{ width: `${s.level}%`, backgroundColor: s.color }}
+                            />
+                          </span>
+                        </span>
+                        <span className="shrink-0 font-brand text-sm text-slate-600 dark:text-slate-300">
+                          {s.level}
+                          <span className="text-[0.7em] opacity-70">%</span>
+                        </span>
+                      </button>
+                    );
+                  })}
+              </div>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Desktop: the treemap "stock portfolio" heatmap */}
+        <motion.div variants={fadeUp} layoutScroll className="hidden overflow-x-auto no-scrollbar md:block">
           <div
             className="relative min-w-[760px]"
             style={{ aspectRatio: `${W} / ${H}` }}
