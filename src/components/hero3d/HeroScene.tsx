@@ -12,7 +12,7 @@ function StudioEnv() {
   const { scene, gl } = useThree();
   useEffect(() => {
     const pmrem = new THREE.PMREMGenerator(gl);
-    const env = pmrem.fromScene(new RoomEnvironment(), 0.04);
+    const env = pmrem.fromScene(new RoomEnvironment(), 0.02);
     scene.environment = env.texture;
     return () => {
       env.texture.dispose();
@@ -51,10 +51,10 @@ export default function HeroScene() {
       style={{ position: "absolute", inset: 0 }}
       aria-hidden="true"
     >
-      <ambientLight intensity={isDark ? 0.35 : 0.6} />
-      <directionalLight position={[5, 6, 8]} intensity={2.1} color="#eaf1ff" />
-      <directionalLight position={[-7, -2, 3]} intensity={1.2} color="#0358fc" />
-      <pointLight position={[0, 1, 6]} intensity={1.0} color="#8fb4ff" />
+      <ambientLight intensity={isDark ? 0.3 : 0.4} />
+      <directionalLight position={[5, 6, 8]} intensity={1.05} color="#dce6ff" />
+      <directionalLight position={[-7, -2, 3]} intensity={0.9} color="#0358fc" />
+      <pointLight position={[0, 1, 6]} intensity={0.6} color="#7ba0ff" />
       <Suspense fallback={null}>
         <StudioEnv />
         <Logo3D isDark={isDark} />
