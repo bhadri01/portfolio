@@ -15,6 +15,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
+  const [hovered, setHovered] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
@@ -79,10 +80,15 @@ export default function Navbar() {
             <Logo size={32} showWordmark={false} />
           </motion.a>
 
-          {/* Desktop links */}
-          <ul className="hidden md:flex items-center gap-1">
+          {/* Desktop links — one active underline that slides between items */}
+          <ul
+            className="hidden md:flex items-center gap-1"
+            onMouseLeave={() => setHovered(null)}
+          >
             {navLinks.map((link) => {
-              const isActive = active === link.href.slice(1);
+              const slug = link.href.slice(1);
+              const isActive = active === slug;
+              const showLine = (hovered ?? active) === slug;
               return (
                 <li key={link.href}>
                   <a
@@ -91,14 +97,22 @@ export default function Navbar() {
                       e.preventDefault();
                       handleClick(link.href);
                     }}
+                    onMouseEnter={() => setHovered(slug)}
                     aria-current={isActive ? "true" : undefined}
-                    className={`px-4 py-2 rounded-lg text-sm tracking-wide transition-all duration-200 ${
+                    className={`relative px-4 py-2 text-sm tracking-wide transition-colors duration-200 ${
                       isActive
-                        ? "text-[#0358fc] dark:text-[#4b8dff] bg-[#0358fc]/10"
-                        : "text-slate-500 dark:text-slate-400 hover:text-[#0358fc] hover:bg-slate-100 dark:hover:bg-white/10"
+                        ? "text-[#0358fc] dark:text-[#4b8dff]"
+                        : "text-slate-500 dark:text-slate-400 hover:text-[#0358fc] dark:hover:text-[#4b8dff]"
                     }`}
                   >
                     {link.label}
+                    {showLine && (
+                      <motion.span
+                        layoutId="nav-underline"
+                        className="absolute inset-x-3 -bottom-0.5 h-[2px] rounded-full bg-[#0358fc] dark:bg-[#4b8dff]"
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
+                    )}
                   </a>
                 </li>
               );
