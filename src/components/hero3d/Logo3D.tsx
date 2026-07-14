@@ -67,8 +67,8 @@ export default function Logo3D({ isDark = true }: { isDark?: boolean }) {
     g.position.y = Math.sin(state.clock.elapsedTime * 0.8) * 0.08;
   });
 
-  // Dark graphite-metal both modes (a bright chrome washes out on the light page).
-  const bodyColor = isDark ? "#101b30" : "#2b3547";
+  // Premium navy-chrome: deep navy in dark, steel-navy in light (reads on the page).
+  const bodyColor = isDark ? "#0d1b36" : "#38496c";
 
   return (
     <group ref={group}>
@@ -79,13 +79,15 @@ export default function Logo3D({ isDark = true }: { isDark?: boolean }) {
       >
         {parts.map((p, i) => (
           <mesh key={i} geometry={p.geometry}>
-            <meshStandardMaterial
-              color={p.accent ? "#2f6bff" : bodyColor}
-              emissive={p.accent ? "#0358fc" : "#000000"}
-              emissiveIntensity={p.accent ? 0.5 : 0}
-              metalness={p.accent ? 0.6 : isDark ? 0.95 : 0.82}
-              roughness={p.accent ? 0.25 : isDark ? 0.32 : 0.36}
-              envMapIntensity={isDark ? 0.9 : 0.65}
+            <meshPhysicalMaterial
+              color={p.accent ? "#3d7bff" : bodyColor}
+              emissive={p.accent ? "#2f6bff" : "#060d1c"}
+              emissiveIntensity={p.accent ? 0.75 : 0.08}
+              metalness={p.accent ? 0.55 : isDark ? 0.95 : 0.88}
+              roughness={p.accent ? 0.16 : isDark ? 0.26 : 0.28}
+              clearcoat={1}
+              clearcoatRoughness={p.accent ? 0.08 : 0.18}
+              envMapIntensity={isDark ? 1.05 : 1.2}
             />
           </mesh>
         ))}
