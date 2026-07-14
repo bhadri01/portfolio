@@ -1,7 +1,10 @@
 import type { ComponentType } from "react";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { fadeUp, stagger } from "../lib/motion";
+import { useWebGLSupport } from "../hooks/useWebGLSupport";
+
+const HeroScene = lazy(() => import("./hero3d/HeroScene"));
 import {
   SiFastapi, SiPython, SiRust, SiReact, SiTypescript, SiDocker, SiRedis,
   SiPostgresql, SiLangchain, SiWireguard, SiSqlalchemy, SiTailwindcss,
@@ -41,6 +44,7 @@ const phrases = [
 
 export default function Hero({ start = true }: { start?: boolean }) {
   const [display, setDisplay] = useState("");
+  const webgl = useWebGLSupport();
   const [pi, setPi] = useState(0);
   const [deleting, setDeleting] = useState(false);
 
@@ -66,7 +70,7 @@ export default function Hero({ start = true }: { start?: boolean }) {
   return (
     <section
       id="home"
-      className="relative min-h-dvh flex flex-col items-center justify-center px-5 sm:px-6 md:px-12 overflow-hidden"
+      className="relative min-h-dvh flex items-center px-5 sm:px-6 md:px-12 overflow-hidden"
     >
       {/* Subtle grid */}
       <div
@@ -78,30 +82,34 @@ export default function Hero({ start = true }: { start?: boolean }) {
         }}
       />
 
+      {/* ambient glow behind the emblem */}
+      <div className="pointer-events-none absolute right-[8%] top-1/2 h-[55vh] w-[55vh] -translate-y-1/2 rounded-full bg-[#0358fc]/10 blur-[130px]" />
+
+      <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-6 pb-20 pt-24 md:grid-cols-[1.06fr_0.94fr] md:gap-10 md:pb-0 md:pt-0">
       {/* Content */}
       <motion.div
-        className="max-w-5xl mx-auto w-full relative z-10 text-center"
+        className="text-center md:text-left"
         variants={stagger(0.12, 0.15)}
         initial="hidden"
         animate={start ? "show" : "hidden"}
       >
         {/* Name — brand wordmark */}
-        <motion.h1 variants={fadeUp} className="mb-8 flex justify-center">
+        <motion.h1 variants={fadeUp} className="mb-6 flex justify-center md:justify-start">
           <img
             src="/bhadrinathan-wordmark.svg"
             alt="Bhadrinathan"
-            className="w-full max-w-[680px] sm:max-w-[780px] md:max-w-[860px] dark:hidden"
+            className="w-full max-w-[420px] sm:max-w-[480px] md:max-w-[520px] dark:hidden"
           />
           <img
             src="/bhadrinathan-wordmark-dark.svg"
             alt="Bhadrinathan"
-            className="hidden w-full max-w-[680px] sm:max-w-[780px] md:max-w-[860px] dark:block"
+            className="hidden w-full max-w-[420px] sm:max-w-[480px] md:max-w-[520px] dark:block"
           />
         </motion.h1>
 
         {/* Typewriter tagline */}
-        <motion.div variants={fadeUp} className="mb-8 min-h-9 flex items-center justify-center px-2">
-          <span className="text-lg md:text-2xl font-medium text-slate-600 dark:text-slate-300 text-center">
+        <motion.div variants={fadeUp} className="mb-6 min-h-9 flex items-center justify-center md:justify-start px-2 md:px-0">
+          <span className="text-lg md:text-2xl font-medium text-slate-600 dark:text-slate-300">
             {display}
             <span className="animate-caret text-[#0358fc] dark:text-[#4b8dff] font-normal ml-0.5">|</span>
           </span>
@@ -110,7 +118,7 @@ export default function Hero({ start = true }: { start?: boolean }) {
         {/* Description */}
         <motion.p
           variants={fadeUp}
-          className="max-w-2xl mx-auto text-slate-600 dark:text-slate-300 text-base md:text-lg leading-relaxed mb-12"
+          className="max-w-xl mx-auto md:mx-0 text-slate-600 dark:text-slate-300 text-base md:text-lg leading-relaxed mb-9"
         >
           A software engineer who ships end-to-end — turning complex problems
           into reliable systems, thoughtful developer tools, and, increasingly,
@@ -118,7 +126,7 @@ export default function Hero({ start = true }: { start?: boolean }) {
         </motion.p>
 
         {/* CTAs */}
-        <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-center gap-4">
+        <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-center md:justify-start gap-4">
           <motion.a
             href="#projects"
             onClick={(e) => {
@@ -145,6 +153,43 @@ export default function Hero({ start = true }: { start?: boolean }) {
           </motion.a>
         </motion.div>
       </motion.div>
+
+        {/* 3D B3 emblem — right side, cursor-steered */}
+        <motion.div
+          className="pointer-events-none relative order-first mx-auto aspect-square w-full max-w-[260px] sm:max-w-[320px] md:order-none md:ml-auto md:max-w-[460px]"
+          initial={{ opacity: 0, scale: 0.94 }}
+          animate={start ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.94 }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+        >
+          {webgl === true ? (
+            <Suspense
+              fallback={
+                <img
+                  src="/logo-mark.svg"
+                  alt=""
+                  aria-hidden
+                  className="absolute inset-0 h-full w-full object-contain p-6 opacity-90 dark:hidden"
+                />
+              }
+            >
+              <HeroScene />
+            </Suspense>
+          ) : (
+            <>
+              <img
+                src="/logo-mark.svg"
+                alt="Bhadrinathan logo"
+                className="absolute inset-0 h-full w-full object-contain p-6 dark:hidden"
+              />
+              <img
+                src="/logo-mark-dark.svg"
+                alt="Bhadrinathan logo"
+                className="absolute inset-0 hidden h-full w-full object-contain p-6 dark:block"
+              />
+            </>
+          )}
+        </motion.div>
+      </div>
 
       {/* Scroll hint */}
       <motion.div

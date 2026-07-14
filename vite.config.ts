@@ -12,10 +12,15 @@ export default defineConfig({
     css: true,
   },
   build: {
+    // three.js is a large, lazy-loaded chunk by design
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
+            if (/[\\/]node_modules[\\/](three|@react-three)[\\/]/.test(id)) {
+              return 'three'
+            }
             if (/[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/.test(id)) {
               return 'react-vendor'
             }
