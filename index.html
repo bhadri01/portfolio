@@ -4,15 +4,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script>
-    (function () {
-      try {
-        var t = localStorage.getItem("theme");
-        var d = t === "dark" || ((t === "system" || t === null) && window.matchMedia("(prefers-color-scheme: dark)").matches);
-        if (d) document.documentElement.classList.add("dark");
-      } catch (e) {}
-    })();
-  </script>
   <meta name="description" content="Bhadrinathan is a full-stack engineer building React and TypeScript interfaces, FastAPI and Rust backends, developer tools, and real-time systems." />
   <meta name="author" content="Bhadrinathan A" />
   <link rel="canonical" href="https://bha3.me/" />
