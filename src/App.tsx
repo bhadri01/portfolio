@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { MotionConfig } from "framer-motion";
 import Preloader from "./components/Preloader";
 import ScrollProgress from "./components/ScrollProgress";
@@ -44,10 +44,11 @@ function useHashScroll() {
 
 function App() {
   useHashScroll();
+  const [booted, setBooted] = useState(false);
 
   return (
     <MotionConfig reducedMotion="user">
-      <Preloader />
+      <Preloader onDone={() => setBooted(true)} />
       <a
         href="#home"
         className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-[#0358fc] focus:text-white focus:text-sm"
@@ -58,7 +59,7 @@ function App() {
         <ScrollProgress />
         <Navbar />
         <main>
-          <Hero />
+          <Hero start={booted} />
           <Suspense fallback={<div className="min-h-[60vh]" />}>
             <About />
             <Skills />

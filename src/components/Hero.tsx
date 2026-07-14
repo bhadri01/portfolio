@@ -39,12 +39,13 @@ const phrases = [
   "Open-Source Developer",
 ];
 
-export default function Hero() {
+export default function Hero({ start = true }: { start?: boolean }) {
   const [display, setDisplay] = useState("");
   const [pi, setPi] = useState(0);
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
+    if (!start) return; // wait for the preloader to finish
     const full = phrases[pi];
     let delay = deleting ? 32 : 62;
     if (!deleting && display === full) delay = 2000;
@@ -60,7 +61,7 @@ export default function Hero() {
       }
     }, delay);
     return () => clearTimeout(t);
-  }, [display, deleting, pi]);
+  }, [display, deleting, pi, start]);
 
   return (
     <section
@@ -82,7 +83,7 @@ export default function Hero() {
         className="max-w-5xl mx-auto w-full relative z-10 text-center"
         variants={stagger(0.12, 0.15)}
         initial="hidden"
-        animate="show"
+        animate={start ? "show" : "hidden"}
       >
         {/* Name — brand wordmark */}
         <motion.h1 variants={fadeUp} className="mb-8 flex justify-center">

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import LogoLoader from "./LogoLoader";
 
@@ -25,9 +25,11 @@ function preloadImage(src: string) {
  * — brand images, web fonts, and every below-the-fold section chunk — then
  * fades out so the site is ready the moment it appears.
  */
-export default function Preloader() {
+export default function Preloader({ onDone }: { onDone?: () => void }) {
   const [progress, setProgress] = useState(0);
   const [done, setDone] = useState(false);
+  const onDoneRef = useRef(onDone);
+  onDoneRef.current = onDone;
 
   useEffect(() => {
     let mounted = true;
@@ -60,7 +62,11 @@ export default function Preloader() {
     const finish = () => {
       if (!mounted) return;
       setProgress(100);
-      setTimeout(() => mounted && setDone(true), 1400);
+      setTimeout(() => {
+        if (!mounted) return;
+        setDone(true);
+        onDoneRef.current?.(); // let the hero start its entrance as the overlay fades
+      }, 1400);
     };
 
     Promise.all(tasks).finally(finish);
