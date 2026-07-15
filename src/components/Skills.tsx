@@ -80,12 +80,19 @@ function squarify(items: { value: number; index: number }[], rect: Rect): Placed
   return result;
 }
 
-// tile area is driven by skill weight (importance), not the proficiency %
-const val = (wt: number) => wt ** 2;
+// Tile area is driven by skill weight (importance), not the proficiency %.
+// Linear, not squared: squaring turned a 3–10 weight range into a 9–100 area
+// range, so the lightest skills collapsed to 34x16px — too short to fit their
+// own label. Area now tracks weight directly, which is also what the caption
+// under the heading actually claims.
+const val = (wt: number) => wt;
 
 // ---------- layout (computed once, all skills in one map) ----------
 const W = 100;
-const H = 58;
+// Taller than it was (58). 59 tiles in a 100x58 box leaves even an average one
+// around 50px square — the lightest ones had nowhere to go. Extra height buys
+// every tile room rather than robbing the big ones to pay the small.
+const H = 76;
 const order = skills.map((_, i) => i).sort((a, b) => val(skills[b].wt) - val(skills[a].wt));
 const rects = squarify(order.map((idx) => ({ value: val(skills[idx].wt), index: idx })), { x: 0, y: 0, w: W, h: H });
 const tiles = rects.map((r) => ({ s: skills[r.index], x: r.x, y: r.y, w: r.w, h: r.h }));
