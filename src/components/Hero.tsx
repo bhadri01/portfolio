@@ -159,7 +159,7 @@ export default function Hero({ start = true }: { start?: boolean }) {
           className="max-w-xl mx-auto md:mx-0 text-slate-600 dark:text-slate-300 text-base md:text-lg leading-relaxed mb-9"
         >
           A software engineer who ships end-to-end — turning complex problems
-          into reliable systems, thoughtful developer tools, and, increasingly,
+          into reliable systems, thoughtful developer tools, and increasingly,
           intelligent AI-driven products.
         </motion.p>
 
