@@ -64,7 +64,14 @@ export default function Navbar() {
 
   const handleClick = (href: string) => {
     setOpen(false);
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    // Scroll on the next frame rather than inline. React hasn't committed the
+    // close yet at this point, so scrolling here starts the animation against a
+    // layout that is about to change underneath it — on mobile that scroll gets
+    // dropped. Waiting a frame lets the menu collapse land first, so the target
+    // is measured against the settled page.
+    requestAnimationFrame(() => {
+      document.querySelector(href)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   };
 
   const containerCls = open
@@ -179,29 +186,26 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile menu.
+            Opens at its final size and fades in. It used to animate height
+            0 → auto behind overflow-hidden, so it started as a sliver and wiped
+            open — the layout only resembled the finished menu at the very end.
+            Items sit in their final positions from the first frame now, so
+            there's nothing to slide or reflow. */}
         <AnimatePresence>
           {open && (
             <motion.div
-              className="md:hidden overflow-hidden"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.32, ease: easeOut }}
+              className="md:hidden"
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.18, ease: easeOut }}
             >
-              <motion.ul
-                className="flex flex-col pt-3"
-                initial="hidden"
-                animate="show"
-                variants={{ show: { transition: { staggerChildren: 0.05, delayChildren: 0.05 } } }}
-              >
+              <ul className="flex flex-col pt-3">
                 {navLinks.map((link) => {
                   const isActive = active === link.href.slice(1);
                   return (
-                    <motion.li
-                      key={link.href}
-                      variants={{ hidden: { opacity: 0, x: -12 }, show: { opacity: 1, x: 0 } }}
-                    >
+                    <li key={link.href}>
                       <a
                         href={link.href}
                         onClick={(e) => {
@@ -217,10 +221,10 @@ export default function Navbar() {
                       >
                         {link.label}
                       </a>
-                    </motion.li>
+                    </li>
                   );
                 })}
-              </motion.ul>
+              </ul>
 
               <div className="flex items-center gap-2 mt-2 pt-3 px-3 border-t border-slate-200/70 dark:border-white/10">
                 <a
