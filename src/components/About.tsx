@@ -2,23 +2,29 @@ import { motion } from "framer-motion";
 import { fadeUp, scaleIn, stagger, viewportOnce } from "../lib/motion";
 import { MapPin, Briefcase, GitBranch, Github, Linkedin } from "lucide-react";
 import Logo from "./Logo";
+import { useSpotlight } from "../hooks/useSpotlight";
 
+// Numbers a reader can weigh, rather than implementation trivia. Every one is
+// straight off the résumé — 16k downloads is third-party proof that the tools
+// get used, which no amount of self-description buys.
 const stats = [
-  { number: "2", label: "Published FastAPI tools", gradient: "from-[#0358fc] to-[#4b8dff]" },
-  { number: "14+", label: "Query operators shipped", gradient: "from-[#0246d4] to-[#0358fc]" },
-  { number: "MIT", label: "Open-source licensed", gradient: "from-[#3b6fff] to-[#0358fc]" },
+  { number: "16K+", label: "PyPI downloads", gradient: "from-[#0358fc] to-[#4b8dff]" },
+  { number: "4 yrs", label: "Shipping production", gradient: "from-[#0246d4] to-[#0358fc]" },
+  { number: "2", label: "Packages published", gradient: "from-[#3b6fff] to-[#0358fc]" },
 ];
 
 const focus = [
-  "Frontend & UI",
+  "Rust & Systems",
   "Backend APIs",
-  "Real-time & SSE",
   "RAG & Agents",
+  "Real-time & SSE",
   "DevOps",
   "Security",
 ];
 
 export default function About() {
+  const spotlight = useSpotlight();
+
   return (
     <section id="about" className="relative py-20 md:py-32 px-5 sm:px-6 md:px-12 overflow-hidden scroll-mt-24">
       <div className="absolute left-0 top-1/3 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#0358fc]/8 blur-[120px] pointer-events-none" />
@@ -43,7 +49,8 @@ export default function About() {
           {/* Intro — large card */}
           <motion.div
             variants={scaleIn}
-            className="relative md:col-span-2 md:row-span-2 overflow-hidden bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-6 sm:p-8 md:p-10 flex flex-col"
+            onPointerMove={spotlight}
+            className="card-spotlight relative md:col-span-2 md:row-span-2 overflow-hidden bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-6 sm:p-8 md:p-10 flex flex-col transition-colors duration-300 hover:border-[#0358fc]/40"
           >
             <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-gradient-to-br from-[#0358fc]/10 to-transparent blur-2xl pointer-events-none" />
 
@@ -53,7 +60,7 @@ export default function About() {
               <div>
                 <p className="font-brand text-sm text-[#000b1b] dark:text-slate-100 tracking-tight">Bhadrinathan</p>
                 <p className="font-mono text-[11px] text-slate-500 dark:text-slate-400 tracking-wide">
-                  Software Engineer
+                  Technical Lead · Software Engineer
                 </p>
               </div>
             </div>
@@ -62,23 +69,26 @@ export default function About() {
               variants={fadeUp}
               className="relative font-brand text-2xl md:text-[2rem] leading-snug tracking-tight text-[#000b1b] dark:text-slate-100 mb-6"
             >
-              I build full-stack products and
-              <span className="gradient-text-cyan"> developer tools </span>
-              people actually reach for.
+              I build systems people trust with
+              <span className="gradient-text-cyan"> untrusted input </span>
+              — and tools other developers install.
             </motion.h2>
 
             <motion.p variants={fadeUp} className="relative text-slate-600 dark:text-slate-300 text-base leading-relaxed mb-5">
-              I'm a full-stack engineer who ships end-to-end — polished React and
-              TypeScript interfaces on the front, scalable Python and FastAPI APIs
-              behind them — and the creator of{" "}
-              <span className="text-[#0358fc] dark:text-[#4b8dff] font-medium">fastapi-querybuilder</span> and{" "}
-              <span className="text-[#0358fc] dark:text-[#4b8dff] font-medium">fastapi-sse-events</span>.
+              Four years shipping production software end to end — from a police
+              records CRM to cloud lab infrastructure, and now leading the build of
+              an edtech platform as Technical Lead. I wrote{" "}
+              <span className="text-[#0358fc] dark:text-[#4b8dff] font-medium">fastapi-querybuilder</span>, which
+              other people's projects have pulled down more than 16,000 times.
             </motion.p>
 
             <motion.p variants={fadeUp} className="relative text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-8">
-              From responsive UIs and real-time dashboards to containerized
-              platforms and production RAG and agentic workflows built on pgvector,
-              LangChain, and LangGraph — I like owning the whole stack.
+              Lately that means Rust where correctness has to be structural — a
+              sandbox that runs untrusted code behind eight independent isolation
+              layers, a read-only forensics tool that physically can't write to the
+              disk it reads. And Python where speed matters: FastAPI, pgvector, and
+              agent workflows on LangGraph. I like owning the whole stack, but I'm
+              happiest close to the metal.
             </motion.p>
 
             {/* Socials */}
@@ -108,7 +118,8 @@ export default function About() {
           <motion.div
             variants={scaleIn}
             whileHover={{ y: -4 }}
-            className="bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-7 hover:border-[#0358fc]/40 transition-colors duration-300"
+            onPointerMove={spotlight}
+            className="card-spotlight relative overflow-hidden bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-7 hover:border-[#0358fc]/40 transition-colors duration-300"
           >
             <span className="font-mono text-[11px] text-slate-400 dark:text-slate-500 tracking-[0.2em] uppercase">
               Currently
@@ -119,8 +130,10 @@ export default function About() {
                   <Briefcase size={15} />
                 </span>
                 <div>
-                  <p className="text-sm font-medium text-[#000b1b] dark:text-slate-100">Software Engineer</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">Bloomskilltech</p>
+                  {/* Matches Experience — this said "Software Engineer", which
+                      contradicted the timeline further down the page. */}
+                  <p className="text-sm font-medium text-[#000b1b] dark:text-slate-100">Technical Lead</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">BloomSkillTech · since Jan 2025</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -138,7 +151,7 @@ export default function About() {
                 </span>
                 <div>
                   <p className="text-sm font-medium text-[#000b1b] dark:text-slate-100">Open source</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">Maintaining PyPI packages</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">fastapi-querybuilder · MIT</p>
                 </div>
               </div>
             </div>
@@ -148,7 +161,8 @@ export default function About() {
           <motion.div
             variants={scaleIn}
             whileHover={{ y: -4 }}
-            className="bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-7 hover:border-[#0358fc]/40 transition-colors duration-300"
+            onPointerMove={spotlight}
+            className="card-spotlight relative overflow-hidden bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-7 hover:border-[#0358fc]/40 transition-colors duration-300"
           >
             <span className="font-mono text-[11px] text-slate-400 dark:text-slate-500 tracking-[0.2em] uppercase">
               Focus
@@ -171,7 +185,8 @@ export default function About() {
               key={stat.label}
               variants={scaleIn}
               whileHover={{ y: -4 }}
-              className="bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-7 hover:border-[#0358fc]/40 transition-colors duration-300"
+              onPointerMove={spotlight}
+              className="card-spotlight relative overflow-hidden bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-7 hover:border-[#0358fc]/40 transition-colors duration-300"
             >
               <span
                 className={`block font-brand text-3xl md:text-4xl bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent mb-2`}

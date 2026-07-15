@@ -2,6 +2,7 @@ import type { ComponentType } from "react";
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { fadeUp, viewportOnce, easeOut } from "../lib/motion";
+import { useSpotlight } from "../hooks/useSpotlight";
 import { Briefcase, GraduationCap, ShieldCheck, MapPin, Calendar } from "lucide-react";
 
 type IconType = ComponentType<{ size?: number; className?: string }>;
@@ -131,6 +132,7 @@ export default function Experience() {
 }
 
 function TimelineCard({ item, idx }: { item: TimelineItem; idx: number }) {
+  const spotlight = useSpotlight();
   return (
     <div className="group relative pl-16 md:pl-28">
       {/* Node */}
@@ -151,6 +153,9 @@ function TimelineCard({ item, idx }: { item: TimelineItem; idx: number }) {
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.6, ease: easeOut }}
         whileHover={{ y: -4 }}
+        // card-spotlight has been on these cards all along, but nothing ever set
+        // --mx/--my, so the glow sat pinned to the centre. Now it tracks.
+        onPointerMove={spotlight}
         className="card-spotlight relative overflow-hidden rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0f1a2e] hover:border-[#0358fc]/40 transition-colors duration-300"
       >
         {/* Left accent bar */}
