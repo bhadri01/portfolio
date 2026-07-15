@@ -2,14 +2,16 @@ import { renderHook, act } from "@testing-library/react";
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { useDeviceTilt } from "./useDeviceTilt";
 
-type W = typeof window & { DeviceOrientationEvent?: unknown };
+/** `typeof window` types DeviceOrientationEvent as a required global, so go
+ *  through an index signature to stub and delete it. */
+const globals = window as unknown as Record<string, unknown>;
 
 /** Install a DeviceOrientationEvent stub; `ios` adds the requestPermission gate. */
 function stubSensor({ ios, verdict = "granted" }: { ios: boolean; verdict?: string }) {
   const requestPermission = vi.fn().mockResolvedValue(verdict);
-  const DOE = function () {} as unknown as Record<string, unknown>;
+  const DOE: Record<string, unknown> = function () {} as unknown as Record<string, unknown>;
   if (ios) DOE.requestPermission = requestPermission;
-  (window as W).DeviceOrientationEvent = DOE;
+  globals.DeviceOrientationEvent = DOE;
   return { requestPermission };
 }
 
@@ -28,7 +30,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  delete (window as W).DeviceOrientationEvent;
+  delete globals.DeviceOrientationEvent;
   vi.restoreAllMocks();
 });
 

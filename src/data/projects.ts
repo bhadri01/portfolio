@@ -49,6 +49,22 @@ export const projects: Project[] = [
     visibility: "public",
   },
   {
+    title: "ZeroCode",
+    description:
+      "Sandboxed code-execution service in Rust — submit source code, get stdout/stderr/exit status back. Runs untrusted code across 20 languages inside cgroup-bounded, namespaced, seccomp-filtered Linux sandboxes.",
+    highlights: [
+      "Stacked 8 independent isolation layers on every submission — user/PID/NET/IPC/UTS/MNT namespaces, pivot_root into a read-only rootfs, cgroup v2 limits, Landlock, seccomp BPF, a full capability drop and NO_NEW_PRIVS — so an escape lands nowhere useful.",
+      "Built it as a 7-crate Rust workspace: an Axum HTTP API, a worker pool, pluggable sandbox backends, a moka result cache, and a Postgres LISTEN/NOTIFY queue.",
+      "Dispatched jobs with pg_notify + SELECT … FOR UPDATE SKIP LOCKED so workers race for them safely, and streamed live stdout/stderr to the browser over SSE.",
+      "Hardened it against 130+ adversarial edge-case tests — fork bombs, memory bombs, output floods, and symlink/ptrace/mount escape attempts — backed by a STRIDE threat model.",
+    ],
+    tech: ["Rust", "Axum", "PostgreSQL", "Docker", "seccomp", "Landlock", "cgroups", "SSE", "React", "Vite"],
+    github: "https://github.com/bhadri01/ZeroCode",
+    year: "2026",
+    featured: true,
+    visibility: "public",
+  },
+  {
     title: "ZeroVPN",
     description:
       "Self-hosted WireGuard VPN management platform — a multi-crate Rust (Axum) backend with a React frontend, run from a single docker compose up.",
