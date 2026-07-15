@@ -2,10 +2,11 @@ import type { ComponentType } from "react";
 import { useEffect, useRef, useState } from "react";
 import {
   motion, AnimatePresence, LayoutGroup,
-  useScroll, useTransform, useMotionValue, useSpring,
+  useTransform, useMotionValue, useSpring,
 } from "framer-motion";
 import { fadeUp, stagger, viewportOnce } from "../lib/motion";
 import { useMediaQuery } from "../hooks/useMediaQuery";
+import { useScreenProgress } from "../hooks/useScreenProgress";
 import { ArrowUpRight, Star, X, Github, ExternalLink, Code2, TrendingUp, ShieldCheck, RadioTower, Smartphone, GraduationCap, Globe, Lock } from "lucide-react";
 import { SiFastapi, SiRust, SiDocker, SiWireguard, SiGo } from "react-icons/si";
 import { projects, type Project } from "../data/projects";
@@ -130,27 +131,28 @@ function ProjectCard({
   // nothing to lean toward, so it stays flat.
   // Kept small on purpose — rotateX and rotateY compose into a rotation about a
   // diagonal axis, so large values read as a twist rather than a curve.
-  const baseRotateY = animate ? (index % 2 === 0 ? 5 : -5) : 0;
+  const baseRotateY = animate ? (index % 2 === 0 ? 4 : -4) : 0;
 
-  // Scroll: each card starts bowed away from the viewer and straightens as it
-  // rises into view. It settles well before the centre so most of the time
-  // you're reading flat, upright cards.
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "start 60%"],
-  });
-  const bendX = useTransform(scrollYProgress, [0, 1], [12, 0]);
-  const riseY = useTransform(scrollYProgress, [0, 1], [44, 0]);
-  const growth = useTransform(scrollYProgress, [0, 1], [0.94, 1]);
-  const fade = useTransform(scrollYProgress, [0, 0.45], [0, 1]);
+  // Scroll: the card rides over a convex surface as it crosses the screen.
+  // Progress runs 0 (centre at the bottom edge) → 0.5 (centred) → 1 (centre at
+  // the top edge), so everything below is a symmetric arc: hidden and bowed
+  // away at the bottom, face-on and closest at the centre, bowed away and
+  // hidden again at the top. It hides on the way out, not just on the way in.
+  const progress = useScreenProgress(ref, animate);
+  const bendX = useTransform(progress, [0, 0.5, 1], [20, 0, -20]);
+  const depthZ = useTransform(progress, [0, 0.5, 1], [-220, 0, -220]);
+  const growth = useTransform(progress, [0, 0.5, 1], [0.88, 1, 0.88]);
+  const fade = useTransform(progress, [0, 0.26, 0.74, 1], [0, 1, 1, 0]);
 
-  const rotateX = useSpring(bendX, { stiffness: 90, damping: 20 });
-  const y = useSpring(riseY, { stiffness: 90, damping: 20 });
+  const rotateX = useSpring(bendX, { stiffness: 80, damping: 20 });
+  const z = useSpring(depthZ, { stiffness: 80, damping: 20 });
 
   // Hover tilt — pointer position normalised to -0.5..0.5 across the card.
+  // Soft spring with real mass so the card feels weighted: it lags the cursor
+  // slightly and settles rather than snapping.
   const px = useMotionValue(0);
   const py = useMotionValue(0);
-  const spring = { stiffness: 260, damping: 18, mass: 0.5 };
+  const spring = { stiffness: 140, damping: 14, mass: 1.1 };
   const tiltY = useSpring(useTransform(px, [-0.5, 0.5], [-TILT_MAX, TILT_MAX]), spring);
   const tiltX = useSpring(useTransform(py, [-0.5, 0.5], [TILT_MAX, -TILT_MAX]), spring);
   // A spring bound to a source follows that source, so it has to be driven by
@@ -171,15 +173,19 @@ function ProjectCard({
   };
 
   return (
-    <motion.div
-      ref={ref}
-      style={
-        animate
-          ? { rotateY: baseRotateY, rotateX, y, scale: growth, opacity: fade, transformStyle: "preserve-3d" }
-          : undefined
-      }
-      className="h-full [transform-style:preserve-3d]"
-    >
+    // useScroll measures this element's box, so it must stay untransformed —
+    // measuring a transformed target reports a moving box and the progress
+    // never resolves. preserve-3d lets the grid's perspective reach the
+    // transformed layer inside.
+    <div ref={ref} className="h-full [transform-style:preserve-3d]">
+      <motion.div
+        style={
+          animate
+            ? { rotateY: baseRotateY, rotateX, z, scale: growth, opacity: fade, transformStyle: "preserve-3d" }
+            : undefined
+        }
+        className="h-full [transform-style:preserve-3d]"
+      >
       <motion.div
         onPointerMove={onPointerMove}
         onPointerLeave={onPointerLeave}
@@ -201,7 +207,7 @@ function ProjectCard({
           aria-label={`Open details for ${project.title}`}
           whileTap={{ scale: 0.985 }}
           transition={{ type: "spring", stiffness: 400, damping: 34 }}
-          className="group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition-colors duration-300 hover:border-[#0358fc]/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0358fc]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f6f9fe] dark:border-white/10 dark:bg-[#0f1a2e] dark:ring-offset-[#0a0f1c]"
+          className="group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0358fc]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f6f9fe] dark:border-white/10 dark:bg-[#0f1a2e] dark:ring-offset-[#0a0f1c]"
         >
           {/* Cover */}
           <div
@@ -228,7 +234,7 @@ function ProjectCard({
             <div className="mb-1.5 flex items-center gap-2">
               <motion.h3
                 layout="position"
-                className="truncate text-base font-semibold text-[#000b1b] transition-colors group-hover:text-[#0358fc] dark:text-slate-100 md:text-lg"
+                className="truncate text-base font-semibold text-[#000b1b] dark:text-slate-100 md:text-lg"
               >
                 {project.title}
               </motion.h3>
@@ -261,17 +267,15 @@ function ProjectCard({
               <span className="font-mono text-[10px] tracking-wider text-slate-400 dark:text-slate-500">
                 {project.year}
               </span>
-              <span className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-400 transition-all duration-300 group-hover:border-[#0358fc]/30 group-hover:bg-[#0358fc]/5 group-hover:text-[#0358fc] dark:border-white/10 dark:text-slate-500">
-                <ArrowUpRight
-                  size={17}
-                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                />
+              <span className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-400 dark:border-white/10 dark:text-slate-500">
+                <ArrowUpRight size={17} />
               </span>
             </div>
           </div>
         </motion.article>
       </motion.div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 }
 
