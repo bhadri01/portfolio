@@ -1,98 +1,11 @@
-import type { ComponentType } from "react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { fadeUp, stagger, viewportOnce } from "../lib/motion";
 import { useMediaQuery } from "../hooks/useMediaQuery";
-import { X, ArrowUpRight } from "lucide-react";
-import { projects } from "../data/projects";
-import {
-  SiPython, SiTypescript, SiJavascript, SiC, SiGo, SiRust, SiHtml5, SiFastapi,
-  SiSqlalchemy, SiNodedotjs, SiGraphql, SiRedis, SiPostgresql, SiReact,
-  SiTailwindcss, SiVite, SiDocker, SiJenkins, SiTraefikproxy, SiNginx, SiLinux,
-  SiWireguard, SiGit, SiLangchain, SiWireshark, SiBurpsuite, SiOwasp,
-  SiPostman, SiMetasploit, SiGnubash, SiMongodb, SiCelery,
-  SiPydantic, SiRabbitmq, SiPytest, SiVitest,
-  SiPrometheus, SiGrafana, SiHuggingface,
-  SiTimescale, SiReactquery, SiWebassembly,
-} from "react-icons/si";
-import {
-  Database, Webhook, RadioTower, BrainCircuit, Workflow, Boxes, Gauge,
-  Bot, Infinity as InfinityIcon, Radar, Cloud, Sparkles, Drama,
-  Layers, Smartphone,
-} from "lucide-react";
+import { X } from "lucide-react";
+import { skills, type Skill } from "../data/skills";
 
-type IconType = ComponentType<{ size?: number; className?: string }>;
-// wt = weight / importance in the toolkit (drives tile size); level = proficiency %
-type Skill = { label: string; Icon: IconType; color: string; level: number; mom: number; cat: string; wt: number };
 type Selected = { skill: Skill; rect: DOMRect };
-
-const skills: Skill[] = [
-  // Languages
-  { label: "Python", Icon: SiPython, color: "#3776AB", level: 95, mom: 3.1, cat: "Languages", wt: 10 },
-  { label: "TypeScript", Icon: SiTypescript, color: "#3178C6", level: 86, mom: 5.4, cat: "Languages", wt: 7 },
-  { label: "JavaScript", Icon: SiJavascript, color: "#EAB308", level: 88, mom: 2.2, cat: "Languages", wt: 6 },
-  { label: "Go", Icon: SiGo, color: "#00ADD8", level: 76, mom: 6.0, cat: "Languages", wt: 4 },
-  { label: "Rust", Icon: SiRust, color: "#B7410E", level: 76, mom: 9.5, cat: "Languages", wt: 7 },
-  { label: "C", Icon: SiC, color: "#5A6E8C", level: 78, mom: 1.5, cat: "Languages", wt: 3 },
-  { label: "SQL", Icon: Database, color: "#4479A1", level: 85, mom: 4.0, cat: "Languages", wt: 7 },
-  { label: "HTML/CSS", Icon: SiHtml5, color: "#E34F26", level: 82, mom: 1.8, cat: "Languages", wt: 5 },
-  // Backend
-  { label: "FastAPI", Icon: SiFastapi, color: "#009688", level: 95, mom: 6.2, cat: "Backend", wt: 10 },
-  { label: "SQLAlchemy", Icon: SiSqlalchemy, color: "#D71F00", level: 90, mom: 5.1, cat: "Backend", wt: 8 },
-  { label: "Node.js", Icon: SiNodedotjs, color: "#5FA04E", level: 78, mom: 3.0, cat: "Backend", wt: 5 },
-  { label: "REST APIs", Icon: Webhook, color: "#0EA5E9", level: 92, mom: 4.3, cat: "Backend", wt: 8 },
-  { label: "GraphQL", Icon: SiGraphql, color: "#E10098", level: 80, mom: 5.5, cat: "Backend", wt: 5 },
-  { label: "Redis", Icon: SiRedis, color: "#D82C20", level: 85, mom: 6.0, cat: "Backend", wt: 7 },
-  { label: "PostgreSQL", Icon: SiPostgresql, color: "#4169E1", level: 90, mom: 5.2, cat: "Backend", wt: 9 },
-  { label: "SSE / WebSockets", Icon: RadioTower, color: "#7C3AED", level: 84, mom: 7.1, cat: "Backend", wt: 6 },
-  // AI Engineering
-  { label: "RAG Systems", Icon: BrainCircuit, color: "#0358fc", level: 78, mom: 22.4, cat: "AI Engineering", wt: 8 },
-  { label: "LangChain", Icon: SiLangchain, color: "#1C3C3C", level: 76, mom: 20.1, cat: "AI Engineering", wt: 7 },
-  { label: "LangGraph", Icon: Workflow, color: "#2563EB", level: 72, mom: 24.6, cat: "AI Engineering", wt: 6 },
-  { label: "pgvector", Icon: Boxes, color: "#3E63DD", level: 74, mom: 18.3, cat: "AI Engineering", wt: 5 },
-  { label: "LLM Evaluation", Icon: Gauge, color: "#0891B2", level: 70, mom: 19.2, cat: "AI Engineering", wt: 5 },
-  { label: "AI Agents", Icon: Bot, color: "#0246d4", level: 73, mom: 21.5, cat: "AI Engineering", wt: 6 },
-  // Frontend
-  { label: "React", Icon: SiReact, color: "#149ECA", level: 82, mom: 4.1, cat: "Frontend", wt: 7 },
-  { label: "Tailwind CSS", Icon: SiTailwindcss, color: "#06B6D4", level: 88, mom: 3.3, cat: "Frontend", wt: 6 },
-  { label: "Vite", Icon: SiVite, color: "#646CFF", level: 80, mom: 5.0, cat: "Frontend", wt: 4 },
-  // Infrastructure
-  { label: "Docker", Icon: SiDocker, color: "#2496ED", level: 90, mom: 5.0, cat: "Infrastructure", wt: 9 },
-  { label: "Jenkins", Icon: SiJenkins, color: "#D24939", level: 80, mom: 3.2, cat: "Infrastructure", wt: 5 },
-  { label: "Traefik", Icon: SiTraefikproxy, color: "#24A1C1", level: 78, mom: 4.4, cat: "Infrastructure", wt: 5 },
-  { label: "Nginx", Icon: SiNginx, color: "#009639", level: 82, mom: 3.1, cat: "Infrastructure", wt: 6 },
-  { label: "Linux", Icon: SiLinux, color: "#C9930A", level: 88, mom: 4.0, cat: "Infrastructure", wt: 8 },
-  { label: "WireGuard", Icon: SiWireguard, color: "#88171A", level: 76, mom: 5.3, cat: "Infrastructure", wt: 5 },
-  { label: "Git", Icon: SiGit, color: "#F05032", level: 92, mom: 2.1, cat: "Infrastructure", wt: 8 },
-  { label: "CI/CD", Icon: InfinityIcon, color: "#0358fc", level: 85, mom: 4.2, cat: "Infrastructure", wt: 6 },
-  // Security & Testing
-  { label: "Nmap", Icon: Radar, color: "#5D3FD3", level: 85, mom: 3.0, cat: "Security & Testing", wt: 6 },
-  { label: "Wireshark", Icon: SiWireshark, color: "#1679A7", level: 82, mom: 3.5, cat: "Security & Testing", wt: 5 },
-  { label: "Burp Suite", Icon: SiBurpsuite, color: "#FF6633", level: 84, mom: 4.0, cat: "Security & Testing", wt: 6 },
-  { label: "OWASP ZAP", Icon: SiOwasp, color: "#00A4A6", level: 78, mom: 4.5, cat: "Security & Testing", wt: 4 },
-  { label: "Postman", Icon: SiPostman, color: "#FF6C37", level: 88, mom: 2.5, cat: "Security & Testing", wt: 6 },
-  { label: "Metasploit", Icon: SiMetasploit, color: "#2A6BB0", level: 74, mom: 4.0, cat: "Security & Testing", wt: 4 },
-  // More tooling
-  { label: "Bash", Icon: SiGnubash, color: "#4EAA25", level: 84, mom: 2.5, cat: "Languages", wt: 6 },
-  { label: "MongoDB", Icon: SiMongodb, color: "#47A248", level: 78, mom: 3.5, cat: "Backend", wt: 5 },
-  { label: "Celery", Icon: SiCelery, color: "#37814A", level: 80, mom: 3.0, cat: "Backend", wt: 5 },
-  { label: "Pydantic", Icon: SiPydantic, color: "#E92063", level: 88, mom: 4.0, cat: "Backend", wt: 6 },
-  { label: "RabbitMQ", Icon: SiRabbitmq, color: "#FF6600", level: 74, mom: 3.5, cat: "Backend", wt: 4 },
-  { label: "Hugging Face", Icon: SiHuggingface, color: "#FFD21E", level: 74, mom: 12.0, cat: "AI Engineering", wt: 5 },
-  { label: "OpenAI API", Icon: Sparkles, color: "#10A37F", level: 82, mom: 14.0, cat: "AI Engineering", wt: 6 },
-  { label: "AWS", Icon: Cloud, color: "#FF9900", level: 76, mom: 8.0, cat: "Infrastructure", wt: 6 },
-  { label: "Prometheus", Icon: SiPrometheus, color: "#E6522C", level: 78, mom: 3.5, cat: "Infrastructure", wt: 5 },
-  { label: "Grafana", Icon: SiGrafana, color: "#F46800", level: 80, mom: 3.0, cat: "Infrastructure", wt: 5 },
-  { label: "Pytest", Icon: SiPytest, color: "#0A9EDC", level: 86, mom: 3.0, cat: "Security & Testing", wt: 6 },
-  { label: "Vitest", Icon: SiVitest, color: "#6E9F18", level: 84, mom: 5.0, cat: "Security & Testing", wt: 5 },
-  { label: "Playwright", Icon: Drama, color: "#2EAD33", level: 82, mom: 6.0, cat: "Security & Testing", wt: 5 },
-  // Surfaced from recent projects
-  { label: "TimescaleDB", Icon: SiTimescale, color: "#FDB515", level: 74, mom: 6.5, cat: "Backend", wt: 4 },
-  { label: "WebAssembly", Icon: SiWebassembly, color: "#654FF0", level: 66, mom: 9.0, cat: "Languages", wt: 3 },
-  { label: "React Native", Icon: Smartphone, color: "#087EA4", level: 74, mom: 7.5, cat: "Frontend", wt: 5 },
-  { label: "Zustand", Icon: Layers, color: "#6E5A43", level: 82, mom: 6.0, cat: "Frontend", wt: 4 },
-  { label: "TanStack Query", Icon: SiReactquery, color: "#FF4154", level: 82, mom: 7.0, cat: "Frontend", wt: 5 },
-];
 
 function textOn(hex: string) {
   const h = hex.replace("#", "");
@@ -179,6 +92,8 @@ const tiles = rects.map((r) => ({ s: skills[r.index], x: r.x, y: r.y, w: r.w, h:
 
 const pct = (v: number, span: number) => `${(v / span) * 100}%`;
 
+/** Fallback for skills without a specific, evidence-backed usage story. Kept
+ *  general on purpose — better a true generality than an invented specific. */
 const catNote: Record<string, string> = {
   Languages: "A core language I reach for across backend services, tooling, and automation.",
   Backend: "Used to design APIs, data models, and real-time systems in production.",
@@ -187,17 +102,6 @@ const catNote: Record<string, string> = {
   Infrastructure: "Part of my deployment, networking, and monitoring stack.",
   "Security & Testing": "Used for network and web-application testing and API validation.",
 };
-
-function relatedProjects(label: string) {
-  const key = label.toLowerCase();
-  const tokens = key.split(/[^a-z0-9+#.]+/).filter((t) => t.length >= 3);
-  return projects.filter((p) => {
-    const techLower = p.tech.map((t) => t.toLowerCase());
-    if (techLower.includes(key)) return true;
-    const hay = (p.tech.join(" ") + " " + p.title + " " + p.description).toLowerCase();
-    return tokens.some((t) => hay.includes(t));
-  });
-}
 
 function darken(hex: string, amt: number) {
   const h = hex.replace("#", "");
@@ -211,7 +115,6 @@ function levelTag(l: number) {
 function SkillModal({ sel, onClose }: { sel: Selected; onClose: () => void }) {
   const skill = sel.skill;
   const fg = textOn(skill.color);
-  const related = relatedProjects(skill.label);
   const Icon = skill.Icon;
   const hi = fg === "#ffffff" ? "rgba(255,255,255,0.14)" : "rgba(0,0,0,0.06)";
   return (
@@ -289,69 +192,32 @@ function SkillModal({ sel, onClose }: { sel: Selected; onClose: () => void }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.16, duration: 0.3 }}
         >
-          <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-6">{catNote[skill.cat]}</p>
+          {/* What it is — objective, and true no matter who's reading */}
           <div className="flex items-center gap-2 mb-3">
-            <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400 dark:text-slate-500">Where I've used it</span>
-            <div className="h-px flex-1 bg-slate-200" />
-            <span className="font-mono text-[11px] text-slate-400 dark:text-slate-500">
-              {related.length} {related.length === 1 ? "project" : "projects"}
+            <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400 dark:text-slate-500">
+              What it is
             </span>
+            <div className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
           </div>
-          {related.length ? (
-            <motion.ul className="space-y-2.5" initial="hidden" animate="show" variants={stagger(0.07, 0.05)}>
-              {related.map((p) => {
-                const link = p.live || p.github;
-                return (
-                  <motion.li key={p.title} variants={fadeUp}>
-                    <a
-                      href={link}
-                      target={link ? "_blank" : undefined}
-                      rel="noopener noreferrer"
-                      className={`group relative block rounded-2xl border border-slate-200 dark:border-white/10 p-4 pl-5 overflow-hidden transition-all duration-300 ${
-                        link ? "hover:border-[#0358fc]/40 hover:bg-slate-50 dark:bg-white/[0.04] hover:-translate-y-0.5" : "cursor-default"
-                      }`}
-                    >
-                      <span
-                        className="absolute left-0 top-0 bottom-0 w-1 opacity-70 group-hover:opacity-100 transition-opacity"
-                        style={{ backgroundColor: skill.color }}
-                      />
-                      <div className="flex items-center gap-2">
-                        <span className="font-semibold text-sm text-[#000b1b] dark:text-slate-100">{p.title}</span>
-                        {link && (
-                          <ArrowUpRight size={14} className="text-slate-400 dark:text-slate-500 group-hover:text-[#0358fc] transition-colors" />
-                        )}
-                        <span className="ml-auto font-mono text-[10px] text-slate-400 dark:text-slate-500">{p.year}</span>
-                      </div>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mt-1 line-clamp-2">{p.description}</p>
-                      <div className="flex flex-wrap gap-1.5 mt-2.5">
-                        {p.tech.slice(0, 5).map((tech) => {
-                          const isCur = tech.toLowerCase() === skill.label.toLowerCase();
-                          return (
-                            <span
-                              key={tech}
-                              className={`px-2 py-0.5 rounded-md text-[10px] font-mono ${isCur ? "font-semibold" : "bg-slate-100 text-slate-500 dark:text-slate-400"}`}
-                              style={isCur ? { backgroundColor: `${skill.color}1a`, color: skill.color } : undefined}
-                            >
-                              {tech}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </a>
-                  </motion.li>
-                );
-              })}
-            </motion.ul>
-          ) : (
-            <div className="flex items-center gap-3 rounded-2xl border border-dashed border-slate-300 dark:border-white/20 p-4 text-slate-500 dark:text-slate-400">
-              <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-slate-100 shrink-0">
-                <Boxes size={18} />
-              </span>
-              <p className="text-sm leading-snug">
-                Part of my broader toolkit — used in day-to-day work and experiments rather than a dedicated public project.
-              </p>
-            </div>
-          )}
+          <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-6">{skill.what}</p>
+
+          {/* How I use it — the specific story where there's one to tell, and an
+              honest generality where there isn't. */}
+          <div className="flex items-center gap-2 mb-3">
+            <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400 dark:text-slate-500">
+              How I use it
+            </span>
+            <div className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
+            <span className="font-mono text-[10px] text-slate-400 dark:text-slate-500">{levelTag(skill.level)}</span>
+          </div>
+          <div
+            className="relative rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] p-4 pl-5 overflow-hidden"
+          >
+            <span className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: skill.color }} />
+            <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+              {skill.how ?? catNote[skill.cat]}
+            </p>
+          </div>
         </motion.div>
       </motion.div>
     </motion.div>
