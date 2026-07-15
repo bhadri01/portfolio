@@ -2,6 +2,7 @@ import type { ComponentType } from "react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { fadeUp, stagger, viewportOnce } from "../lib/motion";
+import { useMediaQuery } from "../hooks/useMediaQuery";
 import { X, ArrowUpRight } from "lucide-react";
 import { projects } from "../data/projects";
 import {
@@ -360,6 +361,9 @@ function SkillModal({ sel, onClose }: { sel: Selected; onClose: () => void }) {
 export default function Skills() {
   const [active, setActive] = useState<string | null>(null);
   const [selected, setSelected] = useState<Selected | null>(null);
+  // Render EITHER the mobile list or the treemap — never both, so the shared
+  // layoutIds stay unique (duplicates made the mobile rows render invisible).
+  const isMobile = useMediaQuery("(max-width: 767px)");
 
   useEffect(() => {
     if (!selected) return;
@@ -376,7 +380,7 @@ export default function Skills() {
 
   return (
     <LayoutGroup>
-      {SkillsInner({ active, setActive, setSelected })}
+      {SkillsInner({ active, setActive, setSelected, isMobile })}
       <AnimatePresence>
         {selected && <SkillModal sel={selected} onClose={() => setSelected(null)} />}
       </AnimatePresence>
@@ -388,10 +392,12 @@ function SkillsInner({
   active,
   setActive,
   setSelected,
+  isMobile,
 }: {
   active: string | null;
   setActive: (v: string | null) => void;
   setSelected: (v: Selected | null) => void;
+  isMobile: boolean;
 }) {
   const current = tiles.find((t) => t.s.label === active)?.s;
   const categories = [...new Set(skills.map((s) => s.cat))];
@@ -436,7 +442,8 @@ function SkillsInner({
 
         {/* Unified treemap heatmap */}
         {/* Mobile / small screens: a clean vertical list (no horizontal scroll) */}
-        <motion.div variants={fadeUp} className="space-y-6 md:hidden">
+        {isMobile ? (
+        <motion.div variants={fadeUp} className="space-y-6">
           {categories.map((cat) => (
             <div key={cat}>
               <h3 className="mb-2 font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
@@ -491,8 +498,9 @@ function SkillsInner({
           ))}
         </motion.div>
 
-        {/* Desktop: the treemap "stock portfolio" heatmap */}
-        <motion.div variants={fadeUp} layoutScroll className="hidden overflow-x-auto no-scrollbar md:block">
+        ) : (
+        /* Desktop: the treemap "stock portfolio" heatmap */
+        <motion.div variants={fadeUp} layoutScroll className="overflow-x-auto no-scrollbar">
           <div
             className="relative min-w-[760px]"
             style={{ aspectRatio: `${W} / ${H}` }}
@@ -558,6 +566,7 @@ function SkillsInner({
             })}
           </div>
         </motion.div>
+        )}
       </motion.div>
     </section>
   );
