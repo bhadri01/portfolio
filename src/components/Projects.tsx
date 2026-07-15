@@ -359,10 +359,14 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
             </>
           )}
 
+          {/* z-10 is load-bearing: the header content below is position:relative
+              and comes later in the DOM, so without it that div paints over this
+              button and eats the tap. Only bites on narrow screens, where the
+              badges wrap and the content reaches under this corner. */}
           <button
             onClick={onClose}
             aria-label="Close"
-            className="absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center text-white/80 bg-white/10 hover:bg-white/20 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+            className="absolute top-5 right-5 z-10 w-8 h-8 rounded-full flex items-center justify-center text-white/80 bg-white/10 hover:bg-white/20 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
           >
             <X size={16} />
           </button>
