@@ -24,6 +24,13 @@ describe("motion helpers", () => {
     expect(viewportOnce.once).toBe(true);
   });
 
+  // Regression: a ratio-based `amount` is unreachable for elements much taller
+  // than the viewport, leaving whole sections stuck at opacity 0 on phones.
+  it("viewportOnce triggers independently of element height", () => {
+    expect(viewportOnce).not.toHaveProperty("amount");
+    expect(viewportOnce.margin).toBeTypeOf("string");
+  });
+
   it("easeOut is a 4-point cubic bezier", () => {
     expect(easeOut).toHaveLength(4);
   });

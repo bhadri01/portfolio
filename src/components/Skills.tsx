@@ -433,28 +433,37 @@ function SkillsInner({
             </span>
           ) : (
             <span className="font-mono text-[11px] text-slate-400 dark:text-slate-500">
-              <span className="hidden sm:inline">Hover a tile to inspect · </span>
-              <span className="sm:hidden">Tap a tile · swipe to explore · </span>
+              {isMobile ? "Tap a card to inspect · " : "Hover a tile to inspect · "}
               tile size = weight · colour = technology
             </span>
           )}
         </motion.div>
 
         {/* Unified treemap heatmap */}
-        {/* Mobile / small screens: a clean vertical list (no horizontal scroll) */}
+        {/* Mobile: the same colour-tile cards as the treemap, stacked in a
+            vertical column grid instead of a horizontally-scrolling map. */}
         {isMobile ? (
-        <motion.div variants={fadeUp} className="space-y-6">
-          {categories.map((cat) => (
-            <div key={cat}>
-              <h3 className="mb-2 font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
-                {cat}
-              </h3>
-              <div className="space-y-1.5">
-                {skills
-                  .filter((s) => s.cat === cat)
-                  .sort((a, b) => b.level - a.level)
-                  .map((s) => {
+        <motion.div variants={fadeUp} className="space-y-7">
+          {categories.map((cat) => {
+            const inCat = skills
+              .filter((s) => s.cat === cat)
+              .sort((a, b) => b.wt - a.wt || b.level - a.level);
+            return (
+              <div key={cat}>
+                <div className="mb-2.5 flex items-center gap-3">
+                  <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+                    {cat}
+                  </h3>
+                  <div className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
+                  <span className="font-mono text-[10px] text-slate-400 dark:text-slate-500">{inCat.length}</span>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  {inCat.map((s, i) => {
                     const Icon = s.Icon;
+                    const fg = textOn(s.color);
+                    // Lead skill in each category gets a full-width card, echoing
+                    // the treemap's "size = weight" language.
+                    const lead = i === 0 && s.wt >= 8;
                     return (
                       <motion.button
                         key={s.label}
@@ -466,36 +475,36 @@ function SkillsInner({
                             rect: (e.currentTarget as HTMLElement).getBoundingClientRect(),
                           })
                         }
-                        aria-label={`${s.label}, ${s.level}% proficiency`}
-                        className="group flex w-full items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-left transition-colors hover:border-[#0358fc]/40 dark:border-white/10 dark:bg-[#0f1a2e]"
+                        aria-label={`${s.label}, ${s.level}% proficiency, ${s.cat}`}
+                        initial={{ opacity: 0, scale: 0.85 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true, amount: 0.3 }}
+                        whileTap={{ scale: 0.96 }}
+                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1], delay: Math.min(i, 6) * 0.03 }}
+                        className={`relative flex flex-col justify-between overflow-hidden rounded-xl p-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-inset ${
+                          lead ? "col-span-2 min-h-[104px]" : "min-h-[104px]"
+                        }`}
+                        style={{ backgroundColor: s.color, color: fg }}
                       >
-                        <span
-                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg"
-                          style={{ backgroundColor: `${s.color}22`, color: s.color }}
-                        >
-                          <Icon className="h-4 w-4" />
-                        </span>
-                        <span className="min-w-0 flex-1">
-                          <span className="block truncate text-sm font-medium text-[#000b1b] dark:text-slate-100">
-                            {s.label}
-                          </span>
-                          <span className="mt-1.5 block h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-white/10">
-                            <span
-                              className="block h-full rounded-full"
-                              style={{ width: `${s.level}%`, backgroundColor: s.color }}
-                            />
-                          </span>
-                        </span>
-                        <span className="shrink-0 font-brand text-sm text-slate-600 dark:text-slate-300">
-                          {s.level}
-                          <span className="text-[0.7em] opacity-70">%</span>
-                        </span>
+                        <Icon
+                          className="pointer-events-none absolute -bottom-3 -right-2 h-16 w-16 opacity-[0.16]"
+                          aria-hidden="true"
+                        />
+                        <Icon className={lead ? "h-7 w-7 shrink-0 opacity-90" : "h-6 w-6 shrink-0 opacity-90"} aria-hidden="true" />
+                        <div className="relative mt-auto min-w-0">
+                          <div className="truncate text-sm font-semibold leading-tight">{s.label}</div>
+                          <div className="font-brand text-xl leading-none">
+                            {s.level}
+                            <span className="text-[0.65em] opacity-70">%</span>
+                          </div>
+                        </div>
                       </motion.button>
                     );
                   })}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </motion.div>
 
         ) : (

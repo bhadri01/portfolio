@@ -43,4 +43,12 @@ export const stagger = (staggerChildren = 0.08, delayChildren = 0.05): Variants 
 });
 
 // Shared viewport config: play once, a little before fully in view.
-export const viewportOnce = { once: true, amount: 0.2 } as const;
+//
+// Deliberately trigger on margin rather than `amount` (a ratio of the element).
+// A ratio is unreachable once an element grows taller than ~5x the viewport:
+// the Skills grid is ~3900px on mobile, so `amount: 0.2` needs 780px on screen
+// and simply never fires on a short phone — the section stays invisible.
+// Shrinking the root's bottom edge by 15% fires when the element's top reaches
+// 85% of the viewport, which is height-independent and matches the old timing
+// for normal-sized blocks.
+export const viewportOnce = { once: true, margin: "0px 0px -15% 0px" } as const;
