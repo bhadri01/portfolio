@@ -1,9 +1,12 @@
 import type { ComponentType } from "react";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { fadeUp, stagger } from "../lib/motion";
 import { useWebGLSupport } from "../hooks/useWebGLSupport";
 import { useMediaQuery } from "../hooks/useMediaQuery";
+import { useDeviceTilt } from "../hooks/useDeviceTilt";
+import { useStrongDevice } from "../hooks/useStrongDevice";
+import { useScrollStore } from "../lib/store";
 
 const HeroScene = lazy(() => import("./hero3d/HeroScene"));
 import {
@@ -46,10 +49,40 @@ const phrases = [
 export default function Hero({ start = true }: { start?: boolean }) {
   const [display, setDisplay] = useState("");
   const webgl = useWebGLSupport();
-  // Only load the heavy 3D scene (three.js) on desktop — mobile stays lightweight.
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
+  const strongDevice = useStrongDevice();
   const [pi, setPi] = useState(0);
   const [deleting, setDeleting] = useState(false);
+
+  // three.js is a ~252KB gzipped download, so phones only get the real 3D scene
+  // if they can comfortably afford it. Everything else keeps the static mark.
+  const use3D = webgl === true && (isDesktop || strongDevice);
+
+  const setPointer = useScrollStore((s) => s.setPointer);
+  const flatEmblemRef = useRef<HTMLDivElement>(null);
+
+  // Gyroscope steering. The 3D scene already reads `pointer` from the store, so
+  // tilt just feeds the same channel the cursor does; the static mark instead
+  // gets a CSS transform written straight to the node (no re-render per event).
+  const handleTilt = useCallback(
+    (x: number, y: number) => {
+      if (use3D) {
+        setPointer(x, y);
+        return;
+      }
+      const el = flatEmblemRef.current;
+      if (el) {
+        el.style.transform = `perspective(700px) rotateY(${x * 16}deg) rotateX(${y * 16}deg)`;
+      }
+    },
+    [use3D, setPointer]
+  );
+
+  const { needsPermission, request: requestTilt } = useDeviceTilt({
+    enabled: !isDesktop && !reducedMotion,
+    onTilt: handleTilt,
+  });
 
   useEffect(() => {
     if (!start) return; // wait for the preloader to finish
@@ -157,14 +190,31 @@ export default function Hero({ start = true }: { start?: boolean }) {
         </motion.div>
       </motion.div>
 
-        {/* 3D B3 emblem — right side, cursor-steered */}
+        {/* 3D B3 emblem — right side, steered by cursor (desktop) or gyro (mobile) */}
         <motion.div
-          className="pointer-events-none relative order-first mx-auto aspect-square w-full max-w-[260px] sm:max-w-[320px] md:order-none md:ml-auto md:max-w-[460px]"
+          className={`relative order-first mx-auto aspect-square w-full max-w-[260px] sm:max-w-[320px] md:order-none md:ml-auto md:max-w-[460px] ${
+            needsPermission ? "cursor-pointer" : "pointer-events-none"
+          }`}
           initial={{ opacity: 0, scale: 0.94 }}
           animate={start ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.94 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+          // iOS refuses to hand over motion data unless asked from a real tap.
+          onClick={needsPermission ? requestTilt : undefined}
+          onKeyDown={
+            needsPermission
+              ? (e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    requestTilt();
+                  }
+                }
+              : undefined
+          }
+          role={needsPermission ? "button" : undefined}
+          tabIndex={needsPermission ? 0 : undefined}
+          aria-label={needsPermission ? "Activate motion effect on the logo" : undefined}
         >
-          {isDesktop && webgl === true ? (
+          {use3D ? (
             <Suspense
               fallback={
                 <img
@@ -178,7 +228,10 @@ export default function Hero({ start = true }: { start?: boolean }) {
               <HeroScene />
             </Suspense>
           ) : (
-            <>
+            <div
+              ref={flatEmblemRef}
+              className="absolute inset-0 transition-transform duration-150 ease-out [transform-style:preserve-3d] [will-change:transform]"
+            >
               <img
                 src="/logo-mark.svg"
                 alt="Bhadrinathan logo"
@@ -189,7 +242,13 @@ export default function Hero({ start = true }: { start?: boolean }) {
                 alt="Bhadrinathan logo"
                 className="absolute inset-0 hidden h-full w-full object-contain p-6 dark:block"
               />
-            </>
+            </div>
+          )}
+
+          {needsPermission && (
+            <span className="pointer-events-none absolute inset-x-0 bottom-0 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">
+              Tap to activate
+            </span>
           )}
         </motion.div>
       </div>
