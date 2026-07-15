@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { fadeUp, scaleIn, stagger, viewportOnce } from "../lib/motion";
 import {
   MapPin, Briefcase, GitBranch, Github, Linkedin,
-  Hammer, BrainCircuit, RadioTower, ShieldCheck, Webhook,
+  BrainCircuit, RadioTower, ShieldCheck, Webhook,
 } from "lucide-react";
 import { SiRust, SiDocker } from "react-icons/si";
 import Logo from "./Logo";
@@ -151,28 +151,6 @@ export default function About() {
                       contradicted the timeline further down the page. */}
                   <p className="text-sm font-medium text-[#000b1b] dark:text-slate-100">Technical Lead</p>
                   <p className="text-xs text-slate-500 dark:text-slate-400">BloomSkillTech · since Jan 2025</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="mt-0.5 flex-shrink-0 w-8 h-8 rounded-lg bg-[#0358fc]/10 text-[#0358fc] dark:text-[#4b8dff] flex items-center justify-center">
-                  <Hammer size={15} />
-                </span>
-                <div>
-                  <p className="text-sm font-medium text-[#000b1b] dark:text-slate-100">Building</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
-                    A two-sided edtech marketplace — trainers to institutions
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="mt-0.5 flex-shrink-0 w-8 h-8 rounded-lg bg-[#0358fc]/10 text-[#0358fc] dark:text-[#4b8dff] flex items-center justify-center">
-                  <SiRust size={15} />
-                </span>
-                <div>
-                  <p className="text-sm font-medium text-[#000b1b] dark:text-slate-100">Tinkering with</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
-                    ZeroCode — running untrusted code safely, in Rust
-                  </p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
