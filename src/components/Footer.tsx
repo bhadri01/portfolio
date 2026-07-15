@@ -99,7 +99,8 @@ export default function Footer() {
                 />
                 <input
                   type="email"
-                  placeholder="Email (optional)"
+                  required
+                  placeholder="Your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className={inputCls}
