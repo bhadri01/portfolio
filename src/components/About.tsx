@@ -1,8 +1,15 @@
+import type { ComponentType } from "react";
 import { motion } from "framer-motion";
 import { fadeUp, scaleIn, stagger, viewportOnce } from "../lib/motion";
-import { MapPin, Briefcase, GitBranch, Github, Linkedin } from "lucide-react";
+import {
+  MapPin, Briefcase, GitBranch, Github, Linkedin,
+  Hammer, BrainCircuit, RadioTower, ShieldCheck, Webhook,
+} from "lucide-react";
+import { SiRust, SiDocker } from "react-icons/si";
 import Logo from "./Logo";
 import { useSpotlight } from "../hooks/useSpotlight";
+
+type IconType = ComponentType<{ size?: number; className?: string }>;
 
 // Numbers a reader can weigh, rather than implementation trivia. Every one is
 // straight off the résumé — 16k downloads is third-party proof that the tools
@@ -13,13 +20,15 @@ const stats = [
   { number: "2", label: "Packages published", gradient: "from-[#3b6fff] to-[#0358fc]" },
 ];
 
-const focus = [
-  "Rust & Systems",
-  "Backend APIs",
-  "RAG & Agents",
-  "Real-time & SSE",
-  "DevOps",
-  "Security",
+// Each area carries an icon and the thing it actually means in practice — the
+// bare word alone doesn't tell a reader anything they couldn't guess.
+const focus: { label: string; detail: string; Icon: IconType }[] = [
+  { label: "Rust & Systems", detail: "Sandboxing, filesystems, WireGuard", Icon: SiRust },
+  { label: "Backend APIs", detail: "FastAPI, SQLAlchemy, PostgreSQL", Icon: Webhook },
+  { label: "RAG & Agents", detail: "pgvector, LangGraph, evals", Icon: BrainCircuit },
+  { label: "Real-time", detail: "SSE, WebSockets, Redis pub/sub", Icon: RadioTower },
+  { label: "DevOps", detail: "Docker, Traefik, CI/CD", Icon: SiDocker },
+  { label: "Security", detail: "Isolation, threat modelling, pentest", Icon: ShieldCheck },
 ];
 
 export default function About() {
@@ -146,6 +155,28 @@ export default function About() {
               </div>
               <div className="flex items-start gap-3">
                 <span className="mt-0.5 flex-shrink-0 w-8 h-8 rounded-lg bg-[#0358fc]/10 text-[#0358fc] dark:text-[#4b8dff] flex items-center justify-center">
+                  <Hammer size={15} />
+                </span>
+                <div>
+                  <p className="text-sm font-medium text-[#000b1b] dark:text-slate-100">Building</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    A two-sided edtech marketplace — trainers to institutions
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="mt-0.5 flex-shrink-0 w-8 h-8 rounded-lg bg-[#0358fc]/10 text-[#0358fc] dark:text-[#4b8dff] flex items-center justify-center">
+                  <SiRust size={15} />
+                </span>
+                <div>
+                  <p className="text-sm font-medium text-[#000b1b] dark:text-slate-100">Tinkering with</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    ZeroCode — running untrusted code safely, in Rust
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="mt-0.5 flex-shrink-0 w-8 h-8 rounded-lg bg-[#0358fc]/10 text-[#0358fc] dark:text-[#4b8dff] flex items-center justify-center">
                   <MapPin size={15} />
                 </span>
                 <div>
@@ -175,16 +206,19 @@ export default function About() {
             <span className="font-mono text-[11px] text-slate-400 dark:text-slate-500 tracking-[0.2em] uppercase">
               Focus
             </span>
-            <div className="mt-5 flex flex-wrap gap-2">
+            <ul className="mt-5 space-y-3">
               {focus.map((f) => (
-                <span
-                  key={f}
-                  className="px-3 py-1.5 rounded-full text-xs font-medium text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-white/[0.04] border border-slate-200 dark:border-white/10"
-                >
-                  {f}
-                </span>
+                <li key={f.label} className="group/row flex items-start gap-3">
+                  <span className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-[#0358fc]/10 text-[#0358fc] transition-colors duration-200 group-hover/row:bg-[#0358fc]/20 dark:text-[#4b8dff]">
+                    <f.Icon size={14} />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-[#000b1b] dark:text-slate-100">{f.label}</p>
+                    <p className="truncate text-xs text-slate-500 dark:text-slate-400">{f.detail}</p>
+                  </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </motion.div>
           </div>
 
