@@ -121,7 +121,9 @@ export default function Hero({ start = true }: { start?: boolean }) {
       {/* ambient glow behind the emblem */}
       <div className="pointer-events-none absolute right-[8%] top-1/2 h-[55vh] w-[55vh] -translate-y-1/2 rounded-full bg-[#0358fc]/10 blur-[130px]" />
 
-      <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-6 pb-20 pt-24 md:grid-cols-[1.06fr_0.94fr] md:gap-10 md:pb-0 md:pt-0">
+      {/* pb on mobile reserves room for the scroll hint + marquee pinned to the
+          section's bottom edge, which the CTAs used to sit on top of. */}
+      <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-6 pb-32 pt-24 md:grid-cols-[1.06fr_0.94fr] md:gap-10 md:pb-0 md:pt-0">
       {/* Content */}
       <motion.div
         className="text-center md:text-left"
