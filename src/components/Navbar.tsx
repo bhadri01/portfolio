@@ -74,11 +74,14 @@ export default function Navbar() {
     });
   };
 
+  // Mobile stays rounded-2xl in every state, so opening or closing the menu
+  // never changes the bar's shape. Only desktop — where the menu can't open —
+  // gets the pill.
   const containerCls = open
     ? "glass border border-slate-200/80 dark:border-white/10 rounded-2xl px-5 py-3"
     : scrolled
-      ? "glass border border-slate-200/80 dark:border-white/10 rounded-full px-5 py-2"
-      : "px-0 py-4";
+      ? "glass border border-slate-200/80 dark:border-white/10 rounded-2xl md:rounded-full px-5 py-2"
+      : "rounded-2xl md:rounded-none px-0 py-4";
 
   return (
     <motion.nav
