@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import LogoLoader from "./LogoLoader";
 
 /** Brand images worth having cached before the reveal. */
@@ -28,6 +27,8 @@ function preloadImage(src: string) {
 export default function Preloader({ onDone }: { onDone?: () => void }) {
   const [progress, setProgress] = useState(0);
   const [done, setDone] = useState(false);
+  // Unmounting is driven by a timer, never by an animation finishing — see below.
+  const [gone, setGone] = useState(false);
   const onDoneRef = useRef(onDone);
   onDoneRef.current = onDone;
 
@@ -59,13 +60,19 @@ export default function Preloader({ onDone }: { onDone?: () => void }) {
 
     sections.forEach((load) => tasks.push(load().then(bump, bump)));
 
+    let finished = false;
     const finish = () => {
-      if (!mounted) return;
+      if (!mounted || finished) return;
+      finished = true;
       setProgress(100);
       setTimeout(() => {
         if (!mounted) return;
         setDone(true);
         onDoneRef.current?.(); // let the hero start its entrance as the overlay fades
+        // Hard-remove the overlay on a timer. Never wait for the fade to report
+        // completion: fades are rAF-driven and rAF is frozen while the tab is
+        // backgrounded, which would strand this overlay on top of the whole site.
+        setTimeout(() => mounted && setGone(true), 700);
       }, 1400);
     };
 
@@ -78,37 +85,33 @@ export default function Preloader({ onDone }: { onDone?: () => void }) {
     };
   }, []);
 
-  return (
-    <AnimatePresence>
-      {!done && (
-        <motion.div
-          key="preloader"
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-0 z-[200] grid place-items-center bg-[#f6f9fe] dark:bg-[#0a0f1c]"
-          aria-live="polite"
-          aria-label="Loading"
-        >
-          <div className="flex flex-col items-center gap-7">
-            <div className="relative grid place-items-center">
-              <div className="pointer-events-none absolute h-32 w-32 rounded-full bg-[#0358fc]/15 blur-2xl" />
-              <LogoLoader size={96} />
-            </div>
+  if (gone) return null;
 
-            <div className="h-[3px] w-40 overflow-hidden rounded-full bg-slate-200 dark:bg-white/10">
-              <motion.div
-                className="h-full rounded-full bg-[#0358fc]"
-                animate={{ width: `${progress}%` }}
-                transition={{ ease: "easeOut", duration: 0.4 }}
-              />
-            </div>
-            <span className="font-mono text-[11px] tracking-[0.3em] text-slate-400 dark:text-slate-500">
-              {progress}%
-            </span>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+  return (
+    <div
+      className={`fixed inset-0 z-[200] grid place-items-center bg-[#f6f9fe] transition-opacity duration-500 ease-out dark:bg-[#0a0f1c] ${
+        done ? "pointer-events-none opacity-0" : "opacity-100"
+      }`}
+      aria-live="polite"
+      aria-label="Loading"
+      aria-hidden={done}
+    >
+      <div className="flex flex-col items-center gap-7">
+        <div className="relative grid place-items-center">
+          <div className="pointer-events-none absolute h-32 w-32 rounded-full bg-[#0358fc]/15 blur-2xl" />
+          <LogoLoader size={96} />
+        </div>
+
+        <div className="h-[3px] w-40 overflow-hidden rounded-full bg-slate-200 dark:bg-white/10">
+          <div
+            className="h-full rounded-full bg-[#0358fc] transition-[width] duration-400 ease-out"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+        <span className="font-mono text-[11px] tracking-[0.3em] text-slate-400 dark:text-slate-500">
+          {progress}%
+        </span>
+      </div>
+    </div>
   );
 }
