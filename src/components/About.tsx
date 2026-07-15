@@ -127,16 +127,18 @@ export default function About() {
             </div>
           </motion.div>
 
-          {/* Side column. Stretches to the intro's height and the two cards share
-              the surplus via flex-1 — a little breathing room inside each beats a
-              hole under the shorter column. */}
+          {/* Side column — each card sizes to its own content.
+              These used to share the column height via flex-1, which forced both to
+              the same size: Currently ended up with 95px of dead space while Focus
+              overflowed its card by 38px and got clipped by overflow-hidden. Equal
+              heights only work while the content is equal, and it isn't. */}
           <div className="flex flex-col gap-4 md:gap-5">
           {/* Currently card */}
           <motion.div
             variants={scaleIn}
             whileHover={{ y: -4 }}
             onPointerMove={spotlight}
-            className="card-spotlight relative flex-1 overflow-hidden bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-7 hover:border-[#0358fc]/40 transition-colors duration-300"
+            className="card-spotlight relative overflow-hidden bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-7 hover:border-[#0358fc]/40 transition-colors duration-300"
           >
             <span className="font-mono text-[11px] text-slate-400 dark:text-slate-500 tracking-[0.2em] uppercase">
               Currently
@@ -179,7 +181,7 @@ export default function About() {
             variants={scaleIn}
             whileHover={{ y: -4 }}
             onPointerMove={spotlight}
-            className="card-spotlight relative flex-1 overflow-hidden bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-7 hover:border-[#0358fc]/40 transition-colors duration-300"
+            className="card-spotlight relative overflow-hidden bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-7 hover:border-[#0358fc]/40 transition-colors duration-300"
           >
             <span className="font-mono text-[11px] text-slate-400 dark:text-slate-500 tracking-[0.2em] uppercase">
               Focus
