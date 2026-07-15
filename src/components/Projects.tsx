@@ -1,7 +1,7 @@
 import type { ComponentType } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
-  motion, AnimatePresence,
+  motion, animate,
   useTransform, useMotionValue, useSpring,
 } from "framer-motion";
 import { fadeUp, stagger, viewportOnce } from "../lib/motion";
@@ -55,8 +55,11 @@ function shade(hex: string, amt: number) {
   return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}`;
 }
 
+/** The card that was clicked, plus the exact box it occupied on screen. */
+type Selected = { project: Project; rect: DOMRect };
+
 export default function Projects() {
-  const [selected, setSelected] = useState<Project | null>(null);
+  const [selected, setSelected] = useState<Selected | null>(null);
 
   return (
     <>
@@ -97,15 +100,26 @@ export default function Projects() {
             style={{ perspective: "2400px", transformStyle: "preserve-3d" }}
           >
             {projects.map((p, i) => (
-              <ProjectCard key={p.title} project={p} index={i} onOpen={() => setSelected(p)} />
+              <ProjectCard
+                key={p.title}
+                project={p}
+                index={i}
+                onOpen={(rect) => setSelected({ project: p, rect })}
+              />
             ))}
           </div>
         </motion.div>
       </section>
 
-      <AnimatePresence>
-        {selected && <ProjectModal project={selected} onClose={() => setSelected(null)} />}
-      </AnimatePresence>
+      {/* No AnimatePresence — the modal runs its own close animation and calls
+          onClose once it's finished, so it controls both halves of the morph. */}
+      {selected && (
+        <ProjectModal
+          project={selected.project}
+          from={selected.rect}
+          onClose={() => setSelected(null)}
+        />
+      )}
     </>
   );
 }
@@ -120,7 +134,7 @@ function ProjectCard({
 }: {
   project: Project;
   index: number;
-  onOpen: () => void;
+  onOpen: (rect: DOMRect) => void;
 }) {
   const cover = coverFor(project.title);
   const [imgOk, setImgOk] = useState(true);
@@ -203,11 +217,13 @@ function ProjectCard({
         className="pointer-events-auto h-full"
       >
         <motion.article
-          onClick={onOpen}
+          // The rect is the card's real on-screen box, 3D projection included —
+          // which is exactly what the modal grows out of.
+          onClick={(e) => onOpen(e.currentTarget.getBoundingClientRect())}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
-              onOpen();
+              onOpen(e.currentTarget.getBoundingClientRect());
             }
           }}
           role="button"
@@ -284,19 +300,92 @@ function ProjectCard({
   );
 }
 
-/* ---------- Expanded detail card (shared-element morph) ---------- */
-function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
+/* ---------- Expanded detail card (grows out of the clicked card) ---------- */
+const MORPH = { type: "spring", stiffness: 280, damping: 32, mass: 0.75 } as const;
+
+function ProjectModal({
+  project,
+  from,
+  onClose,
+}: {
+  project: Project;
+  from: DOMRect;
+  onClose: () => void;
+}) {
   const cover = coverFor(project.title);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const closing = useRef(false);
+
+  // Own transform, driven by hand. framer's layoutId can't morph out of the
+  // grid card — layout projection assumes untransformed ancestors and the card
+  // lives under perspective + preserve-3d. A FLIP off the card's measured
+  // screen rect sidesteps projection entirely.
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const scale = useMotionValue(1);
+  const opacity = useMotionValue(0);
+  const backdrop = useMotionValue(0);
+
+  /** Transform that would place the panel exactly over the clicked card. */
+  const overCard = useCallback(() => {
+    const el = panelRef.current;
+    if (!el) return null;
+    // Measure with the transform neutralised, or we'd measure our own offset.
+    const prev = el.style.transform;
+    el.style.transform = "none";
+    const to = el.getBoundingClientRect();
+    el.style.transform = prev;
+    if (!to.width || !to.height) return null;
+    return {
+      x: from.left + from.width / 2 - (to.left + to.width / 2),
+      y: from.top + from.height / 2 - (to.top + to.height / 2),
+      scale: from.width / to.width,
+    };
+  }, [from]);
+
+  // Snap onto the card before paint, then grow into place.
+  useLayoutEffect(() => {
+    const start = overCard();
+    if (start) {
+      x.set(start.x);
+      y.set(start.y);
+      scale.set(start.scale);
+    }
+    opacity.set(0);
+    animate(x, 0, MORPH);
+    animate(y, 0, MORPH);
+    animate(scale, 1, MORPH);
+    animate(opacity, 1, { duration: 0.18 });
+    animate(backdrop, 1, { duration: 0.25 });
+  }, [overCard, x, y, scale, opacity, backdrop]);
+
+  /** Shrink back onto the card, then unmount. */
+  const close = useCallback(() => {
+    if (closing.current) return;
+    closing.current = true;
+    const end = overCard();
+    if (end) {
+      animate(x, end.x, MORPH);
+      animate(y, end.y, MORPH);
+      animate(scale, end.scale, MORPH);
+    }
+    animate(opacity, 0, { duration: 0.2 });
+    animate(backdrop, 0, { duration: 0.25 });
+    // Unmount on a timer, never on an animation callback: animations are
+    // rAF-driven and a backgrounded tab freezes them, which would strand this
+    // full-screen backdrop over the whole page.
+    setTimeout(onClose, 280);
+  }, [onClose, overCard, x, y, scale, opacity, backdrop]);
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
     window.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
     return () => {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
-  }, [onClose]);
+  }, [close]);
 
   return (
     <motion.div
@@ -308,24 +397,15 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
       {/* Backdrop */}
       <motion.div
         className="absolute inset-0 bg-[#000b1b]/45 backdrop-blur-sm"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={onClose}
+        style={{ opacity: backdrop }}
+        onClick={close}
       />
 
-      {/* Card.
-          Deliberately not a shared-element morph from the grid card. Layout
-          projection measures rects and animates them with 2D transforms, but
-          the grid card sits under perspective + preserve-3d with rotateX/Y,
-          scale and translateZ still spring-animating from scroll — so the morph
-          was chasing a moving, 3D-projected target and stuttered. A plain
-          spring owns its own transform and can't be fought. */}
+      {/* The panel: starts life sitting exactly on the clicked card, then grows
+          into place — and shrinks back onto it on close. */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.94, y: 12 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.96, y: 8 }}
-        transition={{ type: "spring", stiffness: 320, damping: 30, mass: 0.7 }}
+        ref={panelRef}
+        style={{ x, y, scale, opacity, transformOrigin: "center center" }}
         className="relative w-full max-w-2xl max-h-[90dvh] flex flex-col bg-white dark:bg-[#0f1a2e] rounded-3xl overflow-hidden ring-1 ring-black/10 dark:ring-white/10"
       >
         {/* Header with project cover accent (or a real screenshot if provided) */}
@@ -350,7 +430,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
           )}
 
           <button
-            onClick={onClose}
+            onClick={close}
             aria-label="Close"
             className="absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center text-white/80 bg-white/10 hover:bg-white/20 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
           >
