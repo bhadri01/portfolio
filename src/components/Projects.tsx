@@ -140,9 +140,13 @@ function ProjectCard({
   // hidden again at the top. It hides on the way out, not just on the way in.
   const progress = useScreenProgress(ref, animate);
   const bendX = useTransform(progress, [0, 0.5, 1], [20, 0, -20]);
-  const depthZ = useTransform(progress, [0, 0.5, 1], [-220, 0, -220]);
-  const growth = useTransform(progress, [0, 0.5, 1], [0.88, 1, 0.88]);
-  const fade = useTransform(progress, [0, 0.26, 0.74, 1], [0, 1, 1, 0]);
+  const depthZ = useTransform(progress, [0, 0.5, 1], [-180, 0, -180]);
+  // Scale carries the convex read: small entering at the bottom, full size and
+  // closest at mid-screen, shrinking away again toward the top.
+  const growth = useTransform(progress, [0, 0.5, 1], [0.72, 1, 0.72]);
+  // Fade only right at the extremes — the card has to stay visible while it's
+  // small, or the shrink never gets seen.
+  const fade = useTransform(progress, [0, 0.12, 0.88, 1], [0, 1, 1, 0]);
 
   const rotateX = useSpring(bendX, { stiffness: 80, damping: 20 });
   const z = useSpring(depthZ, { stiffness: 80, damping: 20 });
