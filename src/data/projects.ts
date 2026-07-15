@@ -157,7 +157,7 @@ export const projects: Project[] = [
       "Streamed real-time container status, CPU/memory usage and network/block I/O metrics over WebSockets.",
       "Presented it all in a clean, live web dashboard.",
     ],
-    tech: ["Docker", "Python", "WebSockets", "SSE / WebSockets", "Linux"],
+    tech: ["Docker", "Python", "WebSockets", "Linux"],
     year: "2024",
     visibility: "private",
   },

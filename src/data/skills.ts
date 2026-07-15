@@ -10,7 +10,7 @@ import {
   SiTimescale, SiReactquery, SiWebassembly, SiNextdotjs,
 } from "react-icons/si";
 import {
-  Database, Webhook, RadioTower, BrainCircuit, Workflow, Boxes, Gauge,
+  Database, Webhook, RadioTower, ArrowLeftRight, BrainCircuit, Workflow, Boxes, Gauge,
   Bot, Infinity as InfinityIcon, Radar, Cloud, Sparkles, Drama,
   Layers, Smartphone,
 } from "lucide-react";
@@ -129,9 +129,14 @@ export const skills: Skill[] = [
     how: "ZeroCode uses it as more than storage: LISTEN/NOTIFY dispatches jobs and SELECT … FOR UPDATE SKIP LOCKED lets workers race for them safely — a queue without a queue broker.",
   },
   {
-    label: "SSE / WebSockets", Icon: RadioTower, color: "#7C3AED", level: 84, mom: 7.1, cat: "Backend", wt: 6,
-    what: "Two ways to push from server to browser: SSE is one-way and rides plain HTTP; WebSockets are bidirectional and need their own connection.",
-    how: "I pick by direction. Docker Stats Monitor streams container metrics over WebSockets; ZeroCode streams stdout/stderr over SSE because output only ever flows one way — no need for a socket.",
+    label: "SSE", Icon: RadioTower, color: "#7C3AED", level: 86, mom: 7.1, cat: "Backend", wt: 6,
+    what: "Server-Sent Events: a one-way stream from server to browser over plain HTTP, with reconnection handled by the browser itself.",
+    how: "My default when data only flows one way. ZeroCode streams a job's stdout/stderr to the browser with it, and I published fastapi_sse_events to make it straightforward in FastAPI — backed by Redis pub/sub so it still works across more than one server.",
+  },
+  {
+    label: "WebSockets", Icon: ArrowLeftRight, color: "#6D28D9", level: 84, mom: 6.4, cat: "Backend", wt: 6,
+    what: "A persistent, bidirectional connection between browser and server — full duplex, but you own the reconnection and heartbeat logic yourself.",
+    how: "Where both ends need to talk. AlgoTrade holds one broker WebSocket and fans every tick out through Redis rather than letting each consumer open its own; Docker Stats Monitor pushes live container metrics over one; ZeroVPN's Axum backend serves an HTTP + WebSocket API.",
   },
   {
     label: "MongoDB", Icon: SiMongodb, color: "#47A248", level: 78, mom: 3.5, cat: "Backend", wt: 5,
