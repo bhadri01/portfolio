@@ -87,7 +87,13 @@ export default function Navbar() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: easeOut }}
     >
-      <div className={`max-w-5xl mx-auto transition-all duration-500 ${containerCls}`}>
+      {/* Transition padding and colours, but never border-radius. transition-all
+          used to ease the radius from full (9999px) down to 2xl over 500ms, so
+          for half a second after tapping the menu the bar still read as a pill.
+          The corners snap to their target now; everything else still eases. */}
+      <div
+        className={`max-w-5xl mx-auto transition-[padding,background-color,border-color] duration-500 ${containerCls}`}
+      >
         <div className="flex items-center justify-between">
           <motion.a
             href="#home"
