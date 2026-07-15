@@ -86,8 +86,27 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Warn loudly rather than ship a dead contact form. Without these the app
+      # silently falls back to mailto: — it doesn't error, so a missing secret
+      # looks exactly like a working deploy until someone tries to message you.
+      - name: Check contact-form config
+        run: |
+          if [ -z "${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}" ] || [ -z "${{ secrets.VITE_TELEGRAM_CHAT_ID }}" ]; then
+            echo "::warning title=Contact form::VITE_TELEGRAM_BOT_TOKEN / VITE_TELEGRAM_CHAT_ID not set — the contact form will fall back to mailto: instead of sending to Telegram."
+          else
+            echo "Telegram delivery configured."
+          fi
+
       - name: Build
         run: npm run build
+        # Vite inlines VITE_* at build time, so these must be present here — not
+        # at runtime. Note this token is PUBLIC once built: it ends up readable
+        # in the JS bundle. Secrets keep it out of the repo and the Actions log,
+        # which is worth having, but they cannot make a browser-side bot token
+        # private. That trade-off is deliberate; see src/lib/telegram.ts.
+        env:
+          VITE_TELEGRAM_BOT_TOKEN: ${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}
+          VITE_TELEGRAM_CHAT_ID: ${{ secrets.VITE_TELEGRAM_CHAT_ID }}
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
