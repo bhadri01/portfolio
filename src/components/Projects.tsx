@@ -1,7 +1,11 @@
 import type { ComponentType } from "react";
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import {
+  motion, AnimatePresence, LayoutGroup,
+  useScroll, useTransform, useMotionValue, useSpring,
+} from "framer-motion";
 import { fadeUp, stagger, viewportOnce } from "../lib/motion";
+import { useMediaQuery } from "../hooks/useMediaQuery";
 import { ArrowUpRight, Star, X, Github, ExternalLink, Code2, TrendingUp, ShieldCheck, RadioTower, Smartphone, GraduationCap, Globe, Lock } from "lucide-react";
 import { SiFastapi, SiRust, SiDocker, SiWireguard, SiGo } from "react-icons/si";
 import { projects, type Project } from "../data/projects";
@@ -80,10 +84,15 @@ export default function Projects() {
             Selected <span className="gradient-text">Projects</span>
           </motion.h2>
 
-          {/* List */}
-          <div className="flex flex-col gap-3">
-            {projects.map((p) => (
-              <ProjectRow key={p.title} project={p} onOpen={() => setSelected(p)} />
+          {/* Grid — 2 up on desktop, 1 up on mobile. The shared perspective on
+              the container is what bends the columns toward each other, so the
+              grid reads as the inside of a concave mirror. */}
+          <div
+            className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5"
+            style={{ perspective: "2400px", transformStyle: "preserve-3d" }}
+          >
+            {projects.map((p, i) => (
+              <ProjectCard key={p.title} project={p} index={i} onOpen={() => setSelected(p)} />
             ))}
           </div>
         </motion.div>
@@ -96,91 +105,173 @@ export default function Projects() {
   );
 }
 
-/* ---------- Collapsed list row ---------- */
-function ProjectRow({ project, onOpen }: { project: Project; onOpen: () => void }) {
+/* ---------- Grid card: concave arrangement + scroll bend + hover tilt ---------- */
+const TILT_MAX = 9; // degrees of hover tilt at the card's edge
+
+function ProjectCard({
+  project,
+  index,
+  onOpen,
+}: {
+  project: Project;
+  index: number;
+  onOpen: () => void;
+}) {
   const cover = coverFor(project.title);
   const [imgOk, setImgOk] = useState(true);
+  const ref = useRef<HTMLDivElement>(null);
+
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const reduced = useMediaQuery("(prefers-reduced-motion: reduce)");
+  const animate = isDesktop && !reduced;
+
+  // Concave mirror: the left column faces right, the right column faces left,
+  // so the two columns lean in toward each other. A single mobile column has
+  // nothing to lean toward, so it stays flat.
+  // Kept small on purpose — rotateX and rotateY compose into a rotation about a
+  // diagonal axis, so large values read as a twist rather than a curve.
+  const baseRotateY = animate ? (index % 2 === 0 ? 5 : -5) : 0;
+
+  // Scroll: each card starts bowed away from the viewer and straightens as it
+  // rises into view. It settles well before the centre so most of the time
+  // you're reading flat, upright cards.
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "start 60%"],
+  });
+  const bendX = useTransform(scrollYProgress, [0, 1], [12, 0]);
+  const riseY = useTransform(scrollYProgress, [0, 1], [44, 0]);
+  const growth = useTransform(scrollYProgress, [0, 1], [0.94, 1]);
+  const fade = useTransform(scrollYProgress, [0, 0.45], [0, 1]);
+
+  const rotateX = useSpring(bendX, { stiffness: 90, damping: 20 });
+  const y = useSpring(riseY, { stiffness: 90, damping: 20 });
+
+  // Hover tilt — pointer position normalised to -0.5..0.5 across the card.
+  const px = useMotionValue(0);
+  const py = useMotionValue(0);
+  const spring = { stiffness: 260, damping: 18, mass: 0.5 };
+  const tiltY = useSpring(useTransform(px, [-0.5, 0.5], [-TILT_MAX, TILT_MAX]), spring);
+  const tiltX = useSpring(useTransform(py, [-0.5, 0.5], [TILT_MAX, -TILT_MAX]), spring);
+  // A spring bound to a source follows that source, so it has to be driven by
+  // setting the source — calling .set() on the spring itself gets overridden.
+  const liftTarget = useMotionValue(0);
+  const lift = useSpring(liftTarget, spring);
+
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!animate) return;
+    const r = e.currentTarget.getBoundingClientRect();
+    px.set((e.clientX - r.left) / r.width - 0.5);
+    py.set((e.clientY - r.top) / r.height - 0.5);
+  };
+  const onPointerLeave = () => {
+    px.set(0);
+    py.set(0);
+    liftTarget.set(0);
+  };
+
   return (
-    <motion.article
-      layoutId={`project-${project.title}`}
-      variants={fadeUp}
-      onClick={onOpen}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          onOpen();
-        }
-      }}
-      role="button"
-      tabIndex={0}
-      aria-label={`Open details for ${project.title}`}
-      whileTap={{ scale: 0.99 }}
-      transition={{ type: "spring", stiffness: 400, damping: 34 }}
-      className="group relative cursor-pointer flex items-center gap-4 md:gap-6 overflow-hidden bg-white dark:bg-[#0f1a2e] rounded-2xl border border-slate-200 dark:border-white/10 p-4 md:p-5 hover:border-[#0358fc]/50 hover:bg-[#0358fc]/[0.035] transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0358fc]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f6f9fe] dark:ring-offset-[#0a0f1c]"
+    <motion.div
+      ref={ref}
+      style={
+        animate
+          ? { rotateY: baseRotateY, rotateX, y, scale: growth, opacity: fade, transformStyle: "preserve-3d" }
+          : undefined
+      }
+      className="h-full [transform-style:preserve-3d]"
     >
-      {/* Cover tile */}
       <motion.div
-        layout="position"
-        className="relative shrink-0 w-14 h-14 md:w-[68px] md:h-[68px] rounded-xl overflow-hidden flex items-center justify-center"
-        style={{ background: `linear-gradient(140deg, ${cover.color}, ${shade(cover.color, -42)})` }}
+        onPointerMove={onPointerMove}
+        onPointerLeave={onPointerLeave}
+        onPointerEnter={() => animate && liftTarget.set(-8)}
+        style={animate ? { rotateX: tiltX, rotateY: tiltY, y: lift, transformStyle: "preserve-3d" } : undefined}
+        className="h-full"
       >
-        <cover.Icon className="absolute -right-2 -bottom-2 w-12 h-12 text-white/15" />
-        <cover.Icon className="relative w-6 h-6 md:w-7 md:h-7 text-white" />
-        {project.cover && imgOk && (
-          <img
-            src={project.cover}
-            alt=""
-            loading="lazy"
-            onError={() => setImgOk(false)}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-        )}
-      </motion.div>
-
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2.5 mb-1">
-          <motion.h3
-            layout="position"
-            className="text-base md:text-lg font-semibold text-[#000b1b] dark:text-slate-100 group-hover:text-[#0358fc] transition-colors truncate"
+        <motion.article
+          layoutId={`project-${project.title}`}
+          onClick={onOpen}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              onOpen();
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label={`Open details for ${project.title}`}
+          whileTap={{ scale: 0.985 }}
+          transition={{ type: "spring", stiffness: 400, damping: 34 }}
+          className="group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition-colors duration-300 hover:border-[#0358fc]/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0358fc]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f6f9fe] dark:border-white/10 dark:bg-[#0f1a2e] dark:ring-offset-[#0a0f1c]"
+        >
+          {/* Cover */}
+          <div
+            className="relative h-28 shrink-0 overflow-hidden md:h-32"
+            style={{ background: `linear-gradient(140deg, ${cover.color}, ${shade(cover.color, -42)})` }}
           >
-            {project.title}
-          </motion.h3>
-          {project.featured && <Star size={13} className="fill-[#0358fc] text-[#0358fc] dark:text-[#4b8dff] shrink-0" />}
-        </div>
+            <cover.Icon className="absolute -right-4 -bottom-6 h-28 w-28 text-white/15 rotate-[-8deg]" />
+            <cover.Icon className="absolute left-4 top-4 h-7 w-7 text-white" />
+            {project.cover && imgOk && (
+              <img
+                src={project.cover}
+                alt=""
+                loading="lazy"
+                onError={() => setImgOk(false)}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            )}
+            <div className="absolute right-3 top-3">
+              <VisibilityBadge visibility={project.visibility} />
+            </div>
+          </div>
 
-        <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-1 md:line-clamp-2 mb-2.5">
-          {project.description}
-        </p>
+          <div className="flex flex-1 flex-col p-4 md:p-5">
+            <div className="mb-1.5 flex items-center gap-2">
+              <motion.h3
+                layout="position"
+                className="truncate text-base font-semibold text-[#000b1b] transition-colors group-hover:text-[#0358fc] dark:text-slate-100 md:text-lg"
+              >
+                {project.title}
+              </motion.h3>
+              {project.featured && (
+                <Star size={13} className="shrink-0 fill-[#0358fc] text-[#0358fc] dark:text-[#4b8dff]" />
+              )}
+            </div>
 
-        <div className="flex flex-wrap items-center gap-1.5">
-          {project.tech.slice(0, 4).map((t) => (
-            <span
-              key={t}
-              className="font-mono text-[10px] text-slate-500 dark:text-slate-400 tracking-wide bg-slate-50 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 px-2 py-0.5 rounded-md"
-            >
-              {t}
-            </span>
-          ))}
-          {project.tech.length > 4 && (
-            <span className="font-mono text-[10px] text-slate-400 dark:text-slate-500">+{project.tech.length - 4}</span>
-          )}
-        </div>
-      </div>
+            <p className="mb-3 line-clamp-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+              {project.description}
+            </p>
 
-      {/* Right meta */}
-      <div className="flex flex-col items-end justify-between gap-2 shrink-0 self-stretch">
-        <div className="flex flex-col items-end gap-1.5">
-          <VisibilityBadge visibility={project.visibility} />
-          <span className="font-mono text-[10px] text-slate-400 dark:text-slate-500 tracking-wider">{project.year}</span>
-        </div>
-        <span className="mt-auto w-9 h-9 rounded-full flex items-center justify-center text-slate-400 dark:text-slate-500 border border-slate-200 dark:border-white/10 group-hover:border-[#0358fc]/30 group-hover:text-[#0358fc] group-hover:bg-[#0358fc]/5 transition-all duration-300">
-          <ArrowUpRight
-            size={17}
-            className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-          />
-        </span>
-      </div>
-    </motion.article>
+            <div className="mb-4 flex flex-wrap items-center gap-1.5">
+              {project.tech.slice(0, 4).map((t) => (
+                <span
+                  key={t}
+                  className="rounded-md border border-slate-200/80 bg-slate-50 px-2 py-0.5 font-mono text-[10px] tracking-wide text-slate-500 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-400"
+                >
+                  {t}
+                </span>
+              ))}
+              {project.tech.length > 4 && (
+                <span className="font-mono text-[10px] text-slate-400 dark:text-slate-500">
+                  +{project.tech.length - 4}
+                </span>
+              )}
+            </div>
+
+            <div className="mt-auto flex items-center justify-between">
+              <span className="font-mono text-[10px] tracking-wider text-slate-400 dark:text-slate-500">
+                {project.year}
+              </span>
+              <span className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-400 transition-all duration-300 group-hover:border-[#0358fc]/30 group-hover:bg-[#0358fc]/5 group-hover:text-[#0358fc] dark:border-white/10 dark:text-slate-500">
+                <ArrowUpRight
+                  size={17}
+                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
+              </span>
+            </div>
+          </div>
+        </motion.article>
+      </motion.div>
+    </motion.div>
   );
 }
 
