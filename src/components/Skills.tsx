@@ -4,6 +4,7 @@ import { fadeUp, stagger, viewportOnce } from "../lib/motion";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { X } from "lucide-react";
 import { skills, type Skill } from "../data/skills";
+import { squarify } from "../lib/treemap";
 
 type Selected = { skill: Skill; rect: DOMRect };
 
@@ -16,70 +17,6 @@ function textOn(hex: string) {
   return lum > 0.62 ? "#0b1220" : "#ffffff";
 }
 
-// ---------- squarified treemap ----------
-type Rect = { x: number; y: number; w: number; h: number };
-type Placed = Rect & { index: number };
-
-function worstRatio(row: { value: number }[], w: number) {
-  if (!row.length) return Infinity;
-  const s = row.reduce((a, b) => a + b.value, 0);
-  const mx = Math.max(...row.map((x) => x.value));
-  const mn = Math.min(...row.map((x) => x.value));
-  return Math.max((w * w * mx) / (s * s), (s * s) / (w * w * mn));
-}
-
-function squarify(items: { value: number; index: number }[], rect: Rect): Placed[] {
-  const result: Placed[] = [];
-  const total = items.reduce((a, b) => a + b.value, 0);
-  if (total <= 0 || !items.length) return result;
-  const area = rect.w * rect.h;
-  let children = items.map((it) => ({ value: (it.value / total) * area, index: it.index }));
-  const r = { ...rect };
-  let row: { value: number; index: number }[] = [];
-  let w = Math.min(r.w, r.h);
-
-  const place = (rw: { value: number; index: number }[], len: number) => {
-    const s = rw.reduce((a, b) => a + b.value, 0);
-    if (r.w >= r.h) {
-      const colw = s / len;
-      let y = r.y;
-      for (const it of rw) {
-        const h = (it.value / s) * len;
-        result.push({ index: it.index, x: r.x, y, w: colw, h });
-        y += h;
-      }
-      r.x += colw;
-      r.w -= colw;
-    } else {
-      const rowh = s / len;
-      let x = r.x;
-      for (const it of rw) {
-        const wd = (it.value / s) * len;
-        result.push({ index: it.index, x, y: r.y, w: wd, h: rowh });
-        x += wd;
-      }
-      r.y += rowh;
-      r.h -= rowh;
-    }
-  };
-
-  children = children.slice();
-  while (children.length) {
-    const c = children[0];
-    const nr = [...row, c];
-    if (!row.length || worstRatio(nr, w) <= worstRatio(row, w)) {
-      row = nr;
-      children.shift();
-    } else {
-      place(row, w);
-      row = [];
-      w = Math.min(r.w, r.h);
-    }
-  }
-  if (row.length) place(row, w);
-  return result;
-}
-
 // Tile area is driven by skill weight (importance), not the proficiency %.
 // Linear, not squared: squaring turned a 3–10 weight range into a 9–100 area
 // range, so the lightest skills collapsed to 34x16px — too short to fit their
@@ -89,10 +26,11 @@ const val = (wt: number) => wt;
 
 // ---------- layout (computed once, all skills in one map) ----------
 const W = 100;
-// Taller than it was (58). 59 tiles in a 100x58 box leaves even an average one
-// around 50px square — the lightest ones had nowhere to go. Extra height buys
-// every tile room rather than robbing the big ones to pay the small.
-const H = 76;
+// Back to a shallow box now that the layout actually fills it. The old squarify
+// covered only ~20% of the rectangle, so tiles were ~5x smaller than the space
+// allowed and the only way to make them legible was more height. With the
+// coverage bug fixed, 48 is enough — and the section stops towering.
+const H = 48;
 const order = skills.map((_, i) => i).sort((a, b) => val(skills[b].wt) - val(skills[a].wt));
 const rects = squarify(order.map((idx) => ({ value: val(skills[idx].wt), index: idx })), { x: 0, y: 0, w: W, h: H });
 const tiles = rects.map((r) => ({ s: skills[r.index], x: r.x, y: r.y, w: r.w, h: r.h }));
