@@ -104,6 +104,10 @@ export default function Projects() {
                 key={p.title}
                 project={p}
                 index={i}
+                // The panel takes this card's place while open, so the card
+                // itself steps aside — otherwise you'd see the original still
+                // sitting in the grid and it reads as a second, separate card.
+                handedOver={selected?.project.title === p.title}
                 onOpen={(rect) => setSelected({ project: p, rect })}
               />
             ))}
@@ -130,10 +134,12 @@ const TILT_MAX = 9; // degrees of hover tilt at the card's edge
 function ProjectCard({
   project,
   index,
+  handedOver,
   onOpen,
 }: {
   project: Project;
   index: number;
+  handedOver: boolean;
   onOpen: (rect: DOMRect) => void;
 }) {
   const cover = coverFor(project.title);
@@ -231,7 +237,13 @@ function ProjectCard({
           aria-label={`Open details for ${project.title}`}
           whileTap={{ scale: 0.985 }}
           transition={{ type: "spring", stiffness: 400, damping: 34 }}
-          className="group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0358fc]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f6f9fe] dark:border-white/10 dark:bg-[#0f1a2e] dark:ring-offset-[#0a0f1c]"
+          // Handed over via a class, not style or animate: both of those route
+          // through framer's rAF-batched render pipeline, whereas React commits
+          // className straight to the DOM. The swap must land on the same frame
+          // the panel appears or you briefly see the card twice.
+          className={`group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0358fc]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f6f9fe] dark:border-white/10 dark:bg-[#0f1a2e] dark:ring-offset-[#0a0f1c] ${
+            handedOver ? "opacity-0" : ""
+          }`}
         >
           {/* Cover */}
           <div
@@ -351,11 +363,12 @@ function ProjectModal({
       y.set(start.y);
       scale.set(start.scale);
     }
-    opacity.set(0);
+    // Visible from frame one: the card has already vanished from underneath, so
+    // fading in from zero would leave a hole where the card was.
+    opacity.set(1);
     animate(x, 0, MORPH);
     animate(y, 0, MORPH);
     animate(scale, 1, MORPH);
-    animate(opacity, 1, { duration: 0.18 });
     animate(backdrop, 1, { duration: 0.25 });
   }, [overCard, x, y, scale, opacity, backdrop]);
 
@@ -369,13 +382,14 @@ function ProjectModal({
       animate(y, end.y, MORPH);
       animate(scale, end.scale, MORPH);
     }
-    animate(opacity, 0, { duration: 0.2 });
+    // Stays opaque on the way back too — it lands on the card, which reappears
+    // in the same frame this unmounts.
     animate(backdrop, 0, { duration: 0.25 });
     // Unmount on a timer, never on an animation callback: animations are
     // rAF-driven and a backgrounded tab freezes them, which would strand this
     // full-screen backdrop over the whole page.
     setTimeout(onClose, 280);
-  }, [onClose, overCard, x, y, scale, opacity, backdrop]);
+  }, [onClose, overCard, x, y, scale, backdrop]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
