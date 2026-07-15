@@ -44,13 +44,17 @@ export default function About() {
           <div className="h-px flex-1 bg-gradient-to-r from-[#0358fc]/30 to-transparent" />
         </motion.div>
 
-        {/* Bento grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-4 md:gap-5">
+        {/* Two columns rather than a row-spanning bento. The intro used to span
+            two grid rows, which stretched Currently and Focus to fill ~831px of
+            row height they only had ~200px of content for — 215px of dead space
+            inside each. The side column now stacks and sizes to content, and the
+            stats moved into it so both columns come out about even. */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 items-start">
           {/* Intro — large card */}
           <motion.div
             variants={scaleIn}
             onPointerMove={spotlight}
-            className="card-spotlight relative md:col-span-2 md:row-span-2 overflow-hidden bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-6 sm:p-8 md:p-10 flex flex-col transition-colors duration-300 hover:border-[#0358fc]/40"
+            className="card-spotlight relative md:col-span-2 overflow-hidden bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-6 sm:p-8 md:p-10 flex flex-col transition-colors duration-300 hover:border-[#0358fc]/40"
           >
             <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-gradient-to-br from-[#0358fc]/10 to-transparent blur-2xl pointer-events-none" />
 
@@ -114,6 +118,8 @@ export default function About() {
             </div>
           </motion.div>
 
+          {/* Side column — sizes to its content, no stretching */}
+          <div className="flex flex-col gap-4 md:gap-5">
           {/* Currently card */}
           <motion.div
             variants={scaleIn}
@@ -198,6 +204,7 @@ export default function About() {
               </span>
             </motion.div>
           ))}
+          </div>
         </div>
       </motion.div>
     </section>
