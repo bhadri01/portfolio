@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { fadeUp, stagger, viewportOnce } from "../lib/motion";
 import { Mail, Download, Send, Github, Linkedin, ArrowUpRight, Copy, Check, Loader2 } from "lucide-react";
+import { sendToTelegram, telegramConfigured } from "../lib/telegram";
 
 const EMAIL = "bhadrinathan28@gmail.com";
 type Status = "idle" | "sending" | "success" | "error";
@@ -21,28 +22,15 @@ export default function Footer() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const key = import.meta.env.VITE_WEB3FORMS_KEY;
-    // No form backend configured → open the visitor's mail client
-    if (!key) {
+    // Not configured (local dev, or env vars missing) → hand off to the mail client
+    // rather than silently swallowing the message.
+    if (!telegramConfigured()) {
       mailtoFallback();
       return;
     }
     setStatus("sending");
     try {
-      const res = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          access_key: key,
-          subject: `Portfolio message from ${name || "someone"}`,
-          from_name: "bha3.me",
-          name,
-          email: email || "not provided",
-          message,
-        }),
-      });
-      const data = await res.json();
-      if (data.success) {
+      if (await sendToTelegram(name, email, message)) {
         setStatus("success");
         setName("");
         setEmail("");
