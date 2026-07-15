@@ -87,9 +87,13 @@ export default function Projects() {
 
           {/* Grid — 2 up on desktop, 1 up on mobile. The shared perspective on
               the container is what bends the columns toward each other, so the
-              grid reads as the inside of a concave mirror. */}
+              grid reads as the inside of a concave mirror.
+              It's also the perspective root, i.e. a plane at z:0, and the cards
+              ride back to z:-180 — under preserve-3d that plane would sit in
+              front of them and eat every click. pointer-events inherits, so the
+              grid drops out of hit-testing and each card opts back in. */}
           <div
-            className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5"
+            className="pointer-events-none grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5"
             style={{ perspective: "2400px", transformStyle: "preserve-3d" }}
           >
             {projects.map((p, i) => (
@@ -177,11 +181,12 @@ function ProjectCard({
   };
 
   return (
-    // useScroll measures this element's box, so it must stay untransformed —
-    // measuring a transformed target reports a moving box and the progress
-    // never resolves. preserve-3d lets the grid's perspective reach the
-    // transformed layer inside.
-    <div ref={ref} className="h-full [transform-style:preserve-3d]">
+    // Measured for scroll progress, so it must stay untransformed — but that
+    // makes it a plane at z:0 while the card inside sits back at z:-180, and
+    // under preserve-3d a parent plane in front of its own child swallows every
+    // pointer event. It exists only to be measured, so it takes no hits; the
+    // card subtree opts back in below.
+    <div ref={ref} className="pointer-events-none h-full [transform-style:preserve-3d]">
       <motion.div
         style={
           animate
@@ -195,7 +200,7 @@ function ProjectCard({
         onPointerLeave={onPointerLeave}
         onPointerEnter={() => animate && liftTarget.set(-8)}
         style={animate ? { rotateX: tiltX, rotateY: tiltY, y: lift, transformStyle: "preserve-3d" } : undefined}
-        className="h-full"
+        className="pointer-events-auto h-full"
       >
         <motion.article
           layoutId={`project-${project.title}`}
