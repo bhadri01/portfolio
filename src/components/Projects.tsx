@@ -1,7 +1,7 @@
 import type { ComponentType } from "react";
 import { useEffect, useRef, useState } from "react";
 import {
-  motion, AnimatePresence, LayoutGroup,
+  motion, AnimatePresence,
   useTransform, useMotionValue, useSpring,
 } from "framer-motion";
 import { fadeUp, stagger, viewportOnce } from "../lib/motion";
@@ -59,7 +59,7 @@ export default function Projects() {
   const [selected, setSelected] = useState<Project | null>(null);
 
   return (
-    <LayoutGroup>
+    <>
       <section id="projects" className="relative py-20 md:py-32 px-5 sm:px-6 md:px-12 overflow-hidden scroll-mt-24">
         <div className="absolute left-1/2 -translate-x-1/2 top-1/4 w-[700px] h-[300px] rounded-full bg-[#0358fc]/8 blur-[120px] pointer-events-none" />
 
@@ -106,7 +106,7 @@ export default function Projects() {
       <AnimatePresence>
         {selected && <ProjectModal project={selected} onClose={() => setSelected(null)} />}
       </AnimatePresence>
-    </LayoutGroup>
+    </>
   );
 }
 
@@ -203,7 +203,6 @@ function ProjectCard({
         className="pointer-events-auto h-full"
       >
         <motion.article
-          layoutId={`project-${project.title}`}
           onClick={onOpen}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
@@ -241,12 +240,9 @@ function ProjectCard({
 
           <div className="flex flex-1 flex-col p-4 md:p-5">
             <div className="mb-1.5 flex items-center gap-2">
-              <motion.h3
-                layout="position"
-                className="truncate text-base font-semibold text-[#000b1b] dark:text-slate-100 md:text-lg"
-              >
+              <h3 className="truncate text-base font-semibold text-[#000b1b] dark:text-slate-100 md:text-lg">
                 {project.title}
-              </motion.h3>
+              </h3>
               {project.featured && (
                 <Star size={13} className="shrink-0 fill-[#0358fc] text-[#0358fc] dark:text-[#4b8dff]" />
               )}
@@ -318,10 +314,18 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
         onClick={onClose}
       />
 
-      {/* Card */}
+      {/* Card.
+          Deliberately not a shared-element morph from the grid card. Layout
+          projection measures rects and animates them with 2D transforms, but
+          the grid card sits under perspective + preserve-3d with rotateX/Y,
+          scale and translateZ still spring-animating from scroll — so the morph
+          was chasing a moving, 3D-projected target and stuttered. A plain
+          spring owns its own transform and can't be fought. */}
       <motion.div
-        layoutId={`project-${project.title}`}
-        transition={{ type: "spring", stiffness: 300, damping: 32 }}
+        initial={{ opacity: 0, scale: 0.94, y: 12 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.96, y: 8 }}
+        transition={{ type: "spring", stiffness: 320, damping: 30, mass: 0.7 }}
         className="relative w-full max-w-2xl max-h-[90dvh] flex flex-col bg-white dark:bg-[#0f1a2e] rounded-3xl overflow-hidden ring-1 ring-black/10 dark:ring-white/10"
       >
         {/* Header with project cover accent (or a real screenshot if provided) */}
@@ -373,12 +377,9 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
             </div>
           </div>
 
-          <motion.h3
-            layout="position"
-            className="relative font-brand text-2xl md:text-[1.7rem] text-white tracking-tight mb-3"
-          >
+          <h3 className="relative font-brand text-2xl md:text-[1.7rem] text-white tracking-tight mb-3">
             {project.title}
-          </motion.h3>
+          </h3>
 
           <p className="relative text-sm md:text-[0.95rem] text-white/85 leading-relaxed max-w-xl">
             {project.description}
