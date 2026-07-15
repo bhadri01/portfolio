@@ -480,7 +480,17 @@ function SkillsInner({
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true, amount: 0.3 }}
                         whileTap={{ scale: 0.96 }}
-                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1], delay: Math.min(i, 6) * 0.03 }}
+                        // The stagger delay is for the scroll-in only. Without
+                        // an explicit `layout` transition it would also govern
+                        // the modal morphing back into this tile on close —
+                        // stalling it for up to 180ms, then tweening. Match the
+                        // treemap tile's spring so both viewports close alike.
+                        transition={{
+                          duration: 0.35,
+                          ease: [0.16, 1, 0.3, 1],
+                          delay: Math.min(i, 6) * 0.03,
+                          layout: { type: "spring", stiffness: 320, damping: 24, delay: 0 },
+                        }}
                         className={`relative flex flex-col justify-between overflow-hidden rounded-xl p-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-inset ${
                           lead ? "col-span-2 min-h-[104px]" : "min-h-[104px]"
                         }`}
