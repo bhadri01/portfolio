@@ -49,7 +49,7 @@ export default function About() {
             row height they only had ~200px of content for — 215px of dead space
             inside each. The side column now stacks and sizes to content, and the
             stats moved into it so both columns come out about even. */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
           {/* Intro — large card */}
           <motion.div
             variants={scaleIn}
@@ -118,14 +118,16 @@ export default function About() {
             </div>
           </motion.div>
 
-          {/* Side column — sizes to its content, no stretching */}
+          {/* Side column. Stretches to the intro's height and the two cards share
+              the surplus via flex-1 — a little breathing room inside each beats a
+              hole under the shorter column. */}
           <div className="flex flex-col gap-4 md:gap-5">
           {/* Currently card */}
           <motion.div
             variants={scaleIn}
             whileHover={{ y: -4 }}
             onPointerMove={spotlight}
-            className="card-spotlight relative overflow-hidden bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-7 hover:border-[#0358fc]/40 transition-colors duration-300"
+            className="card-spotlight relative flex-1 overflow-hidden bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-7 hover:border-[#0358fc]/40 transition-colors duration-300"
           >
             <span className="font-mono text-[11px] text-slate-400 dark:text-slate-500 tracking-[0.2em] uppercase">
               Currently
@@ -168,7 +170,7 @@ export default function About() {
             variants={scaleIn}
             whileHover={{ y: -4 }}
             onPointerMove={spotlight}
-            className="card-spotlight relative overflow-hidden bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-7 hover:border-[#0358fc]/40 transition-colors duration-300"
+            className="card-spotlight relative flex-1 overflow-hidden bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-7 hover:border-[#0358fc]/40 transition-colors duration-300"
           >
             <span className="font-mono text-[11px] text-slate-400 dark:text-slate-500 tracking-[0.2em] uppercase">
               Focus
@@ -184,8 +186,12 @@ export default function About() {
               ))}
             </div>
           </motion.div>
+          </div>
 
-          {/* Stat tiles */}
+          {/* Stats — full-width row under both columns. Stacking them in the side
+              column made it 920px against the intro's 583px, which just moved the
+              gap to the other side. */}
+          <div className="md:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5">
           {stats.map((stat) => (
             <motion.div
               key={stat.label}
