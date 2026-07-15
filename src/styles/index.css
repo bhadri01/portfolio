@@ -209,7 +209,14 @@ body {
   opacity: 1;
 }
 
-.card-spotlight > * {
+/* Lifts card content above the ::before glow.
+   Skips children that position themselves. This file is unlayered and Tailwind's
+   utilities live in @layer utilities — unlayered styles beat layered ones no
+   matter the specificity, so a blanket `> *` here silently overrode `absolute`
+   on any child and dropped decorative overlays back into flow, where they took
+   real height. Specificity tricks can't fix that; the selector simply must not
+   match them. */
+.card-spotlight > *:not(.absolute):not(.fixed) {
   position: relative;
   z-index: 1;
 }
