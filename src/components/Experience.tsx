@@ -56,9 +56,9 @@ const timeline: TimelineItem[] = [
     title: "Bachelor of Engineering",
     org: "Muthayammal Engineering College",
     location: "Rasipuram, Tamil Nadu",
-    period: "2020 — 2024",
+    period: "2019 — 2023",
     description:
-      "Studied engineering with a focus on software development, networking, and cloud infrastructure — building full-stack, DevOps, and real-time systems projects alongside coursework, including the police-station CRM during my final-year internship.",
+      "Studied engineering with a focus on software development, networking, and cloud infrastructure — building full-stack, DevOps, and real-time systems projects alongside coursework, including the police-station CRM during the year-long internship that ran through my final year.",
     accentGradient: "from-[#0246d4] to-[#4b8dff]",
     label: "Education",
     Icon: GraduationCap,
