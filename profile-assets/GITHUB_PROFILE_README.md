@@ -14,19 +14,17 @@ I build systems people trust with untrusted input — and tools other developers
 ## 🛠️ Skills
 
 <!--
-  Generated, not hand-written. `npx vite-node scripts/gen-skills-svg.tsx` in the
-  portfolio repo reads the same src/data/skills.ts the website renders and emits
-  these two files, so this section cannot drift out of sync with bha3.me the way
-  a hand-maintained badge list does. Regenerate after changing a skill.
+  Generated, not hand-written. `npx vite-node scripts/gen-profile-card.tsx` in
+  the portfolio repo reads the same src/data/skills.ts the website renders and
+  emits these two files, so this section cannot drift out of sync with bha3.me
+  the way a hand-maintained badge list does. Regenerate after changing a skill.
 -->
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./skills-dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="./skills-light.svg">
-  <img alt="Skills treemap — 59 technologies, tile area scaled by weight in my toolkit" src="./skills-light.svg">
+  <img alt="Terminal-style profile card listing 59 technologies across languages, backend, AI, frontend, infrastructure and security" src="./skills-light.svg">
 </picture>
-
-> Tile area is how central a technology is to my work, not how much I like it. The number is proficiency.
 
 ---
 
