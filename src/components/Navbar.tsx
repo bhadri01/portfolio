@@ -163,7 +163,7 @@ export default function Navbar() {
               <Github size={19} />
             </a>
             <a
-              href="https://www.linkedin.com/in/bhadrinathan-a-90b8bb361"
+              href="https://www.linkedin.com/in/bhadri01"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
@@ -246,7 +246,7 @@ export default function Navbar() {
                   <Github size={20} />
                 </a>
                 <a
-                  href="https://www.linkedin.com/in/bhadrinathan-a-90b8bb361"
+                  href="https://www.linkedin.com/in/bhadri01"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"

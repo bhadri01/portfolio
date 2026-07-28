@@ -203,7 +203,7 @@ export default function Footer() {
                   <Github size={16} /> GitHub <ArrowUpRight size={13} />
                 </a>
                 <a
-                  href="https://www.linkedin.com/in/bhadrinathan-a-90b8bb361"
+                  href="https://www.linkedin.com/in/bhadri01"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group flex items-center justify-center gap-2 p-3 rounded-xl border border-slate-200 dark:border-white/10 hover:border-[#0358fc]/40 hover:bg-[#0358fc]/[0.03] transition-all duration-200 text-sm text-slate-600 dark:text-slate-300 hover:text-[#0358fc]"
