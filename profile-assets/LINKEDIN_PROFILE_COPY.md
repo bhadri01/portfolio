@@ -21,7 +21,7 @@ I am currently expanding my production AI engineering experience through RAG sys
 
 I am interested in Backend Engineer, Python Engineer, Full-Stack Engineer, Platform Engineer, and developer-tools opportunities where I can build useful systems and take meaningful ownership.
 
-Portfolio: https://bha3.me
+Portfolio: https://bha3.in
 GitHub: https://github.com/bhadri01
 
 ## Current role description

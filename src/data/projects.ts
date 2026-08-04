@@ -24,7 +24,7 @@ export const projects: Project[] = [
       "Hand-wrote a Rust risk-engine (position sizing, Black-Scholes Greeks, Sharpe/Sortino, per-tick risk checks) invoked over stdin/stdout at µs latency — no HTTP, no JSON framing.",
       "Owned a single broker WebSocket and fanned every tick out through Redis, so bot loops, the paper engine and the browser all read from Redis instead of opening their own socket.",
       "Built a 16-section React 19 dashboard backed by FastAPI plus Celery workers for paper fills, deployed strategy loops and a supervisor/heartbeat manager.",
-      "Stored ticks in TimescaleDB, sealed broker credentials with Fernet, and shipped it behind a shared Traefik proxy at algo.bha3.me.",
+      "Stored ticks in TimescaleDB, sealed broker credentials with Fernet, and shipped it behind a shared Traefik proxy at algo.bha3.in.",
     ],
     tech: ["React", "TypeScript", "FastAPI", "Rust", "Celery", "TimescaleDB", "Redis", "Docker", "Traefik", "WebSockets"],
     year: "2026",

@@ -250,7 +250,7 @@ export const skills: Skill[] = [
   {
     label: "Traefik", Icon: SiTraefikproxy, color: "#24A1C1", level: 78, mom: 4.4, cat: "Infrastructure", wt: 5,
     what: "A reverse proxy that discovers containers automatically and handles TLS itself — routing that updates as services come and go.",
-    how: "Fronts my deployments. AlgoTrade sits behind a shared Traefik proxy at algo.bha3.me, with certificates handled for me.",
+    how: "Fronts my deployments. AlgoTrade sits behind a shared Traefik proxy at algo.bha3.in, with certificates handled for me.",
   },
   {
     label: "Nginx", Icon: SiNginx, color: "#009639", level: 82, mom: 3.1, cat: "Infrastructure", wt: 6,

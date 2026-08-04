@@ -23,8 +23,8 @@ icon cover, so nothing breaks.
 
 ## Suggested files (your live projects)
 
-- `algotrade.png` — a capture of https://algo.bha3.me
-- `portfolio.png`  — a capture of https://bha3.me
+- `algotrade.png` — a capture of https://algo.bha3.in
+- `portfolio.png`  — a capture of https://bha3.in
 
 Any landscape screenshot works; the row crops it to a square thumbnail and the
 modal shows it as a wide banner (top-aligned).

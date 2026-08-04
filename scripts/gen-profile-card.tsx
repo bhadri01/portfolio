@@ -4,7 +4,7 @@
  * Run:  npx vite-node scripts/gen-profile-card.tsx
  *
  * Like the treemap it replaces, this imports src/data/skills.ts directly, so the
- * README and bha3.me are the same data and cannot drift. Adding a skill to the
+ * README and bha3.in are the same data and cannot drift. Adding a skill to the
  * site and regenerating is the whole update process.
  *
  * Why this and not the treemap: a treemap sizes tiles by weight, so with 59
@@ -164,7 +164,7 @@ function rows(): Row[] {
   }
 
   out.push({ label: "", lines: [] });
-  out.push({ label: "Web", lines: ["bha3.me · github.com/bhadri01"] });
+  out.push({ label: "Web", lines: ["bha3.in · github.com/bhadri01"] });
   return out;
 }
 

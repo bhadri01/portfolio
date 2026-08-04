@@ -43,7 +43,7 @@
     <text x="194.5" y="335.675" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'DejaVu Sans Mono',monospace" font-size="12.5" font-weight="700" fill="#4b8dff">Security</text>
     <text x="287.5" y="335.675" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'DejaVu Sans Mono',monospace" font-size="12.5" fill="#c8d4e6">Burp Suite, Nmap, Postman, Pytest, Playwright, Vitest, Wireshark, Metasploit, OWASP ZAP</text>
     <text x="194.5" y="364.35" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'DejaVu Sans Mono',monospace" font-size="12.5" font-weight="700" fill="#4b8dff">Web</text>
-    <text x="287.5" y="364.35" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'DejaVu Sans Mono',monospace" font-size="12.5" fill="#c8d4e6">bha3.me · github.com/bhadri01</text>
+    <text x="287.5" y="364.35" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'DejaVu Sans Mono',monospace" font-size="12.5" fill="#c8d4e6">bha3.in · github.com/bhadri01</text>
     <rect x="194.5" y="397" width="13" height="13" rx="3" fill="#3776AB"/><rect x="212.5" y="397" width="13" height="13" rx="3" fill="#009688"/><rect x="230.5" y="397" width="13" height="13" rx="3" fill="#0358fc"/><rect x="248.5" y="397" width="13" height="13" rx="3" fill="#149ECA"/><rect x="266.5" y="397" width="13" height="13" rx="3" fill="#2496ED"/><rect x="284.5" y="397" width="13" height="13" rx="3" fill="#FF6633"/>
   </g>
   <rect x="0.5" y="0.5" width="1115" height="429" rx="9.5" fill="none" stroke="rgba(255,255,255,0.09)"/>

@@ -20,7 +20,7 @@ const escapeHtml = (s: string) =>
 /** Formats a submission for Telegram's HTML parse_mode. */
 export function buildTelegramMessage(name: string, email: string, message: string) {
   return [
-    "<b>New message from bha3.me</b>",
+    "<b>New message from bha3.in</b>",
     "",
     `<b>From:</b> ${escapeHtml(name.trim() || "Anonymous")}`,
     `<b>Email:</b> ${escapeHtml(email.trim() || "not provided")}`,

@@ -7,7 +7,7 @@ I build systems people trust with untrusted input — and tools other developers
 - 🔭 **Technical Lead** at BloomSkillTech — building a two-sided edtech marketplace
 - 🦀 Writing Rust where correctness has to be structural: sandboxes, filesystems, WireGuard
 - 📦 Author of [**fastapi-querybuilder**](https://github.com/bhadri01/fastapi-querybuilder) — **16K+ downloads on PyPI**
-- 🌐 [bha3.me](https://bha3.me) · [LinkedIn](https://www.linkedin.com/in/bhadri01)
+- 🌐 [bha3.in](https://bha3.in) · [LinkedIn](https://www.linkedin.com/in/bhadri01)
 
 ---
 
@@ -16,7 +16,7 @@ I build systems people trust with untrusted input — and tools other developers
 <!--
   Generated, not hand-written. `npx vite-node scripts/gen-profile-card.tsx` in
   the portfolio repo reads the same src/data/skills.ts the website renders and
-  emits these two files, so this section cannot drift out of sync with bha3.me
+  emits these two files, so this section cannot drift out of sync with bha3.in
   the way a hand-maintained badge list does. Regenerate after changing a skill.
 -->
 
@@ -49,4 +49,4 @@ I build systems people trust with untrusted input — and tools other developers
 
 ---
 
-💬 Always up for a chat about building products from scratch — reach me on [LinkedIn](https://www.linkedin.com/in/bhadri01) or through [bha3.me](https://bha3.me).
+💬 Always up for a chat about building products from scratch — reach me on [LinkedIn](https://www.linkedin.com/in/bhadri01) or through [bha3.in](https://bha3.in).
