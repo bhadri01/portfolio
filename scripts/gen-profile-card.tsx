@@ -24,7 +24,7 @@
  */
 import { mkdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { skills, type Skill } from "../src/data/skills";
+import { practices, skills, type Skill } from "../src/data/skills";
 
 // ---------- type metrics ----------
 // The one real advantage of monospace: advance width is a constant, so wrapping
@@ -160,6 +160,9 @@ function rows(): Row[] {
     out.push({ label, lines: wrap(inCat(cat).map((s) => s.label), BODY_COLS) });
   }
 
+  // The résumé's fourth row. Labels only — the descriptions live on bha3.in.
+  out.push({ label: "Practice", lines: wrap(practices.map((p) => p.label), BODY_COLS) });
+
   out.push({ label: "", lines: [] });
   out.push({ label: "Web", lines: ["bha3.in · github.com/bhadri01"] });
   return out;
@@ -282,6 +285,9 @@ function verify() {
 
   for (const s of skills) {
     if (!printed.includes(s.label)) errs.push(`${s.label} never appears on the card`);
+  }
+  for (const p of practices) {
+    if (!printed.includes(p.label)) errs.push(`practice "${p.label}" never appears on the card`);
   }
 
   const cats = new Set(skills.map((s) => s.cat));
