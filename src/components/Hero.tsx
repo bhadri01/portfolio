@@ -38,12 +38,12 @@ const marqueeSkills: { name: string; Icon: MarqueeIcon }[] = [
 ];
 
 const phrases = [
-  "Software Engineer",
-  "Full-Stack Developer",
-  "Frontend Developer",
-  "AI Engineer",
-  "Security & Pentesting",
-  "Open-Source Developer",
+  "Backend Engineer",
+  "Python · FastAPI",
+  "AI Systems",
+  "RAG & MCP Pipelines",
+  "Systems in Rust",
+  "Open-Source Author",
 ];
 
 export default function Hero({ start = true }: { start?: boolean }) {
