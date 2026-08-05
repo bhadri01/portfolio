@@ -135,12 +135,9 @@ type Row = { label: string; lines: string[] };
  */
 function rows(): Row[] {
   const cats: [string, string][] = [
-    ["Languages", "Languages"],
-    ["Backend", "Backend"],
+    ["Core", "Core"],
     ["AI Engineering", "AI"],
-    ["Frontend", "Frontend"],
-    ["Infrastructure", "Infra"],
-    ["Security & Testing", "Security"],
+    ["Also ship with", "Also"],
   ];
 
   const out: Row[] = [
@@ -288,7 +285,7 @@ function verify() {
   }
 
   const cats = new Set(skills.map((s) => s.cat));
-  const covered = new Set(["Languages", "Backend", "AI Engineering", "Frontend", "Infrastructure", "Security & Testing"]);
+  const covered = new Set(["Core", "AI Engineering", "Also ship with"]);
   for (const c of cats) if (!covered.has(c)) errs.push(`category "${c}" has no row — its skills would vanish`);
 
   for (const r of R)
