@@ -40,12 +40,9 @@ const pct = (v: number, span: number) => `${(v / span) * 100}%`;
 /** Fallback for skills without a specific, evidence-backed usage story. Kept
  *  general on purpose — better a true generality than an invented specific. */
 const catNote: Record<string, string> = {
-  Languages: "A core language I reach for across backend services, tooling, and automation.",
-  Backend: "Used to design APIs, data models, and real-time systems in production.",
-  "AI Engineering": "Applied while building the RAG knowledge system and agentic experiments.",
-  Frontend: "Used to build this portfolio and internal product dashboards.",
-  Infrastructure: "Part of my deployment, networking, and monitoring stack.",
-  "Security & Testing": "Used for network and web-application testing and API validation.",
+  Core: "Used daily across production services — the tools I reach for first.",
+  "AI Engineering": "Current focus: retrieval pipelines, agent orchestration, and tool servers for LLM clients.",
+  "Also ship with": "Used regularly alongside the core stack, in production and in my own projects.",
 };
 
 function darken(hex: string, amt: number) {
