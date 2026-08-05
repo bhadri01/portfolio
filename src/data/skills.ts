@@ -1,9 +1,9 @@
 import type { ComponentType } from "react";
 import {
-  SiCelery, SiDocker, SiFastapi, SiLangchain, SiLinux, SiNginx, SiPostgresql, SiPytest, SiPython, SiReact, SiRedis, SiRust, SiSqlalchemy, SiTypescript,
+  SiCelery, SiDocker, SiFastapi, SiGithubactions, SiGo, SiLangchain, SiLinux, SiNginx, SiPostgresql, SiPytest, SiPython, SiReact, SiRedis, SiRust, SiSqlalchemy, SiTypescript,
 } from "react-icons/si";
 import {
-  Boxes, BrainCircuit, Infinity as InfinityIcon, Sparkles, Webhook, Workflow, Plug,
+  BrainCircuit, Sparkles, Webhook, Workflow, Plug,
 } from "lucide-react";
 
 type IconType = ComponentType<{ size?: number; className?: string }>;
@@ -68,9 +68,9 @@ export const skills: Skill[] = [
     how: "Everything I ship runs in it. On the cloud labs platform it was the product itself: containerized environments provisioned per session, so reproducibility was the feature.",
   },
   {
-    label: "REST APIs", Icon: Webhook, color: "#0EA5E9", level: 92, mom: 4.3, cat: "Core", wt: 8,
-    what: "The dominant convention for HTTP APIs: resources as URLs, verbs as methods, state left on the client.",
-    how: "The interface of nearly everything I've built. ZeroCode's submissions API is the one I'd point at — tokens, polling, SSE streaming and readiness probes in one small surface.",
+    label: "REST & SSE APIs", Icon: Webhook, color: "#0EA5E9", level: 92, mom: 4.3, cat: "Core", wt: 8,
+    what: "REST is the dominant convention for HTTP APIs — resources as URLs, verbs as methods. Server-Sent Events is the other half: one long-lived response the server keeps writing to, for progress and streams.",
+    how: "The interface of nearly everything I've built. ZeroCode's submissions API is the one I'd point at — tokens, polling, SSE streaming and readiness probes in one small surface. I also published fastapi_sse_events, which backs SSE with Redis pub/sub so streams survive more than one server.",
   },
   {
     label: "Linux", Icon: SiLinux, color: "#C9930A", level: 88, mom: 4.0, cat: "Core", wt: 8,
@@ -80,9 +80,9 @@ export const skills: Skill[] = [
 
   // ---------------- AI Engineering ----------------
   {
-    label: "RAG Systems", Icon: BrainCircuit, color: "#0358fc", level: 78, mom: 22.4, cat: "AI Engineering", wt: 8,
-    what: "Retrieval-Augmented Generation: fetch relevant documents first, then let the model answer from them — grounding it in your data instead of its memory.",
-    how: "Built a knowledge system on this pattern: pgvector for semantic search, LangGraph to orchestrate the agent, and an evaluation harness to check the answers held up.",
+    label: "RAG (pgvector)", Icon: BrainCircuit, color: "#0358fc", level: 78, mom: 22.4, cat: "AI Engineering", wt: 9,
+    what: "Retrieval-Augmented Generation: fetch relevant documents first, then let the model answer from them — grounding it in your data instead of its memory. pgvector is the PostgreSQL extension that does the similarity search, so the embeddings live next to the relational data instead of in a second database.",
+    how: "Built a knowledge system on this pattern: pgvector for semantic search, LangGraph to orchestrate the agent, and an evaluation harness to check the answers held up. Keeping vectors in Postgres meant one database to operate, back up and reason about rather than two.",
   },
   {
     label: "LangChain", Icon: SiLangchain, color: "#1C3C3C", level: 76, mom: 20.1, cat: "AI Engineering", wt: 7,
@@ -93,11 +93,6 @@ export const skills: Skill[] = [
     label: "LangGraph", Icon: Workflow, color: "#2563EB", level: 72, mom: 24.6, cat: "AI Engineering", wt: 6,
     what: "Models an agent as a state graph rather than a chain, so loops, branches and retries are explicit and inspectable.",
     how: "Orchestrates the RAG knowledge system's agent. A graph beats a chain the moment you need to loop or recover from a bad step.",
-  },
-  {
-    label: "pgvector", Icon: Boxes, color: "#3E63DD", level: 74, mom: 18.3, cat: "AI Engineering", wt: 5,
-    what: "A PostgreSQL extension for embeddings and similarity search — vector search without running a separate vector database.",
-    how: "The semantic search layer in my RAG system. Keeping vectors next to the relational data meant one database to operate instead of two.",
   },
   {
     label: "OpenAI API", Icon: Sparkles, color: "#10A37F", level: 82, mom: 14.0, cat: "AI Engineering", wt: 6,
@@ -131,16 +126,52 @@ export const skills: Skill[] = [
     how: "Runs AlgoTrade's background work: paper fills, deployed strategy loops, and the supervisor/heartbeat manager that keeps them alive.",
   },
   {
-    label: "CI/CD", Icon: InfinityIcon, color: "#0358fc", level: 85, mom: 4.2, cat: "Also ship with", wt: 6,
-    what: "Automating the path from commit to production so releases are routine rather than an event.",
-    how: "As Technical Lead I established the team's CI/CD pipelines, automated testing and code review — the process, not just the YAML.",
+    label: "GitHub Actions", Icon: SiGithubactions, color: "#2088FF", level: 85, mom: 4.2, cat: "Also ship with", wt: 6,
+    what: "CI/CD that lives in the repository — workflows triggered by pushes and pull requests, running on hosted runners.",
+    how: "This site ships through one: lint, type-check, tests and a production build gate every push before it reaches Pages. At BloomSkillTech I set up the same shape for the team.",
   },
   {
-    label: "Nginx", Icon: SiNginx, color: "#009639", level: 82, mom: 3.1, cat: "Also ship with", wt: 6,
-    what: "The workhorse web server and reverse proxy — static files, TLS termination and load balancing, configured by hand.",
+    label: "Go", Icon: SiGo, color: "#00ADD8", level: 70, mom: 2.0, cat: "Also ship with", wt: 4,
+    what: "A small, fast compiled language built for servers — goroutines make concurrency cheap, and the toolchain produces a single static binary.",
+    how: "The backend of the crime-records CRM I built for the Cyber Crime Police Station in Salem: Go APIs behind a React frontend, on PostgreSQL, containerized with Docker.",
+  },
+  {
+    label: "Nginx/Traefik", Icon: SiNginx, color: "#009639", level: 82, mom: 3.1, cat: "Also ship with", wt: 6,
+    what: "The two reverse proxies I use in front of a service. Nginx is configured by hand and does TLS termination, static files and load balancing; Traefik discovers containers and routes to them without a config rewrite per deploy.",
   },
   {
     label: "Pytest", Icon: SiPytest, color: "#0A9EDC", level: 86, mom: 3.0, cat: "Also ship with", wt: 6,
     what: "Python's testing framework — fixtures and plain assert statements instead of boilerplate.",
+  },
+];
+
+/**
+ * The résumé's fourth skills row. Deliberately NOT `Skill[]`: these have no
+ * vendor icon, no brand colour, and no honest percentage — "code review, 82%"
+ * is a number pretending to be a measurement. They render as uniform boxes
+ * under the treemap instead, so the page can claim them without scoring them.
+ */
+export type Practice = { label: string; what: string };
+
+export const practices: Practice[] = [
+  {
+    label: "System design (HLD/LLD)",
+    what: "Deciding the shape of a system before writing it — services, data model, and where the boundaries fall — then taking it down to the level someone can build from.",
+  },
+  {
+    label: "Code review",
+    what: "Reading other people's changes as the main way correctness and context spread through a team, rather than as a gate at the end.",
+  },
+  {
+    label: "Automated testing",
+    what: "Tests that run on every push and are trusted enough to block a merge. The point is being able to change things later without fear.",
+  },
+  {
+    label: "CI/CD",
+    what: "Automating the path from commit to production so a release is routine rather than an event. I set this up for the team at BloomSkillTech.",
+  },
+  {
+    label: "Phased delivery",
+    what: "Shipping in slices that each stand on their own, so scope can move without the launch date moving with it.",
   },
 ];

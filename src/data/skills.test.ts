@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { skills } from "./skills";
+import { practices, skills } from "./skills";
 import { projects } from "./projects";
 
 describe("skills data", () => {
@@ -38,6 +38,46 @@ describe("skills data", () => {
     for (const label of ["Python", "FastAPI", "PostgreSQL", "Docker"]) {
       expect(skills.find((s) => s.label === label)?.cat).toBe("Core");
     }
+  });
+
+  // The résumé's TECHNICAL SKILLS block is the source of truth for this list.
+  // If someone edits one and not the other, a recruiter reading both sees two
+  // different candidates — so pin the exact membership of each row.
+  it("matches the résumé's Core row", () => {
+    const core = skills.filter((s) => s.cat === "Core").map((s) => s.label).sort();
+    expect(core).toEqual(
+      ["Docker", "FastAPI", "Linux", "PostgreSQL", "Python", "REST & SSE APIs", "Redis", "SQLAlchemy"].sort(),
+    );
+  });
+
+  it("matches the résumé's AI Engineering row", () => {
+    const ai = skills.filter((s) => s.cat === "AI Engineering").map((s) => s.label).sort();
+    expect(ai).toEqual(["LangChain", "LangGraph", "MCP Servers", "OpenAI API", "RAG (pgvector)"].sort());
+  });
+});
+
+describe("practices", () => {
+  it("carries the résumé's fourth skills row", () => {
+    expect(practices.map((p) => p.label)).toEqual([
+      "System design (HLD/LLD)",
+      "Code review",
+      "Automated testing",
+      "CI/CD",
+      "Phased delivery",
+    ]);
+  });
+
+  // These render as plain boxes with no proficiency badge. The description is
+  // the entire content of the box, so a stub leaves an empty card on the page.
+  it("explains every practice in a real sentence", () => {
+    const thin = practices.filter((p) => p.what.trim().length < 60).map((p) => p.label);
+    expect(thin).toEqual([]);
+  });
+
+  it("keeps practices out of the scored skill list", () => {
+    const labels = new Set(skills.map((s) => s.label));
+    const scored = practices.filter((p) => labels.has(p.label)).map((p) => p.label);
+    expect(scored).toEqual([]);
   });
 
   // The point of the exercise: `how` is a first-person claim about real
