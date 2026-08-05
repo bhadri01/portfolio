@@ -18,8 +18,26 @@ describe("skills data", () => {
     expect(tooShort).toEqual([]);
   });
 
-  it("includes Next.js", () => {
-    expect(skills.some((s) => s.label === "Next.js")).toBe(true);
+  // The list is deliberately short. A long flat list rated 66-95 tells a reader
+  // nothing about where the depth actually is, so the tiers — and the cap — are
+  // the signal. If this fails, the list has drifted back toward a dump.
+  it("stays a curated list, not a dump", () => {
+    expect(skills.length).toBeLessThanOrEqual(24);
+  });
+
+  it("groups every skill into one of the three tiers", () => {
+    const tiers = ["Core", "AI Engineering", "Also ship with"];
+    const stray = skills.filter((s) => !tiers.includes(s.cat)).map((s) => s.label);
+    expect(stray).toEqual([]);
+    for (const t of tiers) {
+      expect(skills.some((s) => s.cat === t)).toBe(true);
+    }
+  });
+
+  it("leads with the stack the résumé leads with", () => {
+    for (const label of ["Python", "FastAPI", "PostgreSQL", "Docker"]) {
+      expect(skills.find((s) => s.label === label)?.cat).toBe("Core");
+    }
   });
 
   // The point of the exercise: `how` is a first-person claim about real
