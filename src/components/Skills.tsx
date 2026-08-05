@@ -3,7 +3,7 @@ import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { fadeUp, stagger, viewportOnce } from "../lib/motion";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { X } from "lucide-react";
-import { skills, type Skill } from "../data/skills";
+import { practices, skills, type Skill } from "../data/skills";
 import { squarify } from "../lib/treemap";
 
 type Selected = { skill: Skill; rect: DOMRect };
@@ -394,6 +394,53 @@ function SkillsInner({
           </div>
         </motion.div>
         )}
+
+        {/* Practices — the résumé's fourth skills row.
+            Uniform boxes on purpose. The treemap's whole language is "size =
+            weight, number = proficiency", and neither means anything for code
+            review or phased delivery. Sizing them would invent a ranking and
+            scoring them would invent a measurement, so they get equal boxes
+            and a plain description instead. */}
+        <motion.div variants={fadeUp} className="mt-10 md:mt-12">
+          <div className="mb-3 flex items-center gap-3">
+            <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+              Practices
+            </h3>
+            <div className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
+            <span className="font-mono text-[10px] text-slate-400 dark:text-slate-500">
+              how the work gets done
+            </span>
+          </div>
+          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+            {practices.map((p, i) => (
+              // Inherit the section's variant state rather than running a
+              // second whileInView per box: the last row sits below the fold
+              // when the section first enters view, and a nested trigger there
+              // leaves it stuck at opacity 0 until the user scrolls again.
+              <motion.div
+                key={p.label}
+                variants={fadeUp}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: Math.min(i, 5) * 0.05 }}
+                className="rounded-xl border border-slate-200 bg-white/60 p-4 dark:border-white/10 dark:bg-white/[0.03]"
+              >
+                <div className="flex items-start gap-2.5">
+                  <span
+                    className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#0358fc] dark:bg-[#4b8dff]"
+                    aria-hidden="true"
+                  />
+                  <div className="min-w-0">
+                    <div className="text-sm font-semibold leading-snug text-[#000b1b] dark:text-slate-100">
+                      {p.label}
+                    </div>
+                    <p className="mt-1.5 text-[13px] leading-relaxed text-slate-600 dark:text-slate-400">
+                      {p.what}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </motion.div>
     </section>
   );
