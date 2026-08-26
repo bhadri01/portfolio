@@ -38,6 +38,12 @@ services:
       # Global reusable middlewares (see ../traefik/dynamic/middlewares.yml).
       # redirect-to-https first: http:// visitors via the CF tunnel get 301'd.
       - "traefik.http.routers.portfolio.middlewares=redirect-to-https@file,security-headers@file,compression@file"
+      # www.bha3.in -> 301 -> bha3.in (second router, same service).
+      - "traefik.http.routers.portfolio-www.rule=Host(`www.bha3.in`)"
+      - "traefik.http.routers.portfolio-www.entrypoints=websecure"
+      - "traefik.http.routers.portfolio-www.tls=true"
+      - "traefik.http.routers.portfolio-www.service=portfolio"
+      - "traefik.http.routers.portfolio-www.middlewares=www-redirect@file"
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
       interval: 30s
