@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, master]
+    branches: [main]
   pull_request:
-    branches: [main, master]
+    branches: [main]
 
 # Cancel in-progress runs for the same ref (e.g. new push to a PR)
 concurrency:
@@ -55,8 +55,9 @@ jobs:
   deploy:
     name: Deploy to GitHub Pages
     needs: quality
-    # Only deploy on pushes to the default branch, never on PRs
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    # Production deploys run only for commits pushed to main, never for PRs or
+    # pushes to feature branches.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     permissions:
