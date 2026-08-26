@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Real env values (Telegram token etc.) — never commit; used only for the build
+.env
+.env.*
+!.env.example
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

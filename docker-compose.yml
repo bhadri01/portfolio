@@ -1,22 +1,55 @@
+# ============================================================================
+#  Portfolio — served at https://bha3.in (apex)
+#
+#  Built locally from ./Dockerfile (nginx-served static Vite build) and routed
+#  by the shared global Traefik proxy (../traefik). Public traffic arrives via
+#  the Cloudflare Tunnel, which already forwards bha3.in -> Traefik. This
+#  container publishes NO host ports — only Traefik faces the network.
+#
+#  Build + run:   docker compose up -d --build
+#  Rebuild clean: docker compose build --no-cache && docker compose up -d
+#  Logs:          docker compose logs -f
+#  Stop:          docker compose down
+#
+#  Optional contact form: export VITE_TELEGRAM_BOT_TOKEN / VITE_TELEGRAM_CHAT_ID
+#  (or put them in a .env beside this file) before building.
+# ============================================================================
+
 services:
-  bharinathan-portfolio:
-    image: ghcr.io/bhadri01/portfolio:latest
-    container_name: bharinathan-portfolio
-    hostname: bharinathan
-    restart: always
+  portfolio:
+    build:
+      context: .
+      args:
+        VITE_TELEGRAM_BOT_TOKEN: ${VITE_TELEGRAM_BOT_TOKEN:-}
+        VITE_TELEGRAM_CHAT_ID: ${VITE_TELEGRAM_CHAT_ID:-}
+    image: portfolio:latest
+    container_name: portfolio
+    restart: unless-stopped
     networks:
-      default:
+      - traefik
     labels:
-      - traefik.enable=true
-      - traefik.domain=bha3.in
-      - traefik.http.routers.bharinathan-portfolio.rule=Host(`bha3.in`)
-      - traefik.http.routers.bharinathan-portfolio.tls.domains[0].main=bha3.in
-      - traefik.http.routers.bharinathan-portfolio.tls.domains[0].main=*.bha3.in
-      - traefik.http.routers.bharinathan-portfolio.entrypoints=websecure
-      - traefik.http.routers.bharinathan-portfolio.tls=true
-      - traefik.http.routers.bharinathan-portfolio.tls.certresolver=custom_resolver
-      - traefik.http.services.bharinathan-portfolio.loadbalancer.server.port=80
+      - "traefik.enable=true"
+      # Route the apex domain to this container.
+      - "traefik.http.routers.portfolio.rule=Host(`bha3.in`)"
+      - "traefik.http.routers.portfolio.entrypoints=websecure"
+      - "traefik.http.routers.portfolio.tls=true"
+      # App's internal port (nginx).
+      - "traefik.http.services.portfolio.loadbalancer.server.port=80"
+      # Global reusable middlewares (see ../traefik/dynamic/middlewares.yml).
+      - "traefik.http.routers.portfolio.middlewares=security-headers@file,compression@file"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# The 'traefik' network is created and owned by the ../traefik stack.
 networks:
-  default:
-    name: traefik
+  traefik:
     external: true

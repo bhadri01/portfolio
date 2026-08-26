@@ -1,0 +1,36 @@
+# Keep the build context small & reproducible.
+# node_modules is reinstalled inside the image from the lockfile.
+node_modules
+dist
+dist-ssr
+
+# VCS / CI / editor
+.git
+.github
+.gitignore
+.vscode
+.idea
+.claude
+*.swp
+
+# Docker / build meta (not needed inside the image)
+Dockerfile
+.dockerignore
+docker-compose.yml
+Jenkinsfile
+fix-gradle.sh
+README.md
+
+# Secrets & local env — injected explicitly via build args instead
+.env
+.env.*
+*.local
+
+# Generated / scratch artifacts
+tmp
+output
+scripts
+
+# Logs
+*.log
+npm-debug.log*
