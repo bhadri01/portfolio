@@ -36,7 +36,8 @@ services:
       # App's internal port (nginx).
       - "traefik.http.services.portfolio.loadbalancer.server.port=80"
       # Global reusable middlewares (see ../traefik/dynamic/middlewares.yml).
-      - "traefik.http.routers.portfolio.middlewares=security-headers@file,compression@file"
+      # redirect-to-https first: http:// visitors via the CF tunnel get 301'd.
+      - "traefik.http.routers.portfolio.middlewares=redirect-to-https@file,security-headers@file,compression@file"
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
       interval: 30s
