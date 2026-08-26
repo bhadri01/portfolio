@@ -17,12 +17,15 @@
   <meta property="og:image" content="https://bha3.in/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Bhadrinathan A — Backend Engineer & AI Systems" />
+  <meta property="og:locale" content="en_US" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Bhadrinathan | Backend Engineer & AI Systems" />
   <meta name="twitter:description" content="Backend systems in Python — FastAPI, PostgreSQL, Redis, Docker — plus RAG pipelines and MCP servers. Author of fastapi-querybuilder, 16K+ PyPI downloads." />
   <meta name="twitter:image" content="https://bha3.in/og-image.png" />
+  <meta name="twitter:image:alt" content="Bhadrinathan A — Backend Engineer & AI Systems" />
 
   <meta name="theme-color" content="#0a0f1c" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -55,10 +58,51 @@
     ]
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Bhadrinathan",
+    "url": "https://bha3.in/",
+    "author": { "@type": "Person", "name": "Bhadrinathan A", "url": "https://bha3.in/" }
+  }
+  </script>
 </head>
 
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <!-- Static pre-hydration content. React replaces this on mount; crawlers
+         that don't execute JS (and users on slow links) see real content
+         instead of an empty page. Keep the copy in sync with the app. -->
+    <div style="max-width:720px;margin:0 auto;padding:48px 24px;font-family:system-ui,-apple-system,sans-serif;line-height:1.6;background:#0a0f1c;color:#e2e8f0;min-height:100dvh">
+      <h1 style="font-size:1.75rem;margin:0 0 4px;color:#fff">Bhadrinathan A</h1>
+      <p style="margin:0 0 16px;color:#93c5fd;font-weight:600">Backend Engineer &amp; AI Systems</p>
+      <p>
+        I build production Python systems — FastAPI, PostgreSQL, Redis, Docker — and the
+        AI pipelines that run on them: RAG systems and MCP servers. Author of
+        <a href="https://github.com/bhadri01/fastapi-querybuilder" style="color:#7ab5ff">fastapi-querybuilder</a>
+        (16,000+ downloads on PyPI). Based in Salem, Tamil Nadu, India.
+      </p>
+      <h2 style="font-size:1.1rem;margin:24px 0 8px;color:#fff">Selected projects</h2>
+      <ul style="margin:0;padding-left:20px">
+        <li><a href="https://github.com/bhadri01/fastapi-querybuilder" style="color:#7ab5ff">FastAPI QueryBuilder</a> — PyPI package turning URL query params into SQLAlchemy filters for FastAPI</li>
+        <li><a href="https://github.com/bhadri01/fastapi_sse_events" style="color:#7ab5ff">FastAPI SSE Events</a> — server-sent events for FastAPI</li>
+        <li><a href="https://github.com/bhadri01/ZeroCode" style="color:#7ab5ff">ZeroCode</a> — sandboxed code-execution service in Rust, 20 languages</li>
+        <li><a href="https://github.com/bhadri01/ZeroVPN" style="color:#7ab5ff">ZeroVPN</a> — self-hosted WireGuard VPN management platform (Rust + React)</li>
+        <li><a href="https://github.com/bhadri01/NullVeil" style="color:#7ab5ff">NullVeil</a> — read-only deleted-file recovery &amp; filesystem forensics in Rust</li>
+        <li>AlgoTrade Platform — automated algo-trading for Indian markets (FastAPI + Rust risk-engine)</li>
+        <li>Succeedex — multi-tenant EdTech platform</li>
+      </ul>
+      <h2 style="font-size:1.1rem;margin:24px 0 8px;color:#fff">Links</h2>
+      <p>
+        <a href="https://github.com/bhadri01" style="color:#7ab5ff">GitHub</a> ·
+        <a href="https://www.linkedin.com/in/bhadri01" style="color:#7ab5ff">LinkedIn</a> ·
+        <a href="/Bhadrinathan_A_Resume.pdf" style="color:#7ab5ff">Resume (PDF)</a> ·
+        <a href="mailto:bhadrinathan28@gmail.com" style="color:#7ab5ff">bhadrinathan28@gmail.com</a>
+      </p>
+      <noscript><p style="color:#94a3b8">This site is best experienced with JavaScript enabled.</p></noscript>
+    </div>
+  </div>
   <script type="module" src="/src/main.tsx"></script>
 </body>
 
