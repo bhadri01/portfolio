@@ -16,7 +16,7 @@ type IconType = ComponentType<{ size?: number; className?: string }>;
 // get used, which no amount of self-description buys.
 const stats = [
   { number: "16K+", label: "PyPI downloads", gradient: "from-[#0358fc] to-[#4b8dff]" },
-  { number: "3+ yrs", label: "Full-time shipping", gradient: "from-[#0246d4] to-[#0358fc]" },
+  { number: "4+ yrs", label: "Experience", gradient: "from-[#0246d4] to-[#0358fc]" },
   { number: "2", label: "Packages published", gradient: "from-[#3b6fff] to-[#0358fc]" },
 ];
 
@@ -88,10 +88,9 @@ export default function About() {
             </motion.h2>
 
             <motion.p variants={fadeUp} className="relative text-slate-600 dark:text-slate-300 text-base leading-relaxed mb-5">
-              Three-plus years shipping production software full-time — a cloud
-              labs platform, and now leading the build of an edtech platform as
-              Technical Lead — after cutting my teeth on a police records CRM as an
-              intern. I wrote{" "}
+              4+ years of experience shipping production software — from a police
+              records CRM (as an intern) to a cloud labs platform, and now leading
+              the build of an edtech platform as Technical Lead. I wrote{" "}
               <span className="text-[#0358fc] dark:text-[#4b8dff] font-medium">fastapi-querybuilder</span>, which
               other people's projects have pulled down more than 16,000 times.
             </motion.p>
