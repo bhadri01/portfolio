@@ -181,7 +181,7 @@ export default function Footer() {
               </div>
 
               <a
-                href="/Bhadrinathan_A_Resume.pdf"
+                href="/Bhadrinathan_A_Resume.pdf?v=20260902"
                 download
                 className="group flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-white/10 hover:border-[#0358fc]/40 hover:bg-[#0358fc]/[0.03] transition-all duration-200"
               >
