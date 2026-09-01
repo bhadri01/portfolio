@@ -45,7 +45,7 @@ const timeline: TimelineItem[] = [
     title: "Software Engineer Intern",
     org: "Cyber Crime Police Station, Salem",
     location: "Salem, Tamil Nadu · Hybrid",
-    period: "Mar 2022 — Mar 2023",
+    period: "Aug 2022 — Mar 2023",
     description:
       "Single-handedly built a complete CRM digitizing crime records with end-to-end case-timeline tracking — React frontend, Go backend APIs, and a PostgreSQL database, deployed with Docker — so officers could log, search, and monitor investigations from one system.",
     accentGradient: "from-[#0358fc] to-[#6aa1ff]",
@@ -58,7 +58,7 @@ const timeline: TimelineItem[] = [
     location: "Rasipuram, Tamil Nadu",
     period: "2019 — 2023",
     description:
-      "Studied engineering with a focus on software development, networking, and cloud infrastructure — building full-stack, DevOps, and real-time systems projects alongside coursework, including the police-station CRM during the year-long internship that ran through my final year.",
+      "Studied engineering with a focus on software development, networking, and cloud infrastructure — building full-stack, DevOps, and real-time systems projects alongside coursework, including the police-station CRM I built during an internship in my final year.",
     accentGradient: "from-[#0246d4] to-[#4b8dff]",
     label: "Education",
     Icon: GraduationCap,
