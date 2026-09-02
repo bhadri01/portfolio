@@ -1,12 +1,12 @@
 # Hi, I'm Bhadri 👋
 
-**Software Engineer · Technical Lead · Salem, India**
+**Backend Engineer · Technical Lead · Salem, India**
 
-I build systems people trust with untrusted input — and tools other developers install. Four years shipping production software end to end, from a police records CRM to cloud lab infrastructure, and now leading the build of an edtech platform.
+I build systems people trust with untrusted input — and tools other developers install. 4+ years of experience shipping production software, from a police records CRM (as an intern) to cloud lab infrastructure, and now leading the build of an edtech platform.
 
 - 🔭 **Technical Lead** at BloomSkillTech — building a two-sided edtech marketplace
 - 🦀 Writing Rust where correctness has to be structural: sandboxes, filesystems, WireGuard
-- 📦 Author of [**fastapi-querybuilder**](https://github.com/bhadri01/fastapi-querybuilder) — **16K+ downloads on PyPI**
+- 📦 Author of [**fastapi-querybuilder**](https://github.com/bhadri01/fastapi-querybuilder) — **18K+ downloads on PyPI**
 - 🌐 [bha3.in](https://bha3.in) · [LinkedIn](https://www.linkedin.com/in/bhadri01)
 
 ---
@@ -38,7 +38,7 @@ I build systems people trust with untrusted input — and tools other developers
 
 **Open source**
 
-- **[fastapi-querybuilder](https://github.com/bhadri01/fastapi-querybuilder)** — filtering, sorting and search for FastAPI + SQLAlchemy. JSON filters with 14 operators, nested relationship joins, global search, pagination and soft-delete — generated into SQLAlchemy, never string-built. **16K+ downloads**, 18 releases, MIT.
+- **[fastapi-querybuilder](https://github.com/bhadri01/fastapi-querybuilder)** — filtering, sorting and search for FastAPI + SQLAlchemy. JSON filters with 14 operators, nested relationship joins, global search, pagination and soft-delete — generated into SQLAlchemy, never string-built. **18K+ downloads**, 15 tagged releases, MIT.
 - **[fastapi_sse_events](https://github.com/bhadri01/fastapi_sse_events)** — server-sent events for FastAPI, backed by Redis pub/sub so streams survive more than one server.
 
 **Platform & product**

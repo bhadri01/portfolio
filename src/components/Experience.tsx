@@ -53,7 +53,7 @@ const timeline: TimelineItem[] = [
     Icon: ShieldCheck,
   },
   {
-    title: "Bachelor of Engineering",
+    title: "B.E. Electronics and Communication Engineering",
     org: "Muthayammal Engineering College",
     location: "Rasipuram, Tamil Nadu",
     period: "2019 — 2023",

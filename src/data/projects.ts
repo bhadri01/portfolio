@@ -24,7 +24,7 @@ export const projects: Project[] = [
       "Hand-wrote a Rust risk-engine (position sizing, Black-Scholes Greeks, Sharpe/Sortino, per-tick risk checks) invoked over stdin/stdout at µs latency — no HTTP, no JSON framing.",
       "Owned a single broker WebSocket and fanned every tick out through Redis, so bot loops, the paper engine and the browser all read from Redis instead of opening their own socket.",
       "Built a 16-section React 19 dashboard backed by FastAPI plus Celery workers for paper fills, deployed strategy loops and a supervisor/heartbeat manager.",
-      "Stored ticks in TimescaleDB, sealed broker credentials with Fernet, and shipped it behind a shared Traefik proxy at algo.bha3.in.",
+      "Stored ticks in TimescaleDB, sealed broker credentials with Fernet, and shipped it behind a shared Traefik proxy.",
     ],
     tech: ["React", "TypeScript", "FastAPI", "Rust", "Celery", "TimescaleDB", "Redis", "Docker", "Traefik", "WebSockets"],
     year: "2026",
@@ -97,9 +97,9 @@ export const projects: Project[] = [
   {
     title: "FastAPI QueryBuilder",
     description:
-      "Published PyPI package that turns URL query params into SQLAlchemy filters for FastAPI — 14+ operators with nested and relationship filtering.",
+      "Published PyPI package that turns URL query params into SQLAlchemy filters for FastAPI — 14 comparison and 2 logical operators with nested and relationship filtering.",
     highlights: [
-      "Turned request query strings into safe, composable SQLAlchemy filters with 14+ operators.",
+      "Turned request query strings into safe, composable SQLAlchemy filters with 14 comparison and 2 logical operators.",
       "Added dynamic sorting, recursive search across relationships, pagination and soft-delete support.",
       "Packaged it as a drop-in dependency and published it to PyPI under an MIT license.",
     ],
@@ -114,13 +114,13 @@ export const projects: Project[] = [
     description:
       "Published PyPI package for real-time Server-Sent Events in FastAPI, backed by Redis Pub/Sub and built for horizontal scale.",
     highlights: [
-      "Designed a decorator-based API that cuts common SSE integration boilerplate by roughly 75%.",
+      "Designed a decorator-based API for adding real-time event streams to existing REST endpoints.",
       "Backed event delivery with Redis Pub/Sub so it works across horizontally scaled, multi-worker deployments.",
       "Published and maintained it on PyPI under an MIT license.",
     ],
     tech: ["Python", "FastAPI", "Redis", "SSE", "WebSockets"],
     github: "https://github.com/bhadri01/fastapi_sse_events",
-    year: "2025",
+    year: "2026",
     featured: true,
     visibility: "public",
   },

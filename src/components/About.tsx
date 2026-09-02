@@ -15,7 +15,7 @@ type IconType = ComponentType<{ size?: number; className?: string }>;
 // straight off the résumé — 16k downloads is third-party proof that the tools
 // get used, which no amount of self-description buys.
 const stats = [
-  { number: "16K+", label: "PyPI downloads", gradient: "from-[#0358fc] to-[#4b8dff]" },
+  { number: "18K+", label: "PyPI downloads", gradient: "from-[#0358fc] to-[#4b8dff]" },
   { number: "4+ yrs", label: "Experience", gradient: "from-[#0246d4] to-[#0358fc]" },
   { number: "2", label: "Packages published", gradient: "from-[#3b6fff] to-[#0358fc]" },
 ];
@@ -73,7 +73,7 @@ export default function About() {
               <div>
                 <p className="font-brand text-sm text-[#000b1b] dark:text-slate-100 tracking-tight">Bhadrinathan</p>
                 <p className="font-mono text-[11px] text-slate-500 dark:text-slate-400 tracking-wide">
-                  Technical Lead · Software Engineer
+                  Backend Engineer · Technical Lead
                 </p>
               </div>
             </div>
@@ -92,7 +92,7 @@ export default function About() {
               records CRM (as an intern) to a cloud labs platform, and now leading
               the build of an edtech platform as Technical Lead. I wrote{" "}
               <span className="text-[#0358fc] dark:text-[#4b8dff] font-medium">fastapi-querybuilder</span>, which
-              other people's projects have pulled down more than 16,000 times.
+              other people's projects have pulled down more than 18,000 times.
             </motion.p>
 
             <motion.p variants={fadeUp} className="relative text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-8">
