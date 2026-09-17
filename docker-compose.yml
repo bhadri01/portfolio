@@ -33,6 +33,7 @@ services:
       - "traefik.http.routers.portfolio.rule=Host(`bha3.in`)"
       - "traefik.http.routers.portfolio.entrypoints=websecure"
       - "traefik.http.routers.portfolio.tls=true"
+      - "traefik.http.routers.portfolio.tls.certresolver=letsencrypt"
       # App's internal port (nginx).
       - "traefik.http.services.portfolio.loadbalancer.server.port=80"
       # Global reusable middlewares (see ../traefik/dynamic/middlewares.yml).
@@ -42,6 +43,7 @@ services:
       - "traefik.http.routers.portfolio-www.rule=Host(`www.bha3.in`)"
       - "traefik.http.routers.portfolio-www.entrypoints=websecure"
       - "traefik.http.routers.portfolio-www.tls=true"
+      - "traefik.http.routers.portfolio-www.tls.certresolver=letsencrypt"
       - "traefik.http.routers.portfolio-www.service=portfolio"
       - "traefik.http.routers.portfolio-www.middlewares=www-redirect@file"
     healthcheck:
