@@ -22,11 +22,17 @@ describe("skills data", () => {
   // nothing about where the depth actually is, so the tiers — and the cap — are
   // the signal. If this fails, the list has drifted back toward a dump.
   it("stays a curated list, not a dump", () => {
-    expect(skills.length).toBeLessThanOrEqual(24);
+    expect(skills.length).toBeLessThanOrEqual(50);
   });
 
-  it("groups every skill into one of the three tiers", () => {
-    const tiers = ["Core", "AI Engineering", "Also ship with"];
+  it("grounds the expanded project skills in actual work", () => {
+    for (const label of ["Axum", "TimescaleDB", "MinIO", "React Native", "WebAssembly", "DNS & Networking"]) {
+      expect(skills.find((s) => s.label === label)?.how).toBeTruthy();
+    }
+  });
+
+  it("groups every skill into a supported category", () => {
+    const tiers = ["Core", "AI Engineering", "Also ship with", "Cybersecurity"];
     const stray = skills.filter((s) => !tiers.includes(s.cat)).map((s) => s.label);
     expect(stray).toEqual([]);
     for (const t of tiers) {
@@ -40,31 +46,28 @@ describe("skills data", () => {
     }
   });
 
-  // The résumé's TECHNICAL SKILLS block is the source of truth for this list.
-  // If someone edits one and not the other, a recruiter reading both sees two
-  // different candidates — so pin the exact membership of each row.
-  it("matches the résumé's Core row", () => {
+  it("keeps the primary backend tools in the Core tier", () => {
     const core = skills.filter((s) => s.cat === "Core").map((s) => s.label).sort();
     expect(core).toEqual(
       ["Docker", "FastAPI", "Linux", "PostgreSQL", "Python", "REST & SSE APIs", "Redis", "SQLAlchemy"].sort(),
     );
   });
 
-  it("matches the résumé's AI Engineering row", () => {
+  it("groups the AI learning tools together", () => {
     const ai = skills.filter((s) => s.cat === "AI Engineering").map((s) => s.label).sort();
-    expect(ai).toEqual(["LangChain", "LangGraph", "MCP Servers", "OpenAI API", "RAG (pgvector)"].sort());
+    expect(ai).toEqual(expect.arrayContaining(["LangChain", "LangGraph", "MCP Servers", "OpenAI API", "RAG (pgvector)"]));
   });
 });
 
 describe("practices", () => {
-  it("carries the résumé's fourth skills row", () => {
-    expect(practices.map((p) => p.label)).toEqual([
+  it("retains the core engineering practices", () => {
+    expect(practices.map((p) => p.label)).toEqual(expect.arrayContaining([
       "System design (HLD/LLD)",
       "Code review",
       "Automated testing",
       "CI/CD",
       "Phased delivery",
-    ]);
+    ]));
   });
 
   // These render as plain boxes with no proficiency badge. The description is

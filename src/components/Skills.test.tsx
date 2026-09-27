@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi, afterEach } from "vitest";
 import Skills from "./Skills";
 
@@ -26,6 +26,22 @@ function setViewport(width: number) {
 afterEach(() => vi.restoreAllMocks());
 
 describe("Skills", () => {
+  it.each([390, 1440])("opens security and AI details from the shared tiles at %ipx", (width) => {
+    setViewport(width);
+    const { unmount } = render(<Skills />);
+    fireEvent.click(screen.getByRole("button", { name: /^Burp Suite,/ }));
+    const security = screen.getByRole("dialog", { name: "Burp Suite details" });
+    expect(within(security).getByText(/I've used Burp Suite hands-on/)).toBeInTheDocument();
+    expect(security).not.toHaveTextContent("null%");
+    unmount();
+
+    render(<Skills />);
+    fireEvent.click(screen.getByRole("button", { name: /^AI Security,/ }));
+    const ai = screen.getByRole("dialog", { name: "AI Security details" });
+    expect(within(ai).getByText("What I'm learning")).toBeInTheDocument();
+    expect(within(ai).getByText(/Exploring input validation/)).toBeInTheDocument();
+  });
+
   it("renders the skill list on mobile viewports", () => {
     setViewport(390);
     const { container } = render(<Skills />);

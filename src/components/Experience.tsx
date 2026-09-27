@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { fadeUp, viewportOnce, easeOut } from "../lib/motion";
 import { useSpotlight } from "../hooks/useSpotlight";
 import { Briefcase, GraduationCap, ShieldCheck, MapPin, Calendar } from "lucide-react";
+import { achievements } from "../data/achievements";
 
 type IconType = ComponentType<{ size?: number; className?: string }>;
 
@@ -58,7 +59,7 @@ const timeline: TimelineItem[] = [
     location: "Rasipuram, Tamil Nadu",
     period: "2019 — 2023",
     description:
-      "Studied engineering with a focus on software development, networking, and cloud infrastructure — building full-stack, DevOps, and real-time systems projects alongside coursework, including the police-station CRM I built during an internship in my final year.",
+      "Graduated in First Class. Built a final-year gesture-controlled electronics project that lets users control electronic components through gestures, applying IoT prototyping and hardware-software integration. Also built the police-station CRM during my final-year internship.",
     accentGradient: "from-[#0246d4] to-[#4b8dff]",
     label: "Education",
     Icon: GraduationCap,
@@ -137,6 +138,23 @@ export default function Experience() {
           <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
             Trained 1,000+ students from multiple colleges, sharing practical software development experience alongside my engineering work.
           </p>
+        </motion.div>
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={viewportOnce}
+          className="mt-5 ml-0 sm:ml-16 md:ml-28 rounded-2xl border border-slate-200 bg-white p-6 dark:border-white/10 dark:bg-[#0f1a2e]"
+        >
+          <h3 className="font-brand text-lg text-[#000b1b] dark:text-slate-100">CTF achievements</h3>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            {achievements.map((achievement) => (
+              <div key={achievement.title}>
+                <h4 className="text-sm font-semibold text-[#0358fc] dark:text-[#4b8dff]">{achievement.title}</h4>
+                <p className="mt-1.5 text-sm leading-relaxed text-slate-600 dark:text-slate-300">{achievement.detail}</p>
+              </div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>

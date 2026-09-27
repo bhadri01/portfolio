@@ -26,11 +26,8 @@ const val = (wt: number) => wt;
 
 // ---------- layout (computed once, all skills in one map) ----------
 const W = 100;
-// Back to a shallow box now that the layout actually fills it. The old squarify
-// covered only ~20% of the rectangle, so tiles were ~5x smaller than the space
-// allowed and the only way to make them legible was more height. With the
-// coverage bug fixed, 48 is enough — and the section stops towering.
-const H = 48;
+// Give the expanded, project-backed list enough vertical space for tile labels.
+const H = 76;
 const order = skills.map((_, i) => i).sort((a, b) => val(skills[b].wt) - val(skills[a].wt));
 const rects = squarify(order.map((idx) => ({ value: val(skills[idx].wt), index: idx })), { x: 0, y: 0, w: W, h: H });
 const tiles = rects.map((r) => ({ s: skills[r.index], x: r.x, y: r.y, w: r.w, h: r.h }));
@@ -43,6 +40,7 @@ const catNote: Record<string, string> = {
   Core: "Used daily across production services — the tools I reach for first.",
   "AI Engineering": "Current focus: retrieval pipelines, agent orchestration, and tool servers for LLM clients.",
   "Also ship with": "Used regularly alongside the core stack, in production and in my own projects.",
+  Cybersecurity: "Hands-on tools, security engineering projects and team CTF experience.",
 };
 
 function darken(hex: string, amt: number) {
@@ -52,6 +50,14 @@ function darken(hex: string, amt: number) {
 }
 function levelTag(l: number) {
   return l >= 90 ? "Expert" : l >= 80 ? "Advanced" : l >= 70 ? "Proficient" : "Growing";
+}
+
+function experience(skill: Skill) {
+  return skill.status ?? levelTag(skill.level ?? 0);
+}
+
+function tileLabel(skill: Skill) {
+  return `${skill.label}, ${skill.level === null ? experience(skill) : `${skill.level}% proficiency`}, ${skill.cat}`;
 }
 
 function SkillModal({ sel, onClose }: { sel: Selected; onClose: () => void }) {
@@ -74,6 +80,9 @@ function SkillModal({ sel, onClose }: { sel: Selected; onClose: () => void }) {
       />
       <motion.div
         layoutId={`skill-${skill.label}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${skill.label} details`}
         className="relative w-full max-w-lg max-h-[90dvh] flex flex-col bg-white dark:bg-[#0f1a2e] rounded-3xl overflow-hidden ring-1 ring-black/10 dark:ring-white/10"
         transition={{ type: "spring", stiffness: 300, damping: 32 }}
       >
@@ -99,10 +108,10 @@ function SkillModal({ sel, onClose }: { sel: Selected; onClose: () => void }) {
                 <Icon size={34} />
               </span>
               <div className="min-w-0 pt-1">
-                <div className="font-brand text-2xl leading-tight truncate">{skill.label}</div>
+                <div className="font-brand text-2xl leading-tight break-words">{skill.label}</div>
                 <div className="flex flex-wrap items-center gap-2 mt-2.5">
                   <span className="px-2.5 py-0.5 rounded-full bg-white/15 text-[11px] font-medium tracking-wide">{skill.cat}</span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-white/25 text-[11px] font-semibold tracking-wide">{levelTag(skill.level)}</span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-white/25 text-[11px] font-semibold tracking-wide">{experience(skill)}</span>
                 </div>
               </div>
             </div>
@@ -113,10 +122,10 @@ function SkillModal({ sel, onClose }: { sel: Selected; onClose: () => void }) {
         <div className="relative z-10 -mt-11 px-6 grid grid-cols-2 gap-3 shrink-0">
           <div className="bg-white dark:bg-[#0f1a2e] rounded-2xl border border-slate-200 dark:border-white/10 px-3 py-3 text-center">
             <div className="leading-none">
-              <span className="font-brand text-lg text-[#000b1b] dark:text-slate-100">{skill.level}</span>
-              <span className="text-xs text-slate-400 dark:text-slate-500">%</span>
+              <span className={`${skill.level === null ? "text-sm font-semibold" : "font-brand text-lg"} text-[#000b1b] dark:text-slate-100`}>{skill.level ?? experience(skill)}</span>
+              {skill.level !== null && <span className="text-xs text-slate-400 dark:text-slate-500">%</span>}
             </div>
-            <div className="font-mono text-[9px] uppercase tracking-wider text-slate-400 dark:text-slate-500 mt-1.5">Proficiency</div>
+            <div className="font-mono text-[9px] uppercase tracking-wider text-slate-400 dark:text-slate-500 mt-1.5">{skill.level === null ? "Experience" : "Proficiency"}</div>
           </div>
           <div className="bg-white dark:bg-[#0f1a2e] rounded-2xl border border-slate-200 dark:border-white/10 px-3 py-3 text-center">
             <div className="leading-none">
@@ -147,10 +156,10 @@ function SkillModal({ sel, onClose }: { sel: Selected; onClose: () => void }) {
               honest generality where there isn't. */}
           <div className="flex items-center gap-2 mb-3">
             <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400 dark:text-slate-500">
-              How I use it
+              {skill.status === "Learning focus" ? "What I'm learning" : "How I use it"}
             </span>
             <div className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
-            <span className="font-mono text-[10px] text-slate-400 dark:text-slate-500">{levelTag(skill.level)}</span>
+            <span className="font-mono text-[10px] text-slate-400 dark:text-slate-500">{experience(skill)}</span>
           </div>
           <div
             className="relative rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] p-4 pl-5 overflow-hidden"
@@ -237,12 +246,11 @@ function SkillsInner({
               <span className="text-slate-400 dark:text-slate-500">·</span>
               <span className="text-slate-500 dark:text-slate-400">{current.cat}</span>
               <span className="text-slate-400 dark:text-slate-500">·</span>
-              <span className="text-slate-600 dark:text-slate-300">{current.level}% proficiency</span>
+              <span className="text-slate-600 dark:text-slate-300">{current.level === null ? experience(current) : `${current.level}% proficiency`}</span>
             </span>
           ) : (
             <span className="font-mono text-[11px] text-slate-400 dark:text-slate-500">
-              {isMobile ? "Tap a card to inspect · " : "Hover a tile to inspect · "}
-              tile size = weight · colour = technology
+              {isMobile ? "Tap a card to see where I've used each skill" : "Hover a tile to see where I've used each skill"}
             </span>
           )}
         </motion.div>
@@ -255,7 +263,7 @@ function SkillsInner({
           {categories.map((cat) => {
             const inCat = skills
               .filter((s) => s.cat === cat)
-              .sort((a, b) => b.wt - a.wt || b.level - a.level);
+              .sort((a, b) => b.wt - a.wt || (b.level ?? 0) - (a.level ?? 0));
             return (
               <div key={cat}>
                 <div className="mb-2.5 flex items-center gap-3">
@@ -283,7 +291,7 @@ function SkillsInner({
                             rect: (e.currentTarget as HTMLElement).getBoundingClientRect(),
                           })
                         }
-                        aria-label={`${s.label}, ${s.level}% proficiency, ${s.cat}`}
+                        aria-label={tileLabel(s)}
                         initial={{ opacity: 0, scale: 0.85 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true, amount: 0.3 }}
@@ -310,10 +318,10 @@ function SkillsInner({
                         />
                         <Icon className={lead ? "h-7 w-7 shrink-0 opacity-90" : "h-6 w-6 shrink-0 opacity-90"} aria-hidden="true" />
                         <div className="relative mt-auto min-w-0">
-                          <div className="truncate text-sm font-semibold leading-tight">{s.label}</div>
-                          <div className="font-brand text-xl leading-none">
-                            {s.level}
-                            <span className="text-[0.65em] opacity-70">%</span>
+                          <div className="text-sm font-semibold leading-tight break-words">{s.label}</div>
+                          <div className={s.level === null ? "mt-1 text-[10px] leading-tight" : "font-brand text-xl leading-none"}>
+                            {s.level ?? experience(s)}
+                            {s.level !== null && <span className="text-[0.65em] opacity-70">%</span>}
                           </div>
                         </div>
                       </motion.button>
@@ -355,7 +363,7 @@ function SkillsInner({
                     layoutId={`skill-${t.s.label}`}
                     role="button"
                     tabIndex={0}
-                    aria-label={`${t.s.label}, ${t.s.level}% proficiency, ${t.s.cat}`}
+                    aria-label={tileLabel(t.s)}
                     onHoverStart={() => setActive(t.s.label)}
                     onFocus={() => setActive(t.s.label)}
                     onClick={(e) =>
@@ -381,9 +389,9 @@ function SkillsInner({
                       >
                         {t.s.label}
                       </div>
-                      <div className={`font-brand leading-none ${big ? "text-xl md:text-2xl" : med ? "text-sm" : "text-[11px]"}`}>
-                        {t.s.level}
-                        <span className="opacity-70 text-[0.65em]">%</span>
+                      <div className={t.s.level === null ? "mt-1 text-[10px] leading-tight" : `font-brand leading-none ${big ? "text-xl md:text-2xl" : med ? "text-sm" : "text-[11px]"}`}>
+                        {t.s.level ?? experience(t.s)}
+                        {t.s.level !== null && <span className="opacity-70 text-[0.65em]">%</span>}
                       </div>
                     </div>
                     {area < 40 && !big && !med && <span className="sr-only">{t.s.label}</span>}
@@ -395,7 +403,7 @@ function SkillsInner({
         </motion.div>
         )}
 
-        {/* Practices — the résumé's fourth skills row.
+        {/* Applied skills and practices.
             Uniform boxes on purpose. The treemap's whole language is "size =
             weight, number = proficiency", and neither means anything for code
             review or phased delivery. Sizing them would invent a ranking and
@@ -404,11 +412,11 @@ function SkillsInner({
         <motion.div variants={fadeUp} className="mt-10 md:mt-12">
           <div className="mb-3 flex items-center gap-3">
             <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
-              Practices
+              Applied skills & practices
             </h3>
             <div className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
             <span className="font-mono text-[10px] text-slate-400 dark:text-slate-500">
-              how the work gets done
+              experience in practice
             </span>
           </div>
           <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3">

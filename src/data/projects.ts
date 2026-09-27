@@ -125,16 +125,17 @@ export const projects: Project[] = [
     visibility: "public",
   },
   {
-    title: "Crypton API",
+    title: "CrimeTracker Pro",
     description:
-      "Unified authentication, authorization and case-management platform API built on FastAPI and SQLAlchemy.",
+      "Full-stack crime-management platform with a FastAPI backend and React frontend, bringing case registers, timelines, files, reports and station-scoped analytics into one workspace.",
     highlights: [
-      "Built a unified auth + authorization + case-management API on FastAPI and SQLAlchemy.",
-      "Used PostgreSQL as the primary store with Redis sessions/cache and MinIO for object storage.",
-      "Managed schema with Alembic and the toolchain with uv, on a microservices-to-monolith migration path.",
+      "Built authentication, authorization and NCRP/CSR/FIR workflows on FastAPI and SQLAlchemy, with React interfaces for registers, case timelines and file galleries.",
+      "Built station-scoped analytics and configurable report exports, plus session and background-task monitoring.",
+      "Managed PostgreSQL schema with Alembic migrations and used Valkey for sessions/cache and S3-compatible object storage for files.",
+      "Worked across the API, frontend and Docker deployment stack, including the migration from earlier Redis/MinIO services.",
     ],
-    tech: ["Python", "FastAPI", "SQLAlchemy", "PostgreSQL", "Redis", "MinIO"],
-    year: "2025",
+    tech: ["Python", "FastAPI", "React", "TypeScript", "SQLAlchemy", "PostgreSQL", "Valkey", "Alembic", "Docker"],
+    year: "2026",
     visibility: "private",
   },
   {
@@ -184,6 +185,18 @@ export const projects: Project[] = [
       "Containerized and deployed the whole system with Docker.",
     ],
     tech: ["Go", "React", "PostgreSQL", "Docker"],
+    year: "2023",
+    visibility: "private",
+  },
+  {
+    title: "Gesture-Controlled Electronics",
+    description:
+      "Final-year ECE project: an IoT/electronics prototype that lets users control electronic components through gestures.",
+    highlights: [
+      "Built a gesture-based control interface for electronic components during the final year at Muthayammal Engineering College.",
+      "Applied hardware-software integration and IoT prototyping to translate gestures into electronic control actions.",
+    ],
+    tech: ["IoT", "Gesture Control", "Electronics", "Hardware-Software Integration"],
     year: "2023",
     visibility: "private",
   },
