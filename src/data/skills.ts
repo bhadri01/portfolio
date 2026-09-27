@@ -1,6 +1,6 @@
 import type { ComponentType } from "react";
 import {
-  SiCelery, SiDocker, SiFastapi, SiGithubactions, SiGo, SiLangchain, SiLinux, SiNginx, SiPostgresql, SiPytest, SiPython, SiReact, SiRedis, SiRust, SiSqlalchemy, SiTypescript,
+  SiCelery, SiDocker, SiExpress, SiFastapi, SiGithubactions, SiGo, SiLangchain, SiLinux, SiMongodb, SiNginx, SiNodedotjs, SiPostgresql, SiPytest, SiPython, SiReact, SiRedis, SiRust, SiSqlalchemy, SiTypescript,
 } from "react-icons/si";
 import {
   BrainCircuit, Sparkles, Webhook, Workflow, Plug,
@@ -114,6 +114,21 @@ export const skills: Skill[] = [
     label: "React", Icon: SiReact, color: "#149ECA", level: 82, mom: 4.1, cat: "Also ship with", wt: 7,
     what: "The component model that won the frontend: describe the UI for a given state and let it work out the DOM changes.",
     how: "Every interface I've shipped, this site included. The 16-section AlgoTrade dashboard is the biggest — enough surface that state discipline stops being optional.",
+  },
+  {
+    label: "MongoDB", Icon: SiMongodb, color: "#47A248", level: 75, mom: 5.0, cat: "Also ship with", wt: 5,
+    what: "A document database used to store JSON-like records for web applications.",
+    how: "Used MongoDB as the data layer in MERN-stack application work.",
+  },
+  {
+    label: "Express", Icon: SiExpress, color: "#666666", level: 75, mom: 4.7, cat: "Also ship with", wt: 5,
+    what: "A lightweight Node.js framework for routing HTTP requests and building APIs.",
+    how: "Built server-side APIs with Express as part of MERN-stack application work.",
+  },
+  {
+    label: "Node.js", Icon: SiNodedotjs, color: "#339933", level: 78, mom: 4.8, cat: "Also ship with", wt: 5,
+    what: "A JavaScript runtime for server-side applications and development tooling.",
+    how: "Used Node.js with Express behind React interfaces in MERN-stack work.",
   },
   {
     label: "Rust", Icon: SiRust, color: "#B7410E", level: 76, mom: 9.5, cat: "Also ship with", wt: 7,

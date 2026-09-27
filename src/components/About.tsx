@@ -1,4 +1,4 @@
-import type { ComponentType } from "react";
+import { useState, type ComponentType } from "react";
 import { motion } from "framer-motion";
 import { fadeUp, scaleIn, stagger, viewportOnce } from "../lib/motion";
 import {
@@ -8,16 +8,13 @@ import {
 import { SiRust, SiDocker } from "react-icons/si";
 import Logo from "./Logo";
 import { useSpotlight } from "../hooks/useSpotlight";
+import { downloadBadgeUrl, downloadStatsUrl, usePypiDownloads } from "../hooks/usePypiDownloads";
 
 type IconType = ComponentType<{ size?: number; className?: string }>;
 
-// Numbers a reader can weigh, rather than implementation trivia. Every one is
-// straight off the résumé — 16k downloads is third-party proof that the tools
-// get used, which no amount of self-description buys.
 const stats = [
-  { number: "18K+", label: "PyPI downloads", gradient: "from-[#0358fc] to-[#4b8dff]" },
   { number: "4+ yrs", label: "Experience", gradient: "from-[#0246d4] to-[#0358fc]" },
-  { number: "2", label: "Packages published", gradient: "from-[#3b6fff] to-[#0358fc]" },
+  { number: "1,000+", label: "Students trained", gradient: "from-[#3b6fff] to-[#0358fc]" },
 ];
 
 // Each area carries an icon and the thing it actually means in practice — the
@@ -25,6 +22,7 @@ const stats = [
 const focus: { label: string; detail: string; Icon: IconType }[] = [
   { label: "Rust & Systems", detail: "Sandboxing, filesystems, WireGuard", Icon: SiRust },
   { label: "Backend APIs", detail: "FastAPI, SQLAlchemy, PostgreSQL", Icon: Webhook },
+  { label: "Full-stack JavaScript", detail: "MongoDB, Express, React, Node.js", Icon: Webhook },
   { label: "RAG & Agents", detail: "pgvector, LangGraph, evals", Icon: BrainCircuit },
   { label: "Real-time", detail: "SSE, WebSockets, Redis pub/sub", Icon: RadioTower },
   { label: "DevOps", detail: "Docker, Traefik, CI/CD", Icon: SiDocker },
@@ -33,6 +31,8 @@ const focus: { label: string; detail: string; Icon: IconType }[] = [
 
 export default function About() {
   const spotlight = useSpotlight();
+  const downloads = usePypiDownloads();
+  const [badgeError, setBadgeError] = useState(false);
 
   return (
     <section id="about" className="relative py-20 md:py-32 px-5 sm:px-6 md:px-12 overflow-hidden scroll-mt-24">
@@ -58,12 +58,12 @@ export default function About() {
             row height they only had ~200px of content for — 215px of dead space
             inside each. The side column now stacks and sizes to content, and the
             stats moved into it so both columns come out about even. */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-5">
           {/* Intro — large card */}
           <motion.div
             variants={scaleIn}
             onPointerMove={spotlight}
-            className="card-spotlight relative md:col-span-2 overflow-hidden bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-6 sm:p-8 md:p-10 flex flex-col transition-colors duration-300 hover:border-[#0358fc]/40"
+            className="card-spotlight relative lg:col-span-2 overflow-hidden bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-6 sm:p-8 md:p-10 flex flex-col transition-colors duration-300 hover:border-[#0358fc]/40"
           >
             <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-gradient-to-br from-[#0358fc]/10 to-transparent blur-2xl pointer-events-none" />
 
@@ -90,9 +90,11 @@ export default function About() {
             <motion.p variants={fadeUp} className="relative text-slate-600 dark:text-slate-300 text-base leading-relaxed mb-5">
               4+ years of experience shipping production software — from a police
               records CRM (as an intern) to a cloud labs platform, and now leading
-              the build of an edtech platform as Technical Lead. I wrote{" "}
+              the build of an edtech platform as Technical Lead. I have also trained
+              1,000+ students across colleges. I wrote{" "}
               <span className="text-[#0358fc] dark:text-[#4b8dff] font-medium">fastapi-querybuilder</span>, which
-              other people's projects have pulled down more than 18,000 times.
+              developers can install from PyPI. Its lifetime download count is
+              shown live below.
             </motion.p>
 
             <motion.p variants={fadeUp} className="relative text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-8">
@@ -100,7 +102,8 @@ export default function About() {
               sandbox that runs untrusted code behind eight independent isolation
               layers, a read-only forensics tool that physically can't write to the
               disk it reads. And Python where speed matters: FastAPI, pgvector, and
-              agent workflows on LangGraph. I like owning the whole stack, but I'm
+              agent workflows on LangGraph. I have also built with the MERN stack —
+              MongoDB, Express, React and Node.js. I like owning the whole stack, but I'm
               happiest close to the metal.
             </motion.p>
 
@@ -194,7 +197,7 @@ export default function About() {
                   </span>
                   <div className="min-w-0">
                     <p className="text-sm font-medium text-[#000b1b] dark:text-slate-100">{f.label}</p>
-                    <p className="truncate text-xs text-slate-500 dark:text-slate-400">{f.detail}</p>
+                    <p className="text-xs leading-snug text-slate-500 dark:text-slate-400">{f.detail}</p>
                   </div>
                 </li>
               ))}
@@ -205,7 +208,28 @@ export default function About() {
           {/* Stats — full-width row under both columns. Stacking them in the side
               column made it 920px against the intro's 583px, which just moved the
               gap to the other side. */}
-          <div className="md:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5">
+          <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5">
+          <motion.div
+            variants={scaleIn}
+            whileHover={{ y: -4 }}
+            onPointerMove={spotlight}
+            className="card-spotlight relative overflow-hidden bg-white dark:bg-[#0f1a2e] rounded-3xl border border-slate-200 dark:border-white/10 p-7 hover:border-[#0358fc]/40 transition-colors duration-300"
+          >
+            <a href={downloadStatsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center" aria-label="View live fastapi-querybuilder download statistics">
+              {downloads !== null ? (
+                <span className="block font-brand text-3xl md:text-4xl bg-gradient-to-r from-[#0358fc] to-[#4b8dff] bg-clip-text text-transparent">
+                  {new Intl.NumberFormat("en-US").format(downloads)}
+                </span>
+              ) : badgeError ? (
+                <span className="font-brand text-lg text-[#0358fc] dark:text-[#4b8dff]">View live count</span>
+              ) : (
+                <img src={downloadBadgeUrl} alt="Lifetime downloads for fastapi-querybuilder" className="block h-10 w-auto max-w-full" onError={() => setBadgeError(true)} />
+              )}
+            </a>
+            <span className="mt-2 block font-mono text-xs text-slate-500 dark:text-slate-400 tracking-wider uppercase">
+              Lifetime PyPI downloads
+            </span>
+          </motion.div>
           {stats.map((stat) => (
             <motion.div
               key={stat.label}

@@ -37,8 +37,16 @@ function useHashScroll() {
     };
 
     if (window.location.hash) scrollToHash();
+    const onPopState = () => {
+      if (window.location.hash) scrollToHash();
+      else window.scrollTo({ top: 0, behavior: "smooth" });
+    };
     window.addEventListener("hashchange", scrollToHash);
-    return () => window.removeEventListener("hashchange", scrollToHash);
+    window.addEventListener("popstate", onPopState);
+    return () => {
+      window.removeEventListener("hashchange", scrollToHash);
+      window.removeEventListener("popstate", onPopState);
+    };
   }, []);
 }
 

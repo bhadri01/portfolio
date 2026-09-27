@@ -40,6 +40,8 @@ const marqueeSkills: { name: string; Icon: MarqueeIcon }[] = [
 const phrases = [
   "Backend Engineer",
   "Python · FastAPI",
+  "MERN Stack",
+  "Trainer · 1,000+ Students",
   "AI Systems",
   "RAG & MCP Pipelines",
   "Systems in Rust",

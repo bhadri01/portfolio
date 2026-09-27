@@ -40,6 +40,13 @@ describe("Skills", () => {
     expect(screen.getAllByLabelText(/^Python,/).length).toBe(1);
   });
 
+  it("keeps the skill list on tablet viewports instead of forcing horizontal scrolling", () => {
+    setViewport(768);
+    const { container } = render(<Skills />);
+    expect(container.querySelector(".min-w-\\[760px\\]")).toBeNull();
+    expect(screen.getAllByLabelText(/^Python,/).length).toBe(1);
+  });
+
   it("renders the treemap on desktop viewports", () => {
     setViewport(1440);
     const { container } = render(<Skills />);

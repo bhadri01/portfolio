@@ -126,6 +126,18 @@ export default function Experience() {
             ))}
           </div>
         </div>
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={viewportOnce}
+          className="mt-8 ml-16 md:ml-28 rounded-2xl border border-slate-200 bg-white p-6 dark:border-white/10 dark:bg-[#0f1a2e]"
+        >
+          <h3 className="font-brand text-lg text-[#000b1b] dark:text-slate-100">Training & mentorship</h3>
+          <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+            Trained 1,000+ students from multiple colleges, sharing practical software development experience alongside my engineering work.
+          </p>
+        </motion.div>
       </div>
     </section>
   );

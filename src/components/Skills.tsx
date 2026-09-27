@@ -171,7 +171,7 @@ export default function Skills() {
   const [selected, setSelected] = useState<Selected | null>(null);
   // Render EITHER the mobile list or the treemap — never both, so the shared
   // layoutIds stay unique (duplicates made the mobile rows render invisible).
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery("(max-width: 1023px)");
 
   useEffect(() => {
     if (!selected) return;
