@@ -1,11 +1,12 @@
 import type { Variants } from "framer-motion";
+import { lightweightRendering } from "./renderPolicy";
 
 // Smooth, expo-style easing for a polished, high-end feel.
 export const easeOut = [0.16, 1, 0.3, 1] as const;
 
 // Fade + rise. The default building block for revealed content.
 export const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: lightweightRendering ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 },
   show: {
     opacity: 1,
     y: 0,
@@ -15,7 +16,7 @@ export const fadeUp: Variants = {
 
 // Subtle fade + rise for smaller items (pills, list rows).
 export const fadeUpSm: Variants = {
-  hidden: { opacity: 0, y: 14 },
+  hidden: lightweightRendering ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 },
   show: {
     opacity: 1,
     y: 0,
@@ -25,7 +26,7 @@ export const fadeUpSm: Variants = {
 
 // Gentle scale-in for cards.
 export const scaleIn: Variants = {
-  hidden: { opacity: 0, y: 20, scale: 0.98 },
+  hidden: lightweightRendering ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 20, scale: 0.98 },
   show: {
     opacity: 1,
     y: 0,

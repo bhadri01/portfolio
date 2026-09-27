@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { lightweightRendering } from "../lib/renderPolicy";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { fadeUp, stagger, viewportOnce } from "../lib/motion";
 import { useMediaQuery } from "../hooks/useMediaQuery";
@@ -292,7 +293,7 @@ function SkillsInner({
                           })
                         }
                         aria-label={tileLabel(s)}
-                        initial={{ opacity: 0, scale: 0.85 }}
+                        initial={lightweightRendering ? false : { opacity: 0, scale: 0.85 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true, amount: 0.3 }}
                         whileTap={{ scale: 0.96 }}
@@ -354,7 +355,7 @@ function SkillsInner({
                   key={t.s.label}
                   className="absolute"
                   style={{ left: pct(t.x, W), top: pct(t.y, H), width: pct(t.w, W), height: pct(t.h, H), zIndex: isActive ? 20 : 1 }}
-                  initial={{ opacity: 0, scale: 0.45 }}
+                  initial={lightweightRendering ? false : { opacity: 0, scale: 0.45 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true, amount: 0.05 }}
                   transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: ((t.x + t.y) / (W + H)) * 0.6 }}

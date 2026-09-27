@@ -22,6 +22,38 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Keep WebKit scrolling independent of costly blur/3D compositing layers. */
+.lightweight-rendering {
+  scroll-behavior: auto;
+}
+.lightweight-rendering .animate-marquee,
+.lightweight-rendering .animate-blob,
+.lightweight-rendering .animate-blob-reverse,
+.lightweight-rendering .gradient-text {
+  animation: none;
+}
+.lightweight-rendering .glass {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: #f6f9fe;
+}
+.lightweight-rendering.dark .glass {
+  background: #0f172a;
+}
+.lightweight-rendering [class*="blur-"] {
+  filter: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.lightweight-rendering .pointer-events-none[class*="blur-"] {
+  display: none;
+}
+.lightweight-rendering #projects [style*="preserve-3d"],
+.lightweight-rendering #projects [class*="preserve-3d"] {
+  transform-style: flat !important;
+  perspective: none !important;
+}
+
 body {
   background-color: var(--bg);
   color: var(--ink);

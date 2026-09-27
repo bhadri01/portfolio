@@ -1,4 +1,7 @@
 import "./styles/index.css";
+import { lightweightRendering } from "./lib/renderPolicy";
+
+document.documentElement.classList.toggle("lightweight-rendering", lightweightRendering);
 
 import App from "./App.tsx";
 import { StrictMode } from "react";

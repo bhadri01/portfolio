@@ -1,4 +1,5 @@
 import type { ComponentType } from "react";
+import { lightweightRendering } from "../lib/renderPolicy";
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { fadeUp, viewportOnce, easeOut } from "../lib/motion";
@@ -132,7 +133,7 @@ export default function Experience() {
           initial="hidden"
           whileInView="show"
           viewport={viewportOnce}
-          className="mt-8 ml-16 md:ml-28 rounded-2xl border border-slate-200 bg-white p-6 dark:border-white/10 dark:bg-[#0f1a2e]"
+          className="mt-8 ml-0 sm:ml-16 md:ml-28 rounded-2xl border border-slate-200 bg-white p-6 dark:border-white/10 dark:bg-[#0f1a2e]"
         >
           <h3 className="font-brand text-lg text-[#000b1b] dark:text-slate-100">Training & mentorship</h3>
           <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
@@ -167,7 +168,7 @@ function TimelineCard({ item, idx }: { item: TimelineItem; idx: number }) {
     <div className="group relative pl-16 md:pl-28">
       {/* Node */}
       <motion.div
-        initial={{ scale: 0.3, opacity: 0, rotate: -12 }}
+        initial={lightweightRendering ? false : { scale: 0.3, opacity: 0, rotate: -12 }}
         whileInView={{ scale: 1, opacity: 1, rotate: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ type: "spring", stiffness: 360, damping: 18 }}
@@ -178,7 +179,7 @@ function TimelineCard({ item, idx }: { item: TimelineItem; idx: number }) {
 
       {/* Card */}
       <motion.article
-        initial={{ opacity: 0, y: 44 }}
+        initial={lightweightRendering ? false : { opacity: 0, y: 44 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.6, ease: easeOut }}

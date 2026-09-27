@@ -1,4 +1,5 @@
 import type { ComponentType } from "react";
+import { lightweightRendering } from "../lib/renderPolicy";
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { fadeUp, stagger } from "../lib/motion";
@@ -59,7 +60,7 @@ export default function Hero({ start = true }: { start?: boolean }) {
 
   // three.js is a ~252KB gzipped download, so phones only get the real 3D scene
   // if they can comfortably afford it. Everything else keeps the static mark.
-  const use3D = webgl === true && (isDesktop || strongDevice);
+  const use3D = !lightweightRendering && !reducedMotion && webgl === true && (isDesktop || strongDevice);
 
   const setPointer = useScrollStore((s) => s.setPointer);
   const flatEmblemRef = useRef<HTMLDivElement>(null);
@@ -82,7 +83,7 @@ export default function Hero({ start = true }: { start?: boolean }) {
   );
 
   const { needsPermission, request: requestTilt } = useDeviceTilt({
-    enabled: !isDesktop && !reducedMotion,
+    enabled: !lightweightRendering && !isDesktop && !reducedMotion,
     onTilt: handleTilt,
   });
 

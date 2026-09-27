@@ -7,6 +7,7 @@ import {
 import { fadeUp, stagger, viewportOnce } from "../lib/motion";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { useScreenProgress } from "../hooks/useScreenProgress";
+import { lightweightRendering } from "../lib/renderPolicy";
 import { ArrowUpRight, Star, X, Github, ExternalLink, Code2, TrendingUp, ShieldCheck, RadioTower, Smartphone, GraduationCap, Globe, Lock } from "lucide-react";
 import { SiFastapi, SiRust, SiDocker, SiWireguard, SiGo } from "react-icons/si";
 import { projects, type Project } from "../data/projects";
@@ -144,7 +145,7 @@ function ProjectCard({
   // untransformed ancestors, so the 3D has to get out of the way for the card
   // to morph into the dialog cleanly. Cards sit at ~identity near mid-screen
   // anyway, which is where they get clicked, so dropping it barely shows.
-  const animate = isDesktop && !reduced && !morphing;
+  const animate = !lightweightRendering && isDesktop && !reduced && !morphing;
 
   // Concave mirror: the left column faces right, the right column faces left,
   // so the two columns lean in toward each other. A single mobile column has
