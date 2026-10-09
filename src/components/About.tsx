@@ -13,7 +13,7 @@ import { downloadBadgeUrl, downloadStatsUrl, usePypiDownloads } from "../hooks/u
 type IconType = ComponentType<{ size?: number; className?: string }>;
 
 const stats = [
-  { number: "4+ yrs", label: "Experience", gradient: "from-[#0246d4] to-[#0358fc]" },
+  { number: "5+ yrs", label: "Experience incl. internship", gradient: "from-[#0246d4] to-[#0358fc]" },
   { number: "1,000+", label: "Students trained", gradient: "from-[#3b6fff] to-[#0358fc]" },
 ];
 
@@ -23,7 +23,7 @@ const focus: { label: string; detail: string; Icon: IconType }[] = [
   { label: "Rust & Systems", detail: "Sandboxing, filesystems, WireGuard", Icon: SiRust },
   { label: "Backend APIs", detail: "FastAPI, SQLAlchemy, PostgreSQL", Icon: Webhook },
   { label: "Full-stack JavaScript", detail: "MongoDB, Express, React, Node.js", Icon: Webhook },
-  { label: "RAG & Agents", detail: "pgvector, LangGraph, evals", Icon: BrainCircuit },
+  { label: "RAG & Agents", detail: "LangChain, LangGraph, MCP, pgvector, Qdrant", Icon: BrainCircuit },
   { label: "Real-time", detail: "SSE, WebSockets, Redis pub/sub", Icon: RadioTower },
   { label: "DevOps", detail: "Docker, Traefik, CI/CD", Icon: SiDocker },
   { label: "Security", detail: "Isolation, threat modelling, pentest", Icon: ShieldCheck },
@@ -73,7 +73,7 @@ export default function About() {
               <div>
                 <p className="font-brand text-sm text-[#000b1b] dark:text-slate-100 tracking-tight">Bhadrinathan</p>
                 <p className="font-mono text-[11px] text-slate-500 dark:text-slate-400 tracking-wide">
-                  Backend Engineer · Technical Lead
+                  AI & Full-Stack Engineer · Lead Engineer
                 </p>
               </div>
             </div>
@@ -82,29 +82,29 @@ export default function About() {
               variants={fadeUp}
               className="relative font-brand text-2xl md:text-[2rem] leading-snug tracking-tight text-[#000b1b] dark:text-slate-100 mb-6"
             >
-              I build systems people trust with
-              <span className="gradient-text-cyan"> untrusted input </span>
-              — and tools other developers install.
+              I build
+              <span className="gradient-text-cyan"> AI applications </span>
+              — from retrieval and agents to the full-stack systems behind them.
             </motion.h2>
 
             <motion.p variants={fadeUp} className="relative text-slate-600 dark:text-slate-300 text-base leading-relaxed mb-5">
-              4+ years of experience shipping production software — from a police
-              records CRM (as an intern) to a cloud labs platform, and now leading
-              the build of an edtech platform as Technical Lead. I have also trained
-              1,000+ students across colleges. I wrote{" "}
+              5+ years of software development experience, including an internship,
+              spanning web platforms, real-time services and AI applications.
+              As Lead Engineer at BloomSkillTech, I own architecture and deployment
+              workflows and mentor 6+ engineers. I have also trained 1,000+ students
+              across colleges. I wrote{" "}
               <span className="text-[#0358fc] dark:text-[#4b8dff] font-medium">fastapi-querybuilder</span>, which
               developers can install from PyPI. Its lifetime download count is
               shown live below.
             </motion.p>
 
             <motion.p variants={fadeUp} className="relative text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-8">
-              Lately that means Rust where correctness has to be structural — a
-              sandbox that runs untrusted code behind eight independent isolation
-              layers, a read-only forensics tool that physically can't write to the
-              disk it reads. And Python where speed matters: FastAPI, pgvector, and
-              agent workflows on LangGraph. I have also built with the MERN stack —
-              MongoDB, Express, React and Node.js. I like owning the whole stack, but I'm
-              happiest close to the metal.
+              I build RAG and multi-agent pipelines with LangChain, LangGraph and
+              MCP, supported by React/Next.js frontends and Python/FastAPI backends.
+              My work includes reducing RAG response latency by 40% under concurrent
+              workloads and improving API throughput by 50% with Redis caching and
+              asynchronous queues. I also work with the MERN stack and build Rust
+              systems such as ZeroCode, hardened against 130+ adversarial test cases.
             </motion.p>
 
             {/* Socials */}
@@ -154,7 +154,7 @@ export default function About() {
                 <div>
                   {/* Matches Experience — this said "Software Engineer", which
                       contradicted the timeline further down the page. */}
-                  <p className="text-sm font-medium text-[#000b1b] dark:text-slate-100">Technical Lead</p>
+                  <p className="text-sm font-medium text-[#000b1b] dark:text-slate-100">Lead Engineer</p>
                   <p className="text-xs text-slate-500 dark:text-slate-400">BloomSkillTech · since Jan 2025</p>
                 </div>
               </div>

@@ -1,9 +1,8 @@
-"""Build the detailed two-page resume and publish its validated PDF.
+"""Build the archived September two-page resume for reference only.
 
 Requires reportlab and pypdf. Original files in profile-assets are preserved.
 """
 from pathlib import Path
-from shutil import copyfile
 from pypdf import PdfReader
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
@@ -11,8 +10,8 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import BaseDocTemplate, Frame, HRFlowable, KeepTogether, PageBreak, PageTemplate, Paragraph, Spacer
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "output/pdf/Bhadrinathan_A_Resume.pdf"
-PUBLIC = ROOT / "public/Bhadrinathan_A_Resume.pdf"
+# Legacy September resume: never overwrite the user-supplied October final PDF.
+OUTPUT = ROOT / "output/pdf/Bhadrinathan_A_Resume_Legacy.pdf"
 BLUE, INK, MUTED = [colors.HexColor(c) for c in ("#174B79", "#172536", "#49586A")]
 WIDTH, HEIGHT = A4
 MARGIN = 40
@@ -137,8 +136,7 @@ def build():
     for required in ["TOM CTF", "YUKTHI CTF", "Gesture-Controlled", "1,000+", "MERN"]:
         if required not in text:
             raise RuntimeError(f"Missing resume content: {required}")
-    copyfile(OUTPUT, PUBLIC)
-    print(f"Validated 2 pages, {len(text.split())} words; updated {OUTPUT} and {PUBLIC}")
+    print(f"Validated legacy 2-page resume, {len(text.split())} words: {OUTPUT}. Current public resume unchanged.")
 
 if __name__ == "__main__":
     build()

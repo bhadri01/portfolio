@@ -39,11 +39,11 @@ const marqueeSkills: { name: string; Icon: MarqueeIcon }[] = [
 ];
 
 const phrases = [
-  "Backend Engineer",
+  "AI & Full-Stack Engineer",
   "Python · FastAPI",
   "MERN Stack",
   "Trainer · 1,000+ Students",
-  "AI Systems",
+  "Lead Engineer",
   "RAG & MCP Pipelines",
   "Systems in Rust",
   "Open-Source Author",
@@ -161,9 +161,9 @@ export default function Hero({ start = true }: { start?: boolean }) {
           variants={fadeUp}
           className="max-w-xl mx-auto md:mx-0 text-slate-600 dark:text-slate-300 text-base md:text-lg leading-relaxed mb-9"
         >
-          A software engineer who ships end-to-end — turning complex problems
-          into reliable systems, thoughtful developer tools, and increasingly,
-          intelligent AI-driven products.
+          AI and full-stack application development — RAG and multi-agent
+          workflows backed by Python/FastAPI, React/Next.js and reliable
+          production infrastructure.
         </motion.p>
 
         {/* CTAs */}

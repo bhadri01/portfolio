@@ -22,34 +22,45 @@ type TimelineItem = {
 
 const timeline: TimelineItem[] = [
   {
-    title: "Technical Lead — EdTech Platform",
+    title: "Lead Engineer — EdTech Platform",
     org: "BloomSkillTech",
     location: "Salem, Tamil Nadu · Hybrid",
     period: "Jan 2025 — Present",
     description:
-      "Leading the engineering team and technical direction. Drove the end-to-end build of a two-sided edtech marketplace connecting trainers with institutions — from system architecture and data modelling to production launch. Own the technical roadmap across frontend, backend, and cloud, and established the team's CI/CD, automated testing, and code-review processes.",
+      "Architected a multi-tenant EdTech platform spanning React interfaces, FastAPI, PostgreSQL and LLM API integrations. Built RAG and multi-agent pipelines using LangChain, LangGraph and MCP. Optimized RAG indexing and vector queries, reducing response latency by 40% under concurrent workloads. Established CI/CD, automated tests and deployment workflows; mentored 6+ engineers through code reviews and architecture guidance.",
     accentGradient: "from-[#0358fc] to-[#4b8dff]",
+    label: "Full-time",
+    Icon: Briefcase,
+  },
+  {
+    title: "Senior Software Engineer",
+    org: "BloomSkillTech",
+    location: "Salem, Tamil Nadu · Hybrid",
+    period: "May 2023 — Dec 2024",
+    description:
+      "Developed a cloud labs platform with interactive coding environments, secure VPN access and isolated Docker workspaces. Built FastAPI microservices for container lifecycles, resource management and real-time sessions. Implemented Redis caching and asynchronous job queues, improving API throughput by 50%.",
+    accentGradient: "from-[#4b8dff] to-[#0358fc]",
     label: "Full-time",
     Icon: Briefcase,
   },
   {
     title: "Software Developer",
     org: "BloomSkillTech",
-    location: "Salem, Tamil Nadu · Hybrid",
-    period: "May 2023 — Dec 2024",
+    location: "Salem, Tamil Nadu",
+    period: "Dec 2022 — May 2023",
     description:
-      "Built a cloud-based lab platform that provisions isolated, browser-accessible development environments on demand — no local setup required. Developed the full stack (user-facing frontend, backend APIs, and environment-provisioning services) with containerized labs for consistent, reproducible sessions — then took on platform architecture and security: a secure VPN layer for isolated, per-session lab access and an orchestration layer that automatically spins up, scales, and tears down environments to optimize cloud cost.",
-    accentGradient: "from-[#4b8dff] to-[#0358fc]",
+      "Built a law enforcement CRM with React interfaces, Go REST APIs, PostgreSQL and Docker. Delivered case timelines, full-text record search and tracking.",
+    accentGradient: "from-[#0358fc] to-[#6aa1ff]",
     label: "Full-time",
     Icon: Briefcase,
   },
   {
-    title: "Software Engineer Intern",
-    org: "Cyber Crime Police Station, Salem",
+    title: "Software Development Intern",
+    org: "Salem City Cyber Crime Police",
     location: "Salem, Tamil Nadu · Hybrid",
-    period: "Aug 2022 — Mar 2023",
+    period: "Aug 2021 — Dec 2022",
     description:
-      "Single-handedly built a complete CRM digitizing crime records with end-to-end case-timeline tracking — React frontend, Go backend APIs, and a PostgreSQL database, deployed with Docker — so officers could log, search, and monitor investigations from one system.",
+      "Developed a website incorporating the station's database and continued software maintenance and support until joining BloomSkillTech. Received a Certificate of Appreciation from Salem City Police in December 2021 for website development contributions.",
     accentGradient: "from-[#0358fc] to-[#6aa1ff]",
     label: "Internship",
     Icon: ShieldCheck,
@@ -57,10 +68,10 @@ const timeline: TimelineItem[] = [
   {
     title: "B.E. Electronics and Communication Engineering",
     org: "Muthayammal Engineering College",
-    location: "Rasipuram, Tamil Nadu",
+    location: "Namakkal, Tamil Nadu",
     period: "2019 — 2023",
     description:
-      "Graduated in First Class. Built a final-year gesture-controlled electronics project that lets users control electronic components through gestures, applying IoT prototyping and hardware-software integration. Also built the police-station CRM during my final-year internship.",
+      "Graduated in First Class. Built a final-year gesture-controlled electronics project that lets users control electronic components through gestures, applying IoT prototyping and hardware-software integration.",
     accentGradient: "from-[#0246d4] to-[#4b8dff]",
     label: "Education",
     Icon: GraduationCap,
@@ -147,7 +158,7 @@ export default function Experience() {
           viewport={viewportOnce}
           className="mt-5 ml-0 sm:ml-16 md:ml-28 rounded-2xl border border-slate-200 bg-white p-6 dark:border-white/10 dark:bg-[#0f1a2e]"
         >
-          <h3 className="font-brand text-lg text-[#000b1b] dark:text-slate-100">CTF achievements</h3>
+          <h3 className="font-brand text-lg text-[#000b1b] dark:text-slate-100">Achievements & interests</h3>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             {achievements.map((achievement) => (
               <div key={achievement.title}>

@@ -36,6 +36,21 @@ export type Skill = {
 };
 
 export const skills: Skill[] = [
+  {
+    label: "Next.js", Icon: SiReact, color: "#334155", level: null, status: "Hands-on use", mom: 0, cat: "Also ship with", wt: 6,
+    what: "A React framework for building full-stack web applications with routing and server-rendered interfaces.",
+    how: "Part of my React/Next.js frontend toolkit for full-stack application development, as documented in my current resume.",
+  },
+  {
+    label: "Qdrant", Icon: Database, color: "#DC244C", level: null, status: "Hands-on use", mom: 0, cat: "AI Engineering", wt: 6,
+    what: "A vector database for similarity search and retrieval over embeddings.",
+    how: "Part of my AI applications toolkit alongside pgvector, RAG, LangChain and LangGraph.",
+  },
+  {
+    label: "Git", Icon: Workflow, color: "#F05032", level: null, status: "Hands-on use", mom: 0, cat: "Also ship with", wt: 4,
+    what: "Distributed version control for tracking code changes and collaborating on software.",
+    how: "Used for source control, code reviews and CI/CD workflows across application and open-source development.",
+  },
   // ---------------- Core ----------------
   {
     label: "Python", Icon: SiPython, color: "#3776AB", level: 95, mom: 3.1, cat: "Core", wt: 10,
@@ -55,12 +70,12 @@ export const skills: Skill[] = [
   {
     label: "SQLAlchemy", Icon: SiSqlalchemy, color: "#D71F00", level: 90, mom: 5.1, cat: "Core", wt: 8,
     what: "Python's ORM and SQL toolkit — maps database rows to objects without giving up hand-written SQL when you need it.",
-    how: "fastapi-querybuilder is built directly on it: 14 operators, nested relationship joins, pagination and soft-delete, all generated into SQLAlchemy rather than string-built.",
+    how: "fastapi-querybuilder is built directly on it: 14 operators, nested relationship joins, pagination and soft-delete, all generated into SQLAlchemy rather than string-built. I also use Alembic for database schema migrations.",
   },
   {
     label: "Redis", Icon: SiRedis, color: "#D82C20", level: 85, mom: 6.0, cat: "Core", wt: 7,
     what: "An in-memory data store used as a cache, a queue and a pub/sub bus — fast because it never touches disk on the hot path.",
-    how: "In AlgoTrade I own a single broker WebSocket and fan every tick out through Redis, so bot loops, the paper engine and the browser all read from Redis instead of each opening their own socket. fastapi_sse_events uses its pub/sub to scale SSE horizontally.",
+    how: "My backend toolkit includes Redis and Valkey. At BloomSkillTech, Redis caching and asynchronous queues improved API throughput by 50%. In AlgoTrade, Redis fans broker ticks out to bot loops and the browser; fastapi_sse_events uses its pub/sub for horizontal scaling.",
   },
   {
     label: "Docker", Icon: SiDocker, color: "#2496ED", level: 90, mom: 5.0, cat: "Core", wt: 9,
@@ -82,17 +97,17 @@ export const skills: Skill[] = [
   {
     label: "RAG (pgvector)", Icon: BrainCircuit, color: "#0358fc", level: 78, mom: 22.4, cat: "AI Engineering", wt: 9,
     what: "Retrieval-Augmented Generation: fetch relevant documents first, then let the model answer from them — grounding it in your data instead of its memory. pgvector is the PostgreSQL extension that does the similarity search, so the embeddings live next to the relational data instead of in a second database.",
-    how: "My current AI learning work covers retrieval pipelines, embeddings and pgvector semantic search, building on my PostgreSQL backend experience.",
+    how: "Built RAG pipelines at BloomSkillTech. Optimized indexing and vector queries to reduce response latency by 40% under concurrent workloads.",
   },
   {
     label: "LangChain", Icon: SiLangchain, color: "#1C3C3C", level: 76, mom: 20.1, cat: "AI Engineering", wt: 7,
     what: "A framework for wiring LLM calls together with retrieval, tools and memory instead of hand-rolling the plumbing.",
-    how: "Exploring retrieval chains, model calls and tool integration as part of my AI engineering learning.",
+    how: "Used LangChain to build RAG and multi-agent pipelines for AI application workflows at BloomSkillTech.",
   },
   {
     label: "LangGraph", Icon: Workflow, color: "#2563EB", level: 72, mom: 24.6, cat: "AI Engineering", wt: 6,
     what: "Models an agent as a state graph rather than a chain, so loops, branches and retries are explicit and inspectable.",
-    how: "Learning stateful agent workflows, branching and recovery as part of my backend-to-AI engineering development.",
+    how: "Built multi-agent pipelines with LangGraph for AI application workflows in my Lead Engineer role at BloomSkillTech.",
   },
   {
     label: "OpenAI API", Icon: Sparkles, color: "#10A37F", level: 82, mom: 14.0, cat: "AI Engineering", wt: 6,
@@ -101,7 +116,7 @@ export const skills: Skill[] = [
   {
     label: "MCP Servers", Icon: Plug, color: "#d97757", level: 74, mom: 26.0, cat: "AI Engineering", wt: 7,
     what: "Model Context Protocol: a standard way to expose real tools and data to an LLM client, so a model calls your services instead of guessing at their contents.",
-    how: "Studying MCP tools, resources and client/server boundaries to connect LLM applications with existing backend services.",
+    how: "Used MCP alongside LangChain and LangGraph to build AI application workflows at BloomSkillTech.",
   },
 
   // ---------------- Also ship with ----------------

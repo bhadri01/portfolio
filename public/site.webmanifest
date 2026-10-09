@@ -1,7 +1,7 @@
 {
-  "name": "Bhadrinathan — Backend Engineer & AI Systems",
+  "name": "Bhadrinathan — AI Engineer & Full-Stack Development",
   "short_name": "Bhadrinathan",
-  "description": "Backend engineer building production Python systems — FastAPI, PostgreSQL, Redis, Docker — and the AI pipelines that run on them. Author of fastapi-querybuilder.",
+  "description": "AI and Full-Stack Engineer building RAG and multi-agent applications with LangChain, LangGraph, MCP, Python/FastAPI and React/Next.js. Lead Engineer at BloomSkillTech.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f6f9fe",
