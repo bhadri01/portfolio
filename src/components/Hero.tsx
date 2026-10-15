@@ -43,7 +43,7 @@ const phrases = [
   "Python · FastAPI",
   "MERN Stack",
   "Trainer · 1,000+ Students",
-  "Lead Engineer",
+  "Senior Software Engineer",
   "RAG & MCP Pipelines",
   "Systems in Rust",
   "Open-Source Author",

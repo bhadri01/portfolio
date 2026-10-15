@@ -22,7 +22,7 @@ type TimelineItem = {
 
 const timeline: TimelineItem[] = [
   {
-    title: "Lead Engineer — EdTech Platform",
+    title: "Senior Software Engineer — EdTech Platform",
     org: "BloomSkillTech",
     location: "Salem, Tamil Nadu · Hybrid",
     period: "Jan 2025 — Present",
@@ -33,7 +33,7 @@ const timeline: TimelineItem[] = [
     Icon: Briefcase,
   },
   {
-    title: "Senior Software Engineer",
+    title: "Software Engineer",
     org: "BloomSkillTech",
     location: "Salem, Tamil Nadu · Hybrid",
     period: "May 2023 — Dec 2024",
@@ -44,7 +44,7 @@ const timeline: TimelineItem[] = [
     Icon: Briefcase,
   },
   {
-    title: "Software Developer",
+    title: "Associate Software Engineer",
     org: "BloomSkillTech",
     location: "Salem, Tamil Nadu",
     period: "Dec 2022 — May 2023",
@@ -55,7 +55,7 @@ const timeline: TimelineItem[] = [
     Icon: Briefcase,
   },
   {
-    title: "Software Development Intern",
+    title: "Software Engineer Intern",
     org: "Salem City Cyber Crime Police",
     location: "Salem, Tamil Nadu · Hybrid",
     period: "Aug 2021 — Dec 2022",

@@ -107,7 +107,7 @@ export const skills: Skill[] = [
   {
     label: "LangGraph", Icon: Workflow, color: "#2563EB", level: 72, mom: 24.6, cat: "AI Engineering", wt: 6,
     what: "Models an agent as a state graph rather than a chain, so loops, branches and retries are explicit and inspectable.",
-    how: "Built multi-agent pipelines with LangGraph for AI application workflows in my Lead Engineer role at BloomSkillTech.",
+    how: "Built multi-agent pipelines with LangGraph for AI application workflows in my Senior Software Engineer role at BloomSkillTech.",
   },
   {
     label: "OpenAI API", Icon: Sparkles, color: "#10A37F", level: 82, mom: 14.0, cat: "AI Engineering", wt: 6,

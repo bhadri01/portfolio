@@ -13,7 +13,7 @@ import { downloadBadgeUrl, downloadStatsUrl, usePypiDownloads } from "../hooks/u
 type IconType = ComponentType<{ size?: number; className?: string }>;
 
 const stats = [
-  { number: "5+ yrs", label: "Experience incl. internship", gradient: "from-[#0246d4] to-[#0358fc]" },
+  { number: "Nearly 4 yrs", label: "Full-time experience", gradient: "from-[#0246d4] to-[#0358fc]" },
   { number: "1,000+", label: "Students trained", gradient: "from-[#3b6fff] to-[#0358fc]" },
 ];
 
@@ -73,7 +73,7 @@ export default function About() {
               <div>
                 <p className="font-brand text-sm text-[#000b1b] dark:text-slate-100 tracking-tight">Bhadrinathan</p>
                 <p className="font-mono text-[11px] text-slate-500 dark:text-slate-400 tracking-wide">
-                  AI & Full-Stack Engineer · Lead Engineer
+                  AI & Full-Stack Engineer · Senior Software Engineer
                 </p>
               </div>
             </div>
@@ -88,9 +88,9 @@ export default function About() {
             </motion.h2>
 
             <motion.p variants={fadeUp} className="relative text-slate-600 dark:text-slate-300 text-base leading-relaxed mb-5">
-              5+ years of software development experience, including an internship,
+              Nearly 4 years of full-time software development experience since December 2022, excluding internship,
               spanning web platforms, real-time services and AI applications.
-              As Lead Engineer at BloomSkillTech, I own architecture and deployment
+              As Senior Software Engineer at BloomSkillTech, I own architecture and deployment
               workflows and mentor 6+ engineers. I have also trained 1,000+ students
               across colleges. I wrote{" "}
               <span className="text-[#0358fc] dark:text-[#4b8dff] font-medium">fastapi-querybuilder</span>, which
@@ -154,7 +154,7 @@ export default function About() {
                 <div>
                   {/* Matches Experience — this said "Software Engineer", which
                       contradicted the timeline further down the page. */}
-                  <p className="text-sm font-medium text-[#000b1b] dark:text-slate-100">Lead Engineer</p>
+                  <p className="text-sm font-medium text-[#000b1b] dark:text-slate-100">Senior Software Engineer</p>
                   <p className="text-xs text-slate-500 dark:text-slate-400">BloomSkillTech · since Jan 2025</p>
                 </div>
               </div>
